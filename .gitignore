@@ -1,0 +1,24 @@
+# Build caches and local tooling
+.cambc/
+.venv/
+.ruff_cache/
+__pycache__/
+
+# Match outputs (replays, experiment results) are regenerable
+matches/
+replays/
+
+# Bots: only track the main bot, frozen versions and reference bots.
+# Experiment variants made by tools/variant.py (and their seeded copies) stay local.
+bots/*
+!bots/mybot/
+!bots/v1/
+!bots/v2/
+!bots/v3/
+!bots/v4/
+!bots/starter/
+!bots/idle/
+!bots/probe/
+bots/*/.cambc/
+bots/*/build/
+bots/*/target/
