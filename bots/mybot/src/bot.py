@@ -28,7 +28,12 @@ BUILD_STR = [("MONSTER", "S", 5), ("POWER", "S", 5), ("JUNGLE", "H", 5), ("POWER
              ("DURABILITY", "H", 5), ("POWER", "S", 30), ("POWER", "H", 30)]
 BUILD_FOCUS = [("MONSTER", "F", 5), ("POWER", "F", 5), ("JUNGLE", "H", 5), ("POWER", "F", 10),
                ("DURABILITY", "H", 5), ("POWER", "F", 30), ("POWER", "H", 30)]
+BUILD_TANK = [("JUNGLE", "H", 5), ("MONSTER", "S", 5), ("POWER", "S", 5), ("POWER", "S", 10),
+              ("DURABILITY", "H", 5), ("POWER", "S", 30), ("POWER", "H", 30)]
 FOCUS_CHAMPS = (CT.STELLAR, CT.PRISM, CT.CASSI)
+TANK_CHAMPS = (CT.RYTH, CT.VARG, CT.MARCELLA)
+# Tanks (Ryth, Varg, Marcella) buy the Jungle health emblem (30% less camp damage) first.
+TANK_JUNGLE_FIRST = False
 
 DEBUG = True
 # Testing only: a non-zero SEED perturbs target scores by up to 2% so repeated matches diverge.
@@ -130,6 +135,8 @@ class Bot:
             self.ab_info.append(info)
             self.ab_kind.append(ABILITY_KIND.get(type(info).__name__, 0) if info is not None else 0)
         self.build = BUILD_FOCUS if self.kind in FOCUS_CHAMPS else BUILD_STR
+        if TANK_JUNGLE_FIRST and self.kind in TANK_CHAMPS:
+            self.build = BUILD_TANK
         self.splash = me.passive() == cambc.PassiveType.SPLASH_ATTACK
         self.aoe_mod = 0.0
         for i in (0, 1):

@@ -141,8 +141,12 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 43 | Batch 4: `es1` (no enemy-side penalty: 1.0 instead of 0.85) vs `base5` | 37/72, +956; economy 4,560 | Neutral (within noise); keep 0.85 |
 | 44 | Batch 5: tribute thresholds on the current code vs `base5` (60/30) | `t45` (45/20): 32/72, −684, economy 4,535. `t30` (30/15): 36/72, +2,526, economy 4,553 | Roughly neutral here (batch 1 showed +9 wins vs v4 for 45/20). No economy cost and fewer gems at risk against gem-stealing opponents, so `mybot` now uses 30/15 |
 | 45 | Batch 6: `lk2` (locks placed only when passing an altar, no detours) vs `lk0` (no locks, lock-aware) and vs starter | **vs lk0: 42/72, +1,312** (11, 9, 12, 10 per seed); **vs starter: 72/72, +49,756**; economy 4,387 (lk0 4,300, lk1 4,562) | Passive locks are a net win even against a lock-aware bot and crush naive ones. Kept: `ALTAR_LOCKS = True`, `LOCK_DETOUR = 0` |
-| 46 | Batch 7: `rt1` (recall as fast travel) vs `rt0` (same code, off) | **46/72, +3,920**; economy 4,324 | Clear win. Kept in `mybot` |
+| 46 | Batch 7: `rt1` (recall as fast travel) vs `rt0` (same code, off) | **46/72, +3,920** (10, 9, 14, 13 per seed); economy 4,324 vs 4,403 without it; `rt0` also beat the starter 72/72 | Clear win. Kept in `mybot` |
 | 47 | Packaged the current `mybot` (DEBUG off) as `submissions/cambridge-bot-2026-10-15.zip` with `cambc bundle` (copy in `bots/release`) | 16.5 KB: `src/main.py`, `bot.py`, `world.py`, `draft.py` | Ready to upload; verification game pending (batches running) |
+| 48 | Batch 8 (5th pick on 5-pick maps, 4 seeds × corners/elkring/lanes/monolith vs `base8` = Tavi 5th): `p5S` Stellar 5th | **13/32, −3,212** | Tavi stays 5th over Stellar |
+| 49 | Batch 8: `p5V` Vesper 5th | Invalid: only 8 of 32 games recorded (2/8, −698) | Re-run |
+| 50 | Paused for the night (user sleeping the PC). Stopped mid-batch-8 | Not yet run: `p5C`, `p5W`, `p4T`, `p4S`, `p4C` (batch 8), `dE` re-test (batch 9), gold weight 0 / 0.075 (batch 10), verification game for the release ZIP | Re-queue on resume (see HANDOFF.md) |
+| 51 | Resumed 2026-10-16. Verification of the release copy (`bots/release`, same source as the upload ZIP) vs starter on packs/lanes/monolith | 6/6 wins, no errors | Upload ZIP verified. Re-queued the unfinished tests (`matches/queue1.sh`) |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 
