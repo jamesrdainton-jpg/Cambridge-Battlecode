@@ -140,6 +140,9 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 42 | Batch 4: `gw2` (gold weight 0.5) vs `base5` | **25/72, −9,154**; economy 4,953 | Confirms the trend: less weight on gold is better (0.5 < 0.3 < 0.15) |
 | 43 | Batch 4: `es1` (no enemy-side penalty: 1.0 instead of 0.85) vs `base5` | 37/72, +956; economy 4,560 | Neutral (within noise); keep 0.85 |
 | 44 | Batch 5: tribute thresholds on the current code vs `base5` (60/30) | `t45` (45/20): 32/72, −684, economy 4,535. `t30` (30/15): 36/72, +2,526, economy 4,553 | Roughly neutral here (batch 1 showed +9 wins vs v4 for 45/20). No economy cost and fewer gems at risk against gem-stealing opponents, so `mybot` now uses 30/15 |
+| 45 | Batch 6: `lk2` (locks placed only when passing an altar, no detours) vs `lk0` (no locks, lock-aware) and vs starter | **vs lk0: 42/72, +1,312** (11, 9, 12, 10 per seed); **vs starter: 72/72, +49,756**; economy 4,387 (lk0 4,300, lk1 4,562) | Passive locks are a net win even against a lock-aware bot and crush naive ones. Kept: `ALTAR_LOCKS = True`, `LOCK_DETOUR = 0` |
+| 46 | Batch 7: `rt1` (recall as fast travel) vs `rt0` (same code, off) | **46/72, +3,920**; economy 4,324 | Clear win. Kept in `mybot` |
+| 47 | Packaged the current `mybot` (DEBUG off) as `submissions/cambridge-bot-2026-10-15.zip` with `cambc bundle` (copy in `bots/release`) | 16.5 KB: `src/main.py`, `bot.py`, `world.py`, `draft.py` | Ready to upload; verification game pending (batches running) |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 

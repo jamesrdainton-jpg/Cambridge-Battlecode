@@ -22,3 +22,6 @@ bots/*
 bots/*/.cambc/
 bots/*/build/
 bots/*/target/
+
+# Packaged bot uploads
+submissions/
