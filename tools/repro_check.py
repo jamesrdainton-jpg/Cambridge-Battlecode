@@ -2,7 +2,7 @@
 
 Usage: python tools/repro_check.py [--write]
 
-Plays v5 vs v4 on every map from both sides (18 games, about a minute, via tools/arena.py) and compares
+Plays v5 vs v4 on every map from both sides (2 games per map, a minute or two, via tools/arena.py) and compares
 each game's winner, final round and gem totals with tools/repro_reference.txt. Games are deterministic,
 so any difference means this computer's setup differs (cambc version, maps, SDK or bot code) and its
 results can't be compared with the team's. Don't run it while a batch is running.
@@ -33,9 +33,10 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--write", action="store_true", help="replace the reference with this computer's games")
     args = parser.parse_args()
+    expected = 2 * len(list((ROOT / "maps").glob("*.map26a")))
     games = play()
-    if len(games) != 18 or any("MISSING" in g for g in games):
-        raise SystemExit(f"only {sum('MISSING' not in g for g in games)} of 18 games finished; "
+    if len(games) != expected or any("MISSING" in g for g in games):
+        raise SystemExit(f"only {sum('MISSING' not in g for g in games)} of {expected} games finished; "
                          "is a batch running, or is cambc missing?")
     if args.write:
         REFERENCE.write_text(f"# {BOT_A} vs {BOT_B}, every map from both sides; written at commit "

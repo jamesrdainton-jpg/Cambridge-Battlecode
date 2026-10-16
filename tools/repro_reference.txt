@@ -1,19 +1,35 @@
-# v5 vs v4, every map from both sides; written at commit d3f40a6
-collision A=v5 B=v4 TEAM A WIN (v5) round=1020 gems~818-394@1000 errlines=0
-collision A=v4 B=v5 TEAM B WIN (v5) round= 986 gems~44-944@975 errlines=0
-corners A=v5 B=v4 TEAM A WIN (v5) round= 435 gems~958-196@425 errlines=0
-corners A=v4 B=v5 TEAM B WIN (v5) round= 343 gems~116-946@325 errlines=0
-elkring A=v5 B=v4 TEAM A WIN (v5) round= 642 gems~972-72@625 errlines=0
-elkring A=v4 B=v5 TEAM B WIN (v5) round= 688 gems~144-972@675 errlines=0
-expanse A=v5 B=v4 TEAM B WIN (v4) round= 445 gems~922-888@425 errlines=0
-expanse A=v4 B=v5 TEAM B WIN (v5) round= 448 gems~972-944@425 errlines=0
-interlock A=v5 B=v4 TEAM A WIN (v5) round=2000 gems~992-276@2000 errlines=0
-interlock A=v4 B=v5 TEAM B WIN (v5) round= 753 gems~232-950@750 errlines=0
-lanes A=v5 B=v4 TEAM A WIN (v5) round= 463 gems~944-402@450 errlines=0
-lanes A=v4 B=v5 TEAM B WIN (v5) round= 547 gems~722-938@525 errlines=0
+# v5 vs v4, every map from both sides; cambc 2.2.2, platform pool of 2026-10-16 (17 maps)
+ambush A=v5 B=v4 TEAM A WIN (v5) round= 955 gems~966-712@950 errlines=0
+ambush A=v4 B=v5 TEAM B WIN (v5) round= 882 gems~500-880@875 errlines=0
+collision A=v5 B=v4 TEAM A WIN (v5) round= 553 gems~988-0@550 errlines=0
+collision A=v4 B=v5 TEAM B WIN (v5) round=2000 gems~0-176@2000 errlines=0
+contest A=v5 B=v4 TEAM A WIN (v5) round=2000 gems~400-0@2000 errlines=0
+contest A=v4 B=v5 TEAM B WIN (v5) round=1630 gems~0-800@1625 errlines=0
+corners A=v5 B=v4 TEAM A WIN (v5) round= 689 gems~892-442@675 errlines=0
+corners A=v4 B=v5 TEAM B WIN (v5) round= 964 gems~268-918@950 errlines=0
+eight A=v5 B=v4 TEAM A WIN (v5) round= 943 gems~828-72@925 errlines=0
+eight A=v4 B=v5 TEAM B WIN (v5) round= 796 gems~298-826@775 errlines=0
+elkring A=v5 B=v4 TEAM A WIN (v5) round= 612 gems~936-72@600 errlines=0
+elkring A=v4 B=v5 TEAM B WIN (v5) round= 592 gems~144-936@575 errlines=0
+expanse A=v5 B=v4 TEAM A WIN (v5) round= 715 gems~982-828@700 errlines=0
+expanse A=v4 B=v5 TEAM A WIN (v4) round= 707 gems~946-752@700 errlines=0
+fragment A=v5 B=v4 TEAM A WIN (v5) round=1230 gems~938-218@1225 errlines=0
+fragment A=v4 B=v5 TEAM B WIN (v5) round= 841 gems~248-910@825 errlines=0
+interlock A=v5 B=v4 TEAM A WIN (v5) round= 737 gems~950-496@725 errlines=0
+interlock A=v4 B=v5 TEAM B WIN (v5) round= 715 gems~226-878@700 errlines=0
+lanes A=v5 B=v4 TEAM A WIN (v5) round= 534 gems~948-876@525 errlines=0
+lanes A=v4 B=v5 TEAM A WIN (v4) round= 524 gems~940-862@500 errlines=0
 monolith A=v5 B=v4 TEAM A WIN (v5) round= 581 gems~958-168@575 errlines=0
-monolith A=v4 B=v5 TEAM B WIN (v5) round= 593 gems~234-944@575 errlines=0
-packs A=v5 B=v4 TEAM A WIN (v5) round= 654 gems~996-896@650 errlines=0
-packs A=v4 B=v5 TEAM A WIN (v4) round= 617 gems~988-864@600 errlines=0
+monolith A=v4 B=v5 TEAM B WIN (v5) round= 571 gems~234-900@550 errlines=0
+packs A=v5 B=v4 TEAM A WIN (v5) round= 604 gems~980-820@600 errlines=0
+packs A=v4 B=v5 TEAM A WIN (v4) round= 584 gems~964-824@575 errlines=0
+pilgrimage A=v5 B=v4 TEAM A WIN (v5) round=1164 gems~960-680@1150 errlines=0
+pilgrimage A=v4 B=v5 TEAM B WIN (v5) round= 912 gems~612-968@900 errlines=0
 rows A=v5 B=v4 TEAM A WIN (v5) round= 507 gems~990-726@500 errlines=0
 rows A=v4 B=v5 TEAM B WIN (v5) round= 506 gems~858-990@500 errlines=0
+rushbait-v2 A=v5 B=v4 TEAM B WIN (v4) round=2000 gems~0-0@2000 errlines=0
+rushbait-v2 A=v4 B=v5 TEAM B WIN (v5) round=2000 gems~0-0@2000 errlines=0
+stampede A=v5 B=v4 TEAM A WIN (v5) round=1805 gems~720-720@1800 errlines=0
+stampede A=v4 B=v5 TEAM B WIN (v5) round=1785 gems~360-360@1775 errlines=0
+swirl A=v5 B=v4 TEAM A WIN (v5) round=1831 gems~944-816@1825 errlines=0
+swirl A=v4 B=v5 TEAM B WIN (v5) round= 738 gems~124-796@725 errlines=0
