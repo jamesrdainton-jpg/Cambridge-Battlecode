@@ -63,6 +63,9 @@ GEM_HUNT = 0.0
 # health, keep away from them for AVOID_ROUNDS (farm and tribute elsewhere) unless they close in (0 = off).
 STANDOFF_TURNS = 0
 AVOID_ROUNDS = 40
+# Ignore enemy champions standing inside their own spawn region unless something is hurting us: we can't
+# reach them there, and on maps whose spawns touch (rushbait-v2) they kept us "retreating" at spawn forever.
+IGNORE_SPAWN_CAMPERS = False
 # Tribute thresholds: carried gems that send a champion to any altar / to an altar within 12 tiles.
 TRIBUTE_BIG = 30
 TRIBUTE_MID = 15
@@ -532,10 +535,13 @@ class Bot:
         """Decide whether to engage, hold or retreat from visible enemy champions."""
         pos = self.pos
         near = []
+        campers = self.world.enemy_spawn if IGNORE_SPAWN_CAMPERS and not self.taking_damage() else None
         for e in self.enemies:
             try:
                 ep = e.position()
             except Error:
+                continue
+            if campers is not None and campers.is_set(ep):
                 continue
             d = cheb(ep, pos)
             if d <= 10:
