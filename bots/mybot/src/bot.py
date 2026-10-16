@@ -66,6 +66,15 @@ AVOID_ROUNDS = 40
 # Ignore enemy champions standing inside their own spawn region unless something is hurting us: we can't
 # reach them there, and on maps whose spawns touch (rushbait-v2) they kept us "retreating" at spawn forever.
 IGNORE_SPAWN_CAMPERS = False
+# Poke camp groups too strong to fight (monoliths: 20,000 HP, 200 damage) from range 4 with damaging abilities,
+# outside their range-3 reach. Only champions with a damaging ability do it, when it scores best.
+MONOLITH_POKE = False
+# Run the stand-off breaker (STANDOFF_TURNS) only while our team's tributed gems have stayed flat for this many
+# rounds (0 = whenever STANDOFF_TURNS is on). Experiment 76's always-on breaker fired too often.
+TEAM_STALL_ROUNDS = 0
+# Platform telemetry with DEBUG off: "T DIED" per death and "T ACTS" activity counts every 250 rounds.
+# Printing only, so decisions are unchanged.
+TELEMETRY = False
 # Tribute thresholds: carried gems that send a champion to any altar / to an altar within 12 tiles.
 TRIBUTE_BIG = 30
 TRIBUTE_MID = 15
@@ -149,9 +158,12 @@ class Bot:
             self.build = BUILD_TANK
         self.splash = me.passive() == cambc.PassiveType.SPLASH_ATTACK
         self.aoe_mod = 0.0
+        self.poke_mod = 0.0  # damage per turn per point of focus from abilities that can hit camps
         for i in (0, 1):
             if self.ab_kind[i] == K_AOE:
                 self.aoe_mod += getattr(self.ab_info[i], "modifier", 0.0) / 8.0
+            if self.ab_kind[i] in (K_DAMAGE, K_AOE, K_CC):
+                self.poke_mod += getattr(self.ab_info[i], "modifier", 0.0) / 8.0
         self.build_done = 0
         self.remote_shop = self.kind == CT.TAVI
         self.target = None
@@ -176,6 +188,12 @@ class Bot:
         self.avoid_until = -1
         self.avoid_zone = None
         self.avoid_pts = ()
+        self.team_gems = -1
+        self.team_gems_round = 0
+        self.near_n = 0
+        self.tel_alive = True
+        self.tel_gems = 0
+        self.tel_near = 0
         self.aoe_pos = None
         self.choice_cache = None
         self.kinds = {}
@@ -285,7 +303,10 @@ class Bot:
         self.act = "?"
         self.last_ratio = None
         f0 = cambc.fuel_remaining() if DEBUG else 0
+        self.near_n = 0
         self._turn()
+        if TELEMETRY and not DEBUG:
+            self.telemetry()
         if DEBUG:
             if self.act == "dead":
                 if self.history:
@@ -327,6 +348,30 @@ class Bot:
             if self.now % 100 == 0:
                 self.log("ACTS " + " ".join(f"{k}={v}" for k, v in sorted(acts.items())))
                 self.log(f"FUEL max={self.max_fuel} during={self.max_fuel_act}")
+
+    def telemetry(self):
+        """Compact log for platform games, where DEBUG is off: deaths and activity counts."""
+        acts = self.acts
+        acts[self.act] = acts.get(self.act, 0) + 1
+        name = CT.to_string(self.kind)[13:]
+        if self.act == "dead":
+            if self.tel_alive:
+                print(f"T DIED r{self.now} {name} gems={self.tel_gems} enemies_near={self.tel_near}")
+            self.tel_alive = False
+        else:
+            self.tel_alive = True
+            self.tel_gems = getattr(self, "gems", 0)
+            self.tel_near = self.near_n
+        if self.now % 250 == 0:
+            print(f"T ACTS r{self.now} {name} " + " ".join(f"{k}={v}" for k, v in sorted(acts.items())))
+
+    def team_stalled(self):
+        """True when our team's tributed gems haven't changed for TEAM_STALL_ROUNDS rounds."""
+        gems = cambc.global_submitted_gems(Team.ALLY)
+        if gems != self.team_gems:
+            self.team_gems = gems
+            self.team_gems_round = self.now
+        return self.now - self.team_gems_round >= TEAM_STALL_ROUNDS
 
     def mark(self, name):
         if DEBUG:
@@ -560,6 +605,7 @@ class Bot:
             except Error:
                 continue
             near.append((e, ep, hp, prof[2], dps, d, gems))
+        self.near_n = len(near)
         if not near:
             return False
         world = self.world
@@ -611,7 +657,7 @@ class Bot:
                 self.use_reset(x[0])
                 self.cast_offense(x[0], x[1], champion=True)
                 return True
-        if STANDOFF_TURNS and self.standoff_check(near, closest):
+        if STANDOFF_TURNS and (not TEAM_STALL_ROUNDS or self.team_stalled()) and self.standoff_check(near, closest):
             return False  # a stand-off: leave enemies that aren't fighting alone and work away from them
         extra = FIGHT_GEM_EXTRA if self.gems >= 20 else 0.0
         retreat_at = FIGHT_RETREAT + extra
@@ -1088,6 +1134,7 @@ class Bot:
         # Extra damage per neighbouring camp from splash attacks and area abilities.
         cluster_dps = 0.7 * (self.strength_now if self.splash else 0.0) + 0.7 * self.focus_now * self.aoe_mod
         squad = MIN_SQUAD if MIN_SQUAD < n_allies else n_allies
+        poke_dps = self.focus_now * self.poke_mod if MONOLITH_POKE else 0.0
         current = self.target
         my_slot = self.slot
         out = []
@@ -1139,21 +1186,27 @@ class Bot:
                 if g.dps:
                     need = int((g.dps * hp_left * need_k) ** 0.5 + 0.999)
                     if need > n_allies:
-                        continue
-                    if need < 1:
+                        if poke_dps <= 0.0:
+                            continue
+                        need = 0  # too strong to fight: poke it from range 4 (poke_group)
+                    elif need < 1:
                         need = 1
-                if need < squad:
+                if 0 < need < squad:
                     need = squad
-            k = others + 1
-            if k < need:
-                k = need
-            gdps = dps + cluster_dps * g.cluster if cluster_dps else dps
-            # Team champion-rounds spent: everyone involved walks and fights, one captures and tributes.
-            cost = k * (d + wait) + hp_left / gdps + 5 + 0.5 * g.near_altar + g.gems / 10
-            if others + 1 < need:
-                cost += 4 * (need - others - 1)  # waiting for help to arrive
+            if need == 0:
+                # Only this champion's time: walk there, then out-of-reach ability damage shared with other pokers.
+                cost = d + wait + hp_left / (poke_dps * (others + 1)) + 5 + 0.5 * g.near_altar + g.gems / 10
+            else:
+                k = others + 1
+                if k < need:
+                    k = need
+                gdps = dps + cluster_dps * g.cluster if cluster_dps else dps
+                # Team champion-rounds spent: everyone involved walks and fights, one captures and tributes.
+                cost = k * (d + wait) + hp_left / gdps + 5 + 0.5 * g.near_altar + g.gems / 10
+                if others + 1 < need:
+                    cost += 4 * (need - others - 1)  # waiting for help to arrive
             value = g.gems + gold_w * g.gold
-            if others >= need:
+            if need and others >= need:
                 value *= 0.5  # surplus helper
             elif need > 1 and slots and min(slots) < my_slot:
                 value *= 1.2  # fill a squad someone already started
@@ -1242,6 +1295,15 @@ class Bot:
                 self.act = "recall_travel"
                 return
         roots = Bitboard()
+        if self.target_need == 0:
+            # Poke target: approach to range 4, never into its range-3 reach.
+            inner = Bitboard()
+            for c in g.cells:
+                roots.draw_chebyshev(c, 4)
+                inner.draw_chebyshev(c, 3)
+            roots &= ~(inner | self.world.block | self.world.all_camp_tiles)
+            self.go(roots, avoid=self.keep_away(self.danger()))
+            return
         for c in g.cells:
             roots.draw_chebyshev(c, 1)
         roots &= ~(self.world.block | self.world.all_camp_tiles)
@@ -1250,6 +1312,9 @@ class Bot:
 
     def attack_group(self, g, alive):
         """alive: (camp, group, kind, position, hp) tuples of the target group's visible camps."""
+        if self.target_need == 0:
+            self.poke_group(g, alive)
+            return
         pos = self.pos
         awake = g.idx in self.awake
         live = {x[0]._handle for x in alive}
@@ -1332,6 +1397,26 @@ class Bot:
         if cheb(cp, self.pos) <= self.rng:
             self.basic_attack(camp)
             self.use_reset(camp)
+
+    def poke_group(self, g, alive):
+        """Hit a group too strong to fight with abilities from range 4, outside its camps' range-3 reach."""
+        reach = Bitboard()
+        for x in alive:
+            reach.draw_chebyshev(x[3], 3)
+        pos = self.pos
+        best = min(alive, key=lambda x: (cheb(x[3], pos) > 4, x[4]))  # in ability range first, then lowest HP
+        camp, cp = best[0], best[3]
+        self.act = "poke"
+        self.claim(g, ready=True)
+        if not reach.is_set(pos) and cheb(cp, pos) <= 4:
+            self.aoe_pos = cp
+            self.cast_offense(camp, cp, champion=False)
+            return
+        ring = Bitboard()
+        ring.draw_chebyshev(cp, 4)
+        ring &= ~(reach | self.world.block | self.world.all_camp_tiles)
+        danger = self.danger()
+        self.go(ring, avoid=self.keep_away(reach if danger is None else (reach | danger)))
 
     def danger(self, exclude=None):
         """Tiles in range of awake camps, except those of the excluded group."""
