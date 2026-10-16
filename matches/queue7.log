@@ -1,0 +1,19 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\wd1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\gt1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\wg1
+    wd1_s3 vs v6_s3: 18/34 (+3430)
+    wd1_s4 vs v6_s4: 15/34 (+748)
+vs v6         wins 33/68  gem margin +4178
+economy (rounds to 1000 vs idle, summed over 17 maps): 13701
+2026-10-16 16:11,wd1[3,4],33/68,v6:33/68(+4178),13701,queue7 wd1 confirm (seeds 3,4),003c37b
+    gt1_s3 vs v6_s3: 19/34 (+950)
+    gt1_s4 vs v6_s4: 22/34 (+1404)
+vs v6         wins 41/68  gem margin +2354
+economy (rounds to 1000 vs idle, summed over 17 maps): 14238
+2026-10-16 16:19,gt1[3,4],41/68,v6:41/68(+2354),14238,queue7 gt1 confirm (seeds 3,4),003c37b
+    wg1_s1 vs v6_s1: 15/34 (+1234)
+    wg1_s2 vs v6_s2: 19/34 (+4358)
+vs v6         wins 34/68  gem margin +5592
+economy (rounds to 1000 vs idle, summed over 17 maps): 14065
+2026-10-16 16:29,wg1[1,2],34/68,v6:34/68(+5592),14065,queue7 wg1 wards + early gold vs v6,003c37b
+QUEUE7 DONE
