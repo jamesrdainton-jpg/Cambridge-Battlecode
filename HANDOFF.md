@@ -53,8 +53,10 @@ Results append to `matches\gauntlet.csv`. **Judge changes on 72 seeded games, no
 
 When it ends: log each result in DEVLOG.md, adopt anything at 42/72 or better with positive gems (confirm borderline ones with seeds 5–8), freeze `v6`, run `tools\release.py --verify`, and update the "Latest bot" section.
 
+Finished so far: v5 vs v4 66/72 (+29,354); `tj1` 26/72 (loses); `ja1` 34/72 (neutral). Both Jungle flags stay off.
+
 ## Next ideas after that
 
-- Combine `tj1` + `ja1` if either helps on its own.
+- Platform replays: the user can bulk-download them with `tools\download_replays.js` (browser console) into `replays\platform\`. Each replay's map can be found by matching its bytes against `maps\`.
 - Monoliths (monolith and rows maps, 392–448 gems per capture) are never attempted.
 - Submit to the platform and study real matches — the most valuable signal not yet available.
