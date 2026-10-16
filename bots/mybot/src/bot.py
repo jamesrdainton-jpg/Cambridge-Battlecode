@@ -72,6 +72,9 @@ MONOLITH_POKE = False
 # Run the stand-off breaker (STANDOFF_TURNS) only while our team's tributed gems have stayed flat for this many
 # rounds (0 = whenever STANDOFF_TURNS is on). Experiment 76's always-on breaker fired too often.
 TEAM_STALL_ROUNDS = 0
+# Melee approach avoids camp spawn tiles: on contest Vendetta stepped onto a dead camp's spawn tile next to its
+# target, step_off() moved it back next turn, and it repeated that for 1,700+ turns.
+CAMP_TILE_FIX = False
 # Platform telemetry with DEBUG off: "T DIED" per death and "T ACTS" activity counts every 250 rounds.
 # Printing only, so decisions are unchanged.
 TELEMETRY = False
@@ -188,6 +191,7 @@ class Bot:
         self.avoid_until = -1
         self.avoid_zone = None
         self.avoid_pts = ()
+        self.poke_rings = {}
         self.team_gems = -1
         self.team_gems_round = 0
         self.near_n = 0
@@ -1294,16 +1298,14 @@ class Bot:
                 self.claim(g)
                 self.act = "recall_travel"
                 return
-        roots = Bitboard()
         if self.target_need == 0:
-            # Poke target: approach to range 4, never into its range-3 reach.
-            inner = Bitboard()
-            for c in g.cells:
-                roots.draw_chebyshev(c, 4)
-                inner.draw_chebyshev(c, 3)
-            roots &= ~(inner | self.world.block | self.world.all_camp_tiles)
-            self.go(roots, avoid=self.keep_away(self.danger()))
+            # Poke target not in view: approach to range 4, never into its reach.
+            ring = self.poke_ring(g)
+            if ring.is_set(self.pos):
+                ring.set(self.pos, False)  # on the ring yet the camps aren't visible: try another tile
+            self.go(ring, avoid=self.keep_away(self.danger()))
             return
+        roots = Bitboard()
         for c in g.cells:
             roots.draw_chebyshev(c, 1)
         roots &= ~(self.world.block | self.world.all_camp_tiles)
@@ -1393,10 +1395,42 @@ class Bot:
             if not ring.is_empty():
                 roots = ring
         roots &= ~self.world.block
-        self.go(roots, avoid=self.keep_away(self.danger(exclude=g)))
+        avoid = self.danger(exclude=g)
+        if CAMP_TILE_FIX:
+            spawns = self.world.all_camp_tiles
+            off = roots & ~spawns
+            if not off.is_empty():
+                roots = off
+            avoid = spawns if avoid is None else (avoid | spawns)
+        self.go(roots, avoid=self.keep_away(avoid))
         if cheb(cp, self.pos) <= self.rng:
             self.basic_attack(camp)
             self.use_reset(camp)
+
+    def poke_ring(self, g):
+        """Tiles exactly 4 from the group's camps, outside their range-3 reach, with a straight walk to a camp
+        (a ring tile behind a wall gives no vision of the camp). Cached per group."""
+        ring = self.poke_rings.get(g.idx)
+        if ring is None:
+            cells = Bitboard()
+            inner = Bitboard()
+            ring = Bitboard()
+            for c in g.cells:
+                cells.set(c, True)
+                inner.draw_chebyshev(c, 3)
+                ring.draw_chebyshev(c, 4)
+            ring &= ~(inner | self.world.block | self.world.all_camp_tiles)
+            field = DistanceField()
+            field.compute(self.world.block, cells, Bitboard())
+            straight = Bitboard()
+            for p in ring.positions():
+                d = field.get(p)
+                if d is not None and d <= 4:
+                    straight.set(p, True)
+            if not straight.is_empty():
+                ring = straight
+            self.poke_rings[g.idx] = ring
+        return ring
 
     def poke_group(self, g, alive):
         """Hit a group too strong to fight with abilities from range 4, outside its camps' range-3 reach."""
@@ -1412,11 +1446,8 @@ class Bot:
             self.aoe_pos = cp
             self.cast_offense(camp, cp, champion=False)
             return
-        ring = Bitboard()
-        ring.draw_chebyshev(cp, 4)
-        ring &= ~(reach | self.world.block | self.world.all_camp_tiles)
         danger = self.danger()
-        self.go(ring, avoid=self.keep_away(reach if danger is None else (reach | danger)))
+        self.go(self.poke_ring(g), avoid=self.keep_away(reach if danger is None else (reach | danger)))
 
     def danger(self, exclude=None):
         """Tiles in range of awake camps, except those of the excluded group."""
