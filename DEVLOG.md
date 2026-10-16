@@ -57,6 +57,41 @@ Gaps found on 2026-10-16:
 3. Install the tools: `.venv\Scripts\pip install -r requirements-dev.txt` (Mac/Linux: `.venv/bin/pip install -r requirements-dev.txt`).
 4. Run `tools/repro_check.py` with the venv's Python. Only compare results from that computer once it prints `REPRODUCED`.
 
+## Platform matches
+
+**15 games** downloaded on 2026-10-16 (`replays/platform/`, not in git), all played by the 2026-10-16 release: our drafts match its code. `python tools/platform_report.py` rebuilds this table from the downloads. Each download holds our team's stdout (STAT lines only, since DEBUG is off), a `.fuel` file (fuel per champion turn) and the replay. The replay embeds the map, and its pick records give both teams' drafts.
+
+| Map | Result (us-them) | At r200 | At r400 | Longest flat stretch (us) | Their draft |
+|---|---|---|---|---|---|
+| ambush | WIN 916-716 (r875) | 106-0 | 404-0 | 150 rounds at 0 | Cassi&Issac, Stellar, Varg, Tavi, Ren |
+| eight | LOSS 298-800 (r500) | 94-370 | 116-734 | 200 rounds at 94 | Stellar, Ryth, Varg, Cassi&Issac, Marcella |
+| fragment | LOSS 168-896 (r600) | 102-88 | 146-554 | 150 rounds at 168 | Ren, Stellar, Tavi |
+| fragment | LOSS 620-938 (r975) | 66-218 | 146-458 | 150 rounds at 146 | Stellar, Ryth, Varg |
+| interlock | WIN 838-242 (r550) | 132-110 | 474-176 | 50 rounds at 66 | Varg, Tavi, Cassi&Issac, Stellar |
+| interlock | LOSS 66-980 (r525) | 66-176 | 66-710 | **375 rounds at 66** | Cassi&Issac, Ren, Ryth, Stellar |
+| lanes | LOSS 840-972 (r500) | 234-292 | 694-716 | 25 rounds | Stellar, Varg, Cassi&Issac, Ryth, Marcella |
+| lanes | LOSS 322-948 (r475) | 154-322 | 300-686 | 125 rounds at 154 | Varg, Vendetta, Cassi&Issac, Ryth, Ren |
+| monolith | WIN 958-950 (r725) | 256-226 | 388-562 | 50 rounds at 132 | Stellar, Ryth, Varg, Marcella, Cassi&Issac |
+| monolith | LOSS 900-922 (r475) | 278-278 | 856-710 | 50 rounds at 900 | Stellar, Varg, Cassi&Issac, Tavi, Ren |
+| packs | WIN 984-978 (r600) | 250-202 | 566-546 | 25 rounds | Varg, Stellar, Cassi&Issac |
+| pilgrimage | WIN 884-590 (r875) | 136-0 | 408-204 | 75 rounds at 204 | Stellar, Ryth, Varg, Cassi&Issac, Marcella |
+| pilgrimage | WIN 976-780 (r1025) | 238-0 | 476-102 | 125 rounds at 884 | Stellar, Prism, Ren, Cassi&Issac, Varg |
+| rows | LOSS 660-858 (r375) | 264-396 | — | 25 rounds | Varg, Vendetta, Cassi&Issac, Willow |
+| rushbait-v2 | LOSS 336-986 (r500) | 146-176 | 300-672 | 100 rounds at 300 | Cassi&Issac, Ren, Ryth, Stellar |
+
+What the 15 games show (6 wins, 9 losses):
+1. **The map pool changed.** The platform has 17 maps: 8 new (ambush, contest, eight, fragment, pilgrimage, rushbait-v2, stampede, swirl) and 6 of our 9 updated. 12 of the 15 games were on maps we didn't have, so all tuning so far was on an outdated pool.
+2. **The platform runs a newer engine.** Its replays are format 2, while our cambc 2.1.6 wrote format 1, and cambc 2.2.2 is out.
+3. **Opponents out-farm us.** In the losses they reach 800–990 gems by rounds 375–600. v6 needs 500–620 rounds to reach 1,000 on those maps even with no opponent. Our gem total also sits flat for 100–375 rounds in most losses.
+4. **The meta draft is Stellar and Cassi & Issac.** Stellar appears in 13/15 opposing drafts, Cassi & Issac 13/15, Varg 12/15, Ryth 8/15, Ren 7/15. Vendetta, our first pick, appears in only 2/15. Opponents first-pick Stellar (8), Varg (4) or Cassi & Issac (3). Our draft tests (experiments 9, 37, 48–54) were run against our own bots on the old engine and maps; the platform suggests those two champions are strong in better hands.
+5. **Fuel is fine on the platform.** No turn reached the 2.5M limit. Peak 2.45M on ambush (29 turns over 2.0M); every other map ≤ 2.12M.
+
+v6's unopposed economy on the new pool (rounds to 1,000 vs `idle`, cambc 2.2.2): packs 497, corners 496, rows 499, elkring 506, lanes 520, monolith 540, eight 562, fragment 584, interlock 617, collision 662, expanse 756, swirl 807, pilgrimage 867, ambush 972, stampede 1,137. Two outright failures:
+- **contest: 400 gems in 2,000 rounds.** Its only gems are two 200-gem monoliths, which we never attack.
+- **rushbait-v2: 0 gems in 2,000 rounds.** The two spawns touch, so our champions always see enemies sitting in their own spawn. The ratio (×0.6 near the enemy spawn) says retreat, `retreat()` does nothing at our own spawn, and the champions never leave. On the platform, opponents leave their spawn, which is why we scored 336 there.
+
+**Testing standard on the 17-map pool:** one seed is 34 games, so the "72-game" gauntlet is now seeds 1,2 (68 games). The adoption bar 42/72 becomes **40/68** with a positive gem difference. Borderline results are confirmed with seeds 3,4.
+
 ## Setup
 
 - **Toolchain.** Official CLI `cambc` 2.1.6 from PyPI (`pip install cambc`). `cambc init` created `sdk/`, `bots/`, `cambc.toml`; `cambc new mybot --lang python` created the Python starter; `cambc maps pull` downloaded the 9 competition maps.
@@ -236,6 +271,7 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 79 | Queue 3: `cw40` (`CAUTION_WINDOW` 40: lower tribute thresholds for 40 rounds after seeing an enemy) vs v5 | 32/72, +480; economy 4,324 | Rejected; stays 0 |
 | 80 | Queue 3: `sg200` (`SHOP_GOLD` 200) vs v5 | 36/72, +446; economy 4,363 | Neutral; stays 300. Queue 3 complete (12:25) |
 | 81 | Adopted `WAIT_LIMIT = 40`, set `STANDOFF_TURNS = 0` (experiment 76), froze **v6** (`!bots/v6/` added to `.gitignore`). Released with `tools/release.py --verify` | `submissions/cambridge-bot-latest.zip` = `cambridge-bot-2026-10-16-2.zip`, hash `2469c93cbbf3`, 6/6 vs starter, no error lines | v6 is the new baseline. Commit `bots/mybot`, `bots/v6` and `.gitignore` so teammates can rebuild this ZIP |
+| 82 | Platform analysis of 15 downloaded games (see "Platform matches"). New `tools/platform_report.py`: map identification, draft decoding (replay formats 1 and 2) and the fuel file. Then `cambc maps pull` and an upgrade to cambc 2.2.2: `maps/` now matches the platform's 17 maps exactly, `sdk/` refreshed (Python API backward compatible), `requirements-dev.txt` and `cambc.toml` pinned to 2.2.2, `repro_check.py` plays 2 games per map with its reference regenerated (34 games, `REPRODUCED`). Commit `8438173` | 6/15 platform wins. v6 on the new pool: 0 gems on rushbait-v2 and 400 on contest in 2,000 rounds | Every number before this row is on the old engine and pool. Teammates must upgrade (`pip install -r requirements-dev.txt`) and re-run `tools/repro_check.py` |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 
