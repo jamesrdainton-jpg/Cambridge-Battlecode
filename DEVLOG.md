@@ -5,15 +5,15 @@ Running record of everything tried on the bot: setup, discovered game mechanics,
 ## Latest bot
 
 > **When the user asks for "the latest bot":**
-> 1. Run `.venv\Scripts\python.exe tools\release.py --verify` from the project folder. It rebuilds the upload ZIP from `bots/mybot` (DEBUG off), checks it, and plays 6 games against the starter. If a batch is running, leave out `--verify`, because extra games can make batch games fail. If `bots/mybot` has an experimental change turned on, release the last frozen version instead with `--src v5` (or newer).
-> 2. Reply with the ZIP's full path, `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`, and the dated copy it matches (the tool prints both). Say what changed since the previous release.
+> 1. Run `.venv\Scripts\python.exe tools\release.py --verify` from the project folder (on Mac/Linux, `.venv/bin/python tools/release.py --verify`). It rebuilds the upload ZIP from `bots/mybot` (DEBUG off), checks it, and plays 6 games against the starter. If a batch is running, leave out `--verify`, because extra games can make batch games fail. If `bots/mybot` has an experimental change turned on, release the last frozen version instead with `--src v5` (or newer). `submissions/` is not in git, so on a fresh clone this step creates the ZIP; the same commit always gives the same content hash.
+> 2. Reply with the ZIP's full path on the computer you are on (the tool prints it; on James's PC it is `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`) and the dated copy it matches. Say what changed since the previous release.
 > 3. Update the table and the release history below, and add a row to the experiment log.
 >
 > `tools\release.py --check` reports whether the latest ZIP still matches `bots/mybot`, without building anything.
 
 | | |
 |---|---|
-| **ZIP to upload** | `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip` |
+| **ZIP to upload** | `submissions\cambridge-bot-latest.zip` in the repo folder (on James's PC: `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`) |
 | Same file as | `submissions\cambridge-bot-2026-10-16.zip` (content hash `627283f38422`) |
 | Bot | `bots/mybot` = frozen `v5`, DEBUG off. 16.5 KB: `src/main.py`, `src/bot.py`, `src/draft.py`, `src/world.py` |
 | Verified | 2026-10-16: 6/6 wins vs the starter (packs, lanes, monolith), no error lines |
@@ -25,8 +25,30 @@ To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submi
 
 | Date | ZIP | Source | What it added | Verified |
 |---|---|---|---|---|
-| 2026-10-16 | `cambridge-bot-2026-10-16.zip` | `mybot` = `v5` | 3-pick draft Vendetta, Ryth, Tavi | 6/6 vs starter |
-| 2026-10-15 | `cambridge-bot-2026-10-15.zip` | `mybot` | v4 + cluster targeting, passive altar locks, gold weight 0.15, tribute 30/15, recall travel, safer retreats and recalls | 6/6 vs starter (experiment 51) |
+| 2026-10-16 | `cambridge-bot-2026-10-16.zip` | `mybot` at commit `85be59a` (= `v5`) | 3-pick draft Vendetta, Ryth, Tavi | 6/6 vs starter |
+| 2026-10-15 | `cambridge-bot-2026-10-15.zip` | `mybot` at commit `40fc0f3` | v4 + cluster targeting, passive altar locks, gold weight 0.15, tribute 30/15, recall travel, safer retreats and recalls | 6/6 vs starter (experiment 51) |
+
+## Team rule: results must reproduce on any computer
+
+More than one person works on this GitHub repo, each on their own computer. A result only counts if a teammate can check out the same commit, run the same command and get the same games. Games are deterministic (the same code, maps and engine version give identical games), so this works as long as everything that affects a game comes from git:
+
+- **Code from a commit.** Run experiments on committed code and note the commit in the log row. A variant is defined by its base commit plus its `tools/variant.py` command, so record the command too.
+- **Commands and results in git.** Queue scripts (`matches/*.sh`), their logs and the results table `matches/gauntlet.csv` are tracked. Scripts must run from any clone: no `C:/Users/...` paths, no waiting on temporary files.
+- **Same environment.** `cambc` 2.1.6 (pinned in `requirements-dev.txt`), a Python 3.13 venv, and the committed maps in `maps/`. Pulling new maps changes every result, so commit them and log it.
+- **Releases.** Frozen versions (`v1`–`v5`) are in git. Release ZIPs are not: anyone can rebuild one with `tools/release.py` from the same commit, and the content hash shows it is identical.
+- **New computer.** Before comparing numbers, check that the computer reproduces the reference games (check tool planned, see below).
+- **Sharing the log.** Pull before adding experiment rows, and renumber on merge if two people added the same number.
+
+Gaps found on 2026-10-16:
+
+| Gap | Fix | Status |
+|---|---|---|
+| `matches/` was entirely git-ignored, so results, queue scripts and logs never reached teammates | Track `matches/gauntlet.csv`, `matches/*.sh` and `matches/*.log`; replays and arena folders stay ignored | Done (`.gitignore`) |
+| Queue and batch scripts hard-code `C:/Users/james/...`, `.venv/Scripts/python.exe` and Claude temp files | Run from the script's own folder and find the venv's Python on Windows or Mac/Linux | After queue 2 (editing a running script can break it) |
+| Tools look for `cambc` only at `.venv/Scripts/cambc.exe` (Windows layout) | Also try `.venv/bin/cambc` and `PATH` | `release.py` done; `arena.py` and `stats.py` after queue 2 |
+| `gauntlet.csv` lines don't say which code produced them | Add the commit, and a flag for uncommitted changes, to each line | After queue 2 |
+| Nobody has checked that another computer reproduces these games | `tools/repro_check.py`: replay a fixed set of games and compare them with reference results stored in git | After queue 2 |
+| Experiments before the first commit (2026-10-15 17:18) ran on code that was never committed | Can't be reproduced exactly; treat them as history | — |
 
 ## Setup
 
@@ -182,11 +204,17 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 56 | Batch 10: `gw075` (gold weight 0.075) vs `gw1` (0.15). Finished at 09:10 on 2026-10-16, after the PC woke (the rest of queue 1 ran 19:03–19:31 on 2026-10-15) | 37/72, −90; economy 4,470 (gw1: 4,406) | Neutral and slightly slower farming. With `gw0` also neutral, `GOLD_WEIGHT` stays 0.15. Queue 1 complete |
 | 57 | Checked the previous session's last, untested edit to `mybot`: the flags `TANK_JUNGLE_FIRST` (tanks buy the Jungle health emblem first) and `JUNGLE_AWARE` (squad sizing counts the emblem's 30% camp-damage cut), both off. The emblem bookkeeping runs even with the flags off | The `ItemType.JUNGLE_EMBLEM_*` names exist in the SDK, and `item_count()` is indexed the same way the shop code already uses | Safe to ship with the flags off |
 | 58 | Froze the current `mybot` as **v5**: v4 plus every change adopted through experiment 54 (cluster targeting, passive locks, gold weight 0.15, tribute 30/15, recall travel, safer retreats, 3-pick draft). Added `!bots/v5/` to `.gitignore`. New `tools/release.py` builds the upload ZIP in one step (see Testing tools) | Release `submissions/cambridge-bot-2026-10-16.zip` (also saved as `cambridge-bot-latest.zip`, hash `627283f38422`): **6/6 vs starter** on packs, lanes and monolith, no error lines | v5 is the new baseline that variants are judged against. See "Latest bot" at the top |
-| 59 | Queue 2 started (`matches/queue2.sh`, log in `matches/queue2.log`), each test 72 seeded games plus economy unless noted: `v5` vs `v4` (cumulative gain); `tj1` (`TANK_JUNGLE_FIRST`); `ja1` (`JUNGLE_AWARE`); `nf45` / `nf65` (`NEED_FRAC` 0.45 / 0.65, default 0.55); `wl15` / `wl40` (`WAIT_LIMIT` 15 / 40, default 25); `gh2` (`GEM_HUNT` 0.2); `p4C2` (Cassi & Issac as 4th pick, seeds 7–18 on interlock and rows, 48 games) | Results in the rows below | — |
+| 59 | Queue 2 started (`matches/queue2.sh`, log in `matches/queue2.log`; base code `bots/mybot` at commit `85be59a`, unchanged through `d3f40a6`), each test 72 seeded games plus economy unless noted: `v5` vs `v4` (cumulative gain); `tj1` (`TANK_JUNGLE_FIRST`); `ja1` (`JUNGLE_AWARE`); `nf45` / `nf65` (`NEED_FRAC` 0.45 / 0.65, default 0.55); `wl15` / `wl40` (`WAIT_LIMIT` 15 / 40, default 25); `gh2` (`GEM_HUNT` 0.2); `p4C2` (Cassi & Issac as 4th pick, seeds 7–18 on interlock and rows, 48 games) | Results in the rows below | — |
 | 60 | Queue 2: `v5` vs `v4`, both seeded | **66/72, +29,354** (16, 16, 17, 17 per seed); economy 4,324 (v4: 4,419 in experiment 15) | The cumulative gain since v4 is confirmed. Part of it comes from v4's altar-lock bug (experiment 27: v4 stalls at altars we lock), so the margin overstates the gain against bots without that bug |
 | 61 | Queue 2: `tj1` (Ryth, Varg and Marcella buy the Jungle health emblem first) vs v5 | **26/72, −1,344**; economy 4,289 | Loses. Delaying the Monster and Power emblems weakens fights more than the 30% camp-damage cut helps. `TANK_JUNGLE_FIRST` stays off |
 | 62 | Queue 2: `ja1` (squad sizing counts the Jungle emblem's 30% camp-damage cut) vs v5 | 34/72, +90; economy 4,357 | Neutral. `JUNGLE_AWARE` stays off, and the planned `tj1` + `ja1` combination is dropped |
-| 63 | Platform replays: looked for a way to bulk-download match replays. The `cambc` CLI has no match or replay command (its only platform endpoints are sign-in, map pool, submissions and distribution on `https://2026a.battlecode.co.uk`), and the website's app code is served only to signed-in browsers. A local replay embeds its map file byte for byte but not the bot or team names | Wrote `tools/download_replays.js`, a browser-console script that clicks every replay download button on a platform page | Platform replays go in `replays/platform/` (not in git). A replay's map can be identified by matching against `maps/`; the opponent has to come from the file or folder name |
+| 63 | Platform replays: looked for a way to bulk-download match replays. The `cambc` CLI has no match or replay command (its only platform endpoints are sign-in, map pool, submissions and distribution on `https://2026a.battlecode.co.uk`), and the website's app code is served only to signed-in browsers. A local replay embeds its map file byte for byte but not the bot or team names | Wrote `tools/download_replays.js`, a browser-console script that clicks every replay download button on a platform page | **Optional**: the user may not bother, and nothing depends on it. If used, replays go in `replays/platform/` (not in git); a replay's map can be identified by matching against `maps/`, and the opponent has to come from the file or folder name |
+| 64 | Queue 2: `nf45` (`NEED_FRAC` 0.45: more champions per camp) vs v5 | 29/72, −1,474; economy 4,374 | Worse |
+| 65 | Queue 2: `nf65` (`NEED_FRAC` 0.65: fewer champions per camp) vs v5 | 32/72, −2,152; economy 4,277 (faster farming vs idle) | Worse head-to-head despite faster farming. 0.55 sits at the peak; `NEED_FRAC` stays 0.55 |
+| 66 | Recorded the team rule (user request): results must reproduce on a different computer, because more than one person works on the repo. Audited the setup against it | Gaps and fixes listed in "Team rule" near the top. Done now: `matches/` results, queue scripts and logs tracked in git; `release.py` finds `cambc` on Windows or Mac/Linux and reports the commit it built from | Remaining fixes after queue 2 |
+| 67 | Queue 2: `wl15` (`WAIT_LIMIT` 15: attack sooner without the full squad) vs v5 | **31/72, −3,716** (7, 6, 10, 8 per seed); economy 4,326 | Worse: waiting less for the squad loses |
+| 68 | Queue 2: `wl40` (`WAIT_LIMIT` 40) vs v5 | 40/72, +156 (11, 8, 11, 10 per seed); economy 4,343 | Slightly ahead but within noise (about one standard deviation). With 15 clearly worse, longer waits may help: confirm with seeds 5–8 and also try 60 |
+| 69 | Queue 2: `gh2` (`GEM_HUNT` 0.2: engage more readily against enemies carrying 40+ gems) vs v5 | 37/72, +930; economy 4,324 | Neutral; `GEM_HUNT` stays 0 |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 

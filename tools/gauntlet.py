@@ -3,7 +3,8 @@
 Usage: python tools/gauntlet.py BOT [--vs v3,v2,starter] [--note "what changed"]
 
 Runs BOT vs each opponent on every map from both sides (run-batch), then BOT vs idle (one side).
-Prints per-opponent wins and gem margins and appends one CSV line to matches/gauntlet.csv.
+Prints per-opponent wins and gem margins and appends one CSV line to matches/gauntlet.csv, ending with
+the git commit the bots came from ("+dirty" if bots/ or maps/ had uncommitted changes).
 """
 from __future__ import annotations
 
@@ -13,6 +14,8 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+
+from common import git_commit
 
 ROOT = Path(__file__).resolve().parent.parent
 PY = sys.executable
@@ -98,10 +101,11 @@ def main() -> None:
         print(f"economy (rounds to 1000 vs idle, 9 maps): {rounds}")
     stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     maps_note = f" maps={args.maps}" if args.maps else ""
-    line = f"{stamp},{args.bot}{'[' + args.seeds + ']' if args.seeds else ''},{total_w}/{total_g},{' '.join(parts)},{econ},{args.note}\n"
+    line = (f"{stamp},{args.bot}{'[' + args.seeds + ']' if args.seeds else ''},{total_w}/{total_g},"
+            f"{' '.join(parts)},{econ},{args.note},{git_commit('bots', 'maps')}\n")
     log = ROOT / "matches" / "gauntlet.csv"
     if not log.exists():
-        log.write_text("time,bot,wins,per_opponent,economy_rounds,note\n")
+        log.write_text("time,bot,wins,per_opponent,economy_rounds,note,commit\n")
     with log.open("a") as f:
         f.write(line)
     print(line.strip())

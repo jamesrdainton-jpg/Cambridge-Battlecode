@@ -4,8 +4,12 @@
 .ruff_cache/
 __pycache__/
 
-# Match outputs (replays, experiment results) are regenerable
-matches/
+# Replays and per-run match folders are regenerable. The results table, queue scripts and their
+# logs are tracked so teammates can see and re-run every experiment.
+matches/*
+!matches/gauntlet.csv
+!matches/*.sh
+!matches/*.log
 replays/
 
 # Bots: only track the main bot, frozen versions and reference bots.

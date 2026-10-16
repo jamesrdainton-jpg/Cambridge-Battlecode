@@ -25,12 +25,21 @@ import sys
 import zipfile
 from pathlib import Path
 
+from common import find_cambc, git_commit
+
 ROOT = Path(__file__).resolve().parent.parent
 PY = sys.executable
-CAMBC = ROOT / ".venv" / "Scripts" / "cambc.exe"
 SUB = ROOT / "submissions"
 LATEST = SUB / "cambridge-bot-latest.zip"
 VERIFY_MAPS = "packs,lanes,monolith"
+
+
+def git_state(src: str) -> str:
+    """The commit a release was built from, flagging uncommitted changes to the bot."""
+    rev = git_commit(f"bots/{src}") or "unknown"
+    if rev.endswith("+dirty"):
+        return f"commit {rev[:-6]} + UNCOMMITTED changes in bots/{src} (commit them so teammates can rebuild this ZIP)"
+    return f"commit {rev}"
 
 
 def expected_files(src: str) -> dict[str, str]:
@@ -103,7 +112,7 @@ def main() -> None:
     SUB.mkdir(exist_ok=True)
     tmp = SUB / "release-tmp.zip"
     tmp.unlink(missing_ok=True)
-    proc = subprocess.run([str(CAMBC), "bundle", "release", "--output", str(tmp)], cwd=ROOT, check=False,
+    proc = subprocess.run([find_cambc(), "bundle", "release", "--output", str(tmp)], cwd=ROOT, check=False,
                           capture_output=True, text=True)
     if proc.returncode != 0 or not tmp.exists():
         raise SystemExit(f"cambc bundle failed:\n{proc.stdout}{proc.stderr}")
@@ -144,7 +153,8 @@ def main() -> None:
     size_kb = LATEST.stat().st_size / 1024
     print(f"\nLatest bot ZIP: {LATEST}")
     print(f"  same as       {dated}")
-    print(f"  source bots/{args.src}, DEBUG off, {size_kb:.1f} KB, content hash {new_hash}")
+    print(f"  source bots/{args.src} at {git_state(args.src)}")
+    print(f"  DEBUG off, {size_kb:.1f} KB, content hash {new_hash}")
     print(f"  files: {', '.join(sorted(zip_files(LATEST)))}")
 
 

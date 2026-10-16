@@ -11,8 +11,10 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+from common import find_cambc
+
 ROOT = Path(__file__).resolve().parent.parent
-CAMBC = ROOT / ".venv" / "Scripts" / "cambc.exe"
+CAMBC = find_cambc()
 NAMES = ["Ryth", "Vesper", "Vendetta", "Cassi", "Issac", "Stellar", "Prism", "Marcella", "Willow", "Ren", "Varg", "Tavi"]
 
 

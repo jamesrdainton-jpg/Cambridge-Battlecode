@@ -59,6 +59,10 @@ FIGHT_ENGAGE = 1.3
 FIGHT_GEM_EXTRA = 0.25
 # Lower the engage threshold by this much when the best target carries 40+ gems (0 = off).
 GEM_HUNT = 0.0
+# Stand-off breaker: after this many turns facing enemies within 9 tiles with nobody on either side losing
+# health, keep away from them for AVOID_ROUNDS (farm and tribute elsewhere) unless they close in (0 = off).
+STANDOFF_TURNS = 12
+AVOID_ROUNDS = 40
 # Tribute thresholds: carried gems that send a champion to any altar / to an altar within 12 tiles.
 TRIBUTE_BIG = 30
 TRIBUTE_MID = 15
@@ -163,6 +167,12 @@ class Bot:
         self.locked_altars = set()
         self.altar_xy = [(a.x, a.y, a) for a in self.world.altar_list]
         self.enemy_seen = -1000
+        self.standoff = 0
+        self.standoff_round = -1000
+        self.enemy_hp = {}
+        self.avoid_until = -1
+        self.avoid_zone = None
+        self.avoid_pts = ()
         self.aoe_pos = None
         self.choice_cache = None
         self.kinds = {}
@@ -595,6 +605,8 @@ class Bot:
                 self.use_reset(x[0])
                 self.cast_offense(x[0], x[1], champion=True)
                 return True
+        if STANDOFF_TURNS and self.standoff_check(near, closest):
+            return False  # a stand-off: leave enemies that aren't fighting alone and work away from them
         extra = FIGHT_GEM_EXTRA if self.gems >= 20 else 0.0
         retreat_at = FIGHT_RETREAT + extra
         engage_at = FIGHT_ENGAGE + extra
@@ -644,6 +656,47 @@ class Bot:
             # Even fight and they are about to reach us: hold position near allies rather than walk into them.
             return True
         return False
+
+    def standoff_check(self, near, closest):
+        """Count turns facing enemies while nobody loses health. After STANDOFF_TURNS, keep away from those
+        enemies for AVOID_ROUNDS. Returns True when they should be ignored this turn (not closing in, no one hurt).
+
+        Without this, a champion could alternate forever between retreating (ratio below the retreat
+        threshold) and walking back towards its target (ratio in the hold band) next to enemies that never move.
+        """
+        if self.now - self.standoff_round > 3:
+            self.standoff = 0  # a new encounter
+        self.standoff_round = self.now
+        hurt = self.taking_damage()
+        seen = self.enemy_hp
+        for x in near:
+            h = int(x[0])
+            last = seen.get(h)
+            if last is not None and x[2] < last:
+                hurt = True
+            seen[h] = x[2]
+        self.standoff = 0 if hurt else self.standoff + 1
+        if self.standoff >= STANDOFF_TURNS:
+            self.standoff = 0
+            zone = Bitboard()
+            pts = []
+            for x in near:
+                r = x[3] + 3
+                zone.draw_chebyshev(x[1], r)
+                pts.append((x[1].x, x[1].y, r))
+            self.avoid_zone = zone
+            self.avoid_pts = pts
+            self.avoid_until = self.now + AVOID_ROUNDS
+            self.target = None  # choose a target away from them
+            if DEBUG:
+                self.log(f"STANDOFF avoid {pts} until r{self.avoid_until}")
+        return self.now < self.avoid_until and not hurt and closest > 2
+
+    def keep_away(self, avoid):
+        """A movement avoid set plus the stand-off avoid zone while it is active."""
+        if self.now >= self.avoid_until or self.avoid_zone is None:
+            return avoid
+        return self.avoid_zone if avoid is None else (avoid | self.avoid_zone)
 
     def burst(self):
         """Damage this champion can deal this turn with a basic attack and a ready damage ability."""
@@ -932,7 +985,13 @@ class Bot:
                 return
             except Error:
                 pass
-        self.go(world.altar_approach, avoid=self.danger())
+        roots = world.altar_approach
+        if self.now < self.avoid_until and self.avoid_zone is not None:
+            # Prefer an altar the stand-off enemies aren't guarding, if one can be reached.
+            away = roots & ~self.avoid_zone
+            if not away.is_empty() and self.go(away, avoid=self.keep_away(self.danger())):
+                return
+        self.go(roots, avoid=self.danger())
 
     # ------------------------------------------------------------------ farming
     def claims(self):
@@ -1030,7 +1089,16 @@ class Bot:
         recall_ok = RECALL_TRAVEL and not self.at_spawn and self.enemy_seen != now
         sp = self.spawn_dist
         margin = RECALL_TURNS + 3
+        avoid = self.avoid_pts if now < self.avoid_until else ()
         for g in world.groups:
+            if avoid:
+                near_enemy = False
+                for ex, ey, r in avoid:
+                    if abs(g.ax - ex) <= r and abs(g.ay - ey) <= r:
+                        near_enemy = True
+                        break
+                if near_enemy:
+                    continue
             status = g.status
             if status == respawn:
                 if now >= g.alive_at:
@@ -1171,7 +1239,7 @@ class Bot:
         for c in g.cells:
             roots.draw_chebyshev(c, 1)
         roots &= ~(self.world.block | self.world.all_camp_tiles)
-        if not self.go(roots, avoid=self.danger(exclude=g)) and cheb(g.anchor, self.pos) <= 2:
+        if not self.go(roots, avoid=self.keep_away(self.danger(exclude=g))) and cheb(g.anchor, self.pos) <= 2:
             g.status = W.ALIVE
 
     def attack_group(self, g, alive):
@@ -1254,7 +1322,7 @@ class Bot:
             if not ring.is_empty():
                 roots = ring
         roots &= ~self.world.block
-        self.go(roots, avoid=self.danger(exclude=g))
+        self.go(roots, avoid=self.keep_away(self.danger(exclude=g)))
         if cheb(cp, self.pos) <= self.rng:
             self.basic_attack(camp)
             self.use_reset(camp)

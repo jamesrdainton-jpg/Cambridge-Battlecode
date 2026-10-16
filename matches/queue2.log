@@ -1,0 +1,79 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\tj1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ja1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf45
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf65
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\wl15
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\wl40
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\gh2
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\p4C2
+    v5_s1 vs v4_s1: 16/18 (+7160)
+    v5_s2 vs v4_s2: 16/18 (+7022)
+    v5_s3 vs v4_s3: 17/18 (+7400)
+    v5_s4 vs v4_s4: 17/18 (+7772)
+vs v4         wins 66/72  gem margin +29354
+economy (rounds to 1000 vs idle, 9 maps): 4324
+2026-10-16 09:33,v5[1,2,3,4],66/72,v4:66/72(+29354),4324,queue2 v5 vs v4 (cumulative)
+    tj1_s1 vs v5_s1: 6/18 (-866)
+    tj1_s2 vs v5_s2: 9/18 (+766)
+    tj1_s3 vs v5_s3: 5/18 (-530)
+    tj1_s4 vs v5_s4: 6/18 (-714)
+vs v5         wins 26/72  gem margin -1344
+economy (rounds to 1000 vs idle, 9 maps): 4289
+2026-10-16 09:45,tj1[1,2,3,4],26/72,v5:26/72(-1344),4289,queue2 tj1 vs v5
+    ja1_s1 vs v5_s1: 10/18 (+572)
+    ja1_s2 vs v5_s2: 9/18 (+76)
+    ja1_s3 vs v5_s3: 6/18 (-666)
+    ja1_s4 vs v5_s4: 9/18 (+108)
+vs v5         wins 34/72  gem margin +90
+economy (rounds to 1000 vs idle, 9 maps): 4357
+2026-10-16 10:10,ja1[1,2,3,4],34/72,v5:34/72(+90),4357,queue2 ja1 vs v5
+    nf45_s1 vs v5_s1: 7/18 (+284)
+    nf45_s2 vs v5_s2: 6/18 (-1474)
+    nf45_s3 vs v5_s3: 7/18 (-342)
+    nf45_s4 vs v5_s4: 9/18 (+58)
+vs v5         wins 29/72  gem margin -1474
+economy (rounds to 1000 vs idle, 9 maps): 4374
+2026-10-16 10:20,nf45[1,2,3,4],29/72,v5:29/72(-1474),4374,queue2 nf45 vs v5
+    nf65_s1 vs v5_s1: 8/18 (-692)
+    nf65_s2 vs v5_s2: 10/18 (+212)
+    nf65_s3 vs v5_s3: 7/18 (-538)
+    nf65_s4 vs v5_s4: 7/18 (-1134)
+vs v5         wins 32/72  gem margin -2152
+economy (rounds to 1000 vs idle, 9 maps): 4277
+2026-10-16 10:31,nf65[1,2,3,4],32/72,v5:32/72(-2152),4277,queue2 nf65 vs v5
+    wl15_s1 vs v5_s1: 7/18 (-1308)
+    wl15_s2 vs v5_s2: 6/18 (-984)
+    wl15_s3 vs v5_s3: 10/18 (-670)
+    wl15_s4 vs v5_s4: 8/18 (-754)
+vs v5         wins 31/72  gem margin -3716
+economy (rounds to 1000 vs idle, 9 maps): 4326
+2026-10-16 10:40,wl15[1,2,3,4],31/72,v5:31/72(-3716),4326,queue2 wl15 vs v5
+    wl40_s1 vs v5_s1: 11/18 (+286)
+    wl40_s2 vs v5_s2: 8/18 (-622)
+    wl40_s3 vs v5_s3: 11/18 (+314)
+    wl40_s4 vs v5_s4: 10/18 (+178)
+vs v5         wins 40/72  gem margin +156
+economy (rounds to 1000 vs idle, 9 maps): 4343
+2026-10-16 10:49,wl40[1,2,3,4],40/72,v5:40/72(+156),4343,queue2 wl40 vs v5
+    gh2_s1 vs v5_s1: 10/18 (-38)
+    gh2_s2 vs v5_s2: 9/18 (+892)
+    gh2_s3 vs v5_s3: 8/18 (-82)
+    gh2_s4 vs v5_s4: 10/18 (+158)
+vs v5         wins 37/72  gem margin +930
+economy (rounds to 1000 vs idle, 9 maps): 4324
+2026-10-16 10:58,gh2[1,2,3,4],37/72,v5:37/72(+930),4324,queue2 gh2 vs v5
+    p4C2_s7 vs v5_s7: 2/4 (+102)
+    p4C2_s8 vs v5_s8: 1/4 (-274)
+    p4C2_s9 vs v5_s9: 1/4 (-78)
+    p4C2_s10 vs v5_s10: 1/4 (-292)
+    p4C2_s11 vs v5_s11: 2/4 (+152)
+    p4C2_s12 vs v5_s12: 1/4 (-194)
+    p4C2_s13 vs v5_s13: 2/4 (-84)
+    p4C2_s14 vs v5_s14: 1/4 (-364)
+    p4C2_s15 vs v5_s15: 1/4 (+50)
+    p4C2_s16 vs v5_s16: 1/4 (-454)
+    p4C2_s17 vs v5_s17: 2/4 (-244)
+    p4C2_s18 vs v5_s18: 1/4 (-320)
+vs v5         wins 16/48  gem margin -2000
+2026-10-16 11:03,p4C2[7,8,9,10,11,12,13,14,15,16,17,18],16/48,v5:16/48(-2000),,queue2 p4C2 4th-pick retest
+QUEUE2 DONE

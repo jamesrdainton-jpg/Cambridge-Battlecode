@@ -16,8 +16,10 @@ import sys
 import zipfile
 from pathlib import Path
 
+from common import find_cambc
+
 ROOT = Path(__file__).resolve().parent.parent
-CAMBC = ROOT / ".venv" / "Scripts" / "cambc.exe"
+CAMBC = find_cambc()
 RESULT = re.compile(r"\[\+\]\s+(.*?)\s{2,}(\S+) vs (\S+)\s+(\S+)\s+Round (\d+)/\d+")
 
 

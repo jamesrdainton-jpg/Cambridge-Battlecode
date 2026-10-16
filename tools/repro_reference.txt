@@ -1,0 +1,19 @@
+# v5 vs v4, every map from both sides; written at commit d3f40a6
+collision A=v5 B=v4 TEAM A WIN (v5) round=1020 gems~818-394@1000 errlines=0
+collision A=v4 B=v5 TEAM B WIN (v5) round= 986 gems~44-944@975 errlines=0
+corners A=v5 B=v4 TEAM A WIN (v5) round= 435 gems~958-196@425 errlines=0
+corners A=v4 B=v5 TEAM B WIN (v5) round= 343 gems~116-946@325 errlines=0
+elkring A=v5 B=v4 TEAM A WIN (v5) round= 642 gems~972-72@625 errlines=0
+elkring A=v4 B=v5 TEAM B WIN (v5) round= 688 gems~144-972@675 errlines=0
+expanse A=v5 B=v4 TEAM B WIN (v4) round= 445 gems~922-888@425 errlines=0
+expanse A=v4 B=v5 TEAM B WIN (v5) round= 448 gems~972-944@425 errlines=0
+interlock A=v5 B=v4 TEAM A WIN (v5) round=2000 gems~992-276@2000 errlines=0
+interlock A=v4 B=v5 TEAM B WIN (v5) round= 753 gems~232-950@750 errlines=0
+lanes A=v5 B=v4 TEAM A WIN (v5) round= 463 gems~944-402@450 errlines=0
+lanes A=v4 B=v5 TEAM B WIN (v5) round= 547 gems~722-938@525 errlines=0
+monolith A=v5 B=v4 TEAM A WIN (v5) round= 581 gems~958-168@575 errlines=0
+monolith A=v4 B=v5 TEAM B WIN (v5) round= 593 gems~234-944@575 errlines=0
+packs A=v5 B=v4 TEAM A WIN (v5) round= 654 gems~996-896@650 errlines=0
+packs A=v4 B=v5 TEAM A WIN (v4) round= 617 gems~988-864@600 errlines=0
+rows A=v5 B=v4 TEAM A WIN (v5) round= 507 gems~990-726@500 errlines=0
+rows A=v4 B=v5 TEAM B WIN (v5) round= 506 gems~858-990@500 errlines=0
