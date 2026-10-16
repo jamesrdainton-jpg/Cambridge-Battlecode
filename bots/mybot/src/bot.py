@@ -34,6 +34,9 @@ FOCUS_CHAMPS = (CT.STELLAR, CT.PRISM, CT.CASSI)
 TANK_CHAMPS = (CT.RYTH, CT.VARG, CT.MARCELLA)
 # Tanks (Ryth, Varg, Marcella) buy the Jungle health emblem (30% less camp damage) first.
 TANK_JUNGLE_FIRST = False
+# Count camp damage at 70% when sizing squads once this champion owns a Jungle emblem.
+JUNGLE_AWARE = False
+JUNGLE_EMBLEMS = (IT.JUNGLE_EMBLEM_OF_STRENGTH, IT.JUNGLE_EMBLEM_OF_FOCUS, IT.JUNGLE_EMBLEM_OF_HEALTH)
 
 DEBUG = True
 # Testing only: a non-zero SEED perturbs target scores by up to 2% so repeated matches diverge.
@@ -152,6 +155,7 @@ class Bot:
         self.idle_turns = 0
         self.wait_turns = 0
         self.acts = {}
+        self.jungle = False
         self.history = []
         self.why = ""
         self.last_ratio = None
@@ -422,6 +426,10 @@ class Bot:
                 continue
             gold -= 30 * n
             counts = me.item_count()
+            if not self.jungle:
+                for em in JUNGLE_EMBLEMS:
+                    if counts[em]:
+                        self.jungle = True
             if DEBUG:
                 self.log(f"BUY {shard!r} x{n} -> str={me.strength():.1f} foc={me.focus():.1f} "
                          f"maxhp={me.max_health():.0f} items={[(i, c) for i, c in enumerate(counts) if c]}")
@@ -1010,6 +1018,8 @@ class Bot:
         n_allies = self.n_allies
         gold_w = GOLD_WEIGHT * max(0.15, 1.0 - now / 1200)
         need_k = 1.0 / (NEED_FRAC * self.max_hp * dps)
+        if JUNGLE_AWARE and self.jungle:
+            need_k *= 0.7  # our camp damage taken is 30% lower
         # Extra damage per neighbouring camp from splash attacks and area abilities.
         cluster_dps = 0.7 * (self.strength_now if self.splash else 0.0) + 0.7 * self.focus_now * self.aoe_mod
         squad = MIN_SQUAD if MIN_SQUAD < n_allies else n_allies

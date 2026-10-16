@@ -147,6 +147,10 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 49 | Batch 8: `p5V` Vesper 5th | Invalid: only 8 of 32 games recorded (2/8, −698) | Re-run |
 | 50 | Paused for the night (user sleeping the PC). Stopped mid-batch-8 | Not yet run: `p5C`, `p5W`, `p4T`, `p4S`, `p4C` (batch 8), `dE` re-test (batch 9), gold weight 0 / 0.075 (batch 10), verification game for the release ZIP | Re-queue on resume (see HANDOFF.md) |
 | 51 | Resumed 2026-10-16. Verification of the release copy (`bots/release`, same source as the upload ZIP) vs starter on packs/lanes/monolith | 6/6 wins, no errors | Upload ZIP verified. Re-queued the unfinished tests (`matches/queue1.sh`) |
+| 52 | Batch 8 complete. 5th pick vs Tavi (32 games each on corners/elkring/lanes/monolith): Stellar 13/32 (−3,212), Vesper 11/32 (−2,438), Cassi & Issac 14/32 (−1,062), Willow 13/32 (−1,920) | All alternatives lose | Tavi stays 5th |
+| 53 | Batch 8: 4th pick vs Marcella (24 games each on interlock/rows): Tavi 9/24 (−1,340), Stellar 10/24 (−1,432), **Cassi & Issac 13/24 (+1,046)** | Marcella beats Tavi/Stellar; Cassi & Issac slightly ahead but within noise | Re-test Cassi & Issac with more seeds before switching |
+| 54 | Batch 9: `dE` (Vendetta, Ryth, Tavi on 3-pick maps) re-test with seeds 9–16 vs `lk1` | 28/48 (−318). Combined with batch 3: **58/96 wins (60%)**, gems level (−338) | Wins more of the close games (~2 SD above even). Adopted: `draft.py` `BY_SIZE = {3: (Vendetta, Ryth, Tavi)}` |
+| 55 | Batch 10: `gw0` (gold weight 0) vs `gw1` (0.15) | 35/72, +1,784; economy 4,514 (gw1: 4,406) | No gain and slower farming; gold still matters a little. Keep 0.15 unless 0.075 wins |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 

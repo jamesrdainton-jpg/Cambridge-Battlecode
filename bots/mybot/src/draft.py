@@ -5,7 +5,7 @@ from cambc import ChampionDraft as CD
 PRIORITY = (CD.VENDETTA, CD.VARG, CD.RYTH, CD.MARCELLA, CD.TAVI, CD.STELLAR, CD.VESPER_VALE,
             CD.CASSI_AND_ISSAC, CD.WILLOW, CD.REN, CD.PRISM)
 # Team size -> priority list tried before PRIORITY (missing size = PRIORITY only).
-BY_SIZE = {}
+BY_SIZE = {3: (CD.VENDETTA, CD.RYTH, CD.TAVI)}
 
 
 def play():
