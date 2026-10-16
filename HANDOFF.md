@@ -13,10 +13,10 @@ State as of late morning on 2026-10-16. The full history of every experiment is 
 
 ## The bot to submit
 
-- **Upload ZIP:** `submissions\cambridge-bot-latest.zip` (on James's PC, `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`). It is the same file as `cambridge-bot-2026-10-16.zip`, content hash `627283f38422`. Built from `bots\mybot` at commit `85be59a` (= frozen `v5`) with DEBUG off, and verified 6/6 vs the starter. ZIPs aren't in git: on another computer, rebuild with `tools\release.py`, which gives the same hash from the same commit.
+- **Upload ZIP:** `submissions\cambridge-bot-latest.zip` (on James's PC, `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`). It is the same file as `cambridge-bot-2026-10-16-2.zip`, content hash `2469c93cbbf3`. Built from `bots\mybot` (= frozen `v6`: v5 + squad wait 40 turns) with DEBUG off, and verified 6/6 vs the starter. ZIPs aren't in git: on another computer, rebuild with `tools\release.py`, which gives the same hash from the same commit.
 - **When the user asks for the latest bot:** run `.venv\Scripts\python.exe tools\release.py --verify` (leave out `--verify` while a batch runs), then give them the ZIP's full path. The steps are in the "Latest bot" section at the top of DEVLOG.md; update it after each release.
-- **Working copy:** `bots\mybot\src` (DEBUG on). Tuning constants are at the top of `bot.py`. Experimental flags (`TANK_JUNGLE_FIRST`, `JUNGLE_AWARE`, `GEM_HUNT`) stay off until a test adopts them. **Exception:** the new stand-off breaker (`STANDOFF_TURNS = 12`) is on and under test in queue 3. Until it is adopted, release from v5 (`tools\release.py --src v5`); the current ZIP already has v5's code. `STANDOFF_TURNS = 0` gives exactly v5's behaviour.
-- **Frozen versions:** `bots\v1`–`v5` (v5 is the last frozen one and the baseline for tests). Freeze the next best as `v6` with `tools\variant.py v6`.
+- **Working copy:** `bots\mybot\src` (DEBUG on). Tuning constants are at the top of `bot.py`. Experimental flags (`TANK_JUNGLE_FIRST`, `JUNGLE_AWARE`, `GEM_HUNT`) stay off until a test adopts them. The stand-off breaker was rejected (26/72 vs v5) and is off (`STANDOFF_TURNS = 0`, which plays exactly like v5).
+- **Frozen versions:** `bots\v1`–`v6` (v6 is the last frozen one and the baseline for tests). Freeze the next best as `v7` with `tools\variant.py v7`.
 
 ### What `mybot` / v5 contains beyond v4 (each measured with 72 seeded games unless noted)
 
@@ -53,7 +53,11 @@ On Mac/Linux use `.venv/bin/python` and `.venv/bin/cambc`. Setting up a new comp
 
 Results append to `matches\gauntlet.csv`. **Judge changes on 72 seeded games, not 18** (one 18-game set swings ±2 wins / ±800 gems). Don't run extra games while a batch runs (cambc's 2-minute build limit can fail them). Closing the laptop just pauses runs; they resume on wake.
 
-## Queue in progress
+## Last queue
+
+Queue 3 complete (experiments 76–81): `wl40` adopted, everything else rejected or neutral. Nothing is running.
+
+## Queue 3 details
 
 **Queue 2 is complete** (experiments 59–70): nothing beat v5 clearly. The only lead was `wl40` (`WAIT_LIMIT` 40) at 40/72, within noise.
 

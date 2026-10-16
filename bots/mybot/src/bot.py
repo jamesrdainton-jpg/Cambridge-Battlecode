@@ -47,7 +47,7 @@ RETARGET_EVERY = 8
 # A camp group needs enough champions that its damage over the fight stays under this share of their health.
 NEED_FRAC = 0.55
 # Turns a champion waits outside camp range for the rest of a squad before attacking anyway.
-WAIT_LIMIT = 25
+WAIT_LIMIT = 40
 # Target scoring: weight of a camp's gold relative to its gems (tapers to 15% of this by round 1020),
 # and the value multiplier for camps closer to the enemy spawn than ours.
 GOLD_WEIGHT = 0.15
@@ -61,7 +61,7 @@ FIGHT_GEM_EXTRA = 0.25
 GEM_HUNT = 0.0
 # Stand-off breaker: after this many turns facing enemies within 9 tiles with nobody on either side losing
 # health, keep away from them for AVOID_ROUNDS (farm and tribute elsewhere) unless they close in (0 = off).
-STANDOFF_TURNS = 12
+STANDOFF_TURNS = 0
 AVOID_ROUNDS = 40
 # Tribute thresholds: carried gems that send a champion to any altar / to an altar within 12 tiles.
 TRIBUTE_BIG = 30

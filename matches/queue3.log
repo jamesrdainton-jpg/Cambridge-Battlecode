@@ -22,3 +22,25 @@ economy (rounds to 1000 vs idle, 9 maps): 4324
 vs v5         wins 40/72  gem margin +496
 economy (rounds to 1000 vs idle, 9 maps): 4378
 2026-10-16 11:43,wl40[5,6,7,8],40/72,v5:40/72(+496),4378,queue3 wl40 confirm (seeds 5-8),d8621cb
+    wl60_s1 vs v5_s1: 10/18 (+68)
+    wl60_s2 vs v5_s2: 9/18 (-344)
+    wl60_s3 vs v5_s3: 10/18 (-722)
+    wl60_s4 vs v5_s4: 9/18 (+292)
+vs v5         wins 38/72  gem margin -706
+economy (rounds to 1000 vs idle, 9 maps): 4351
+2026-10-16 11:55,wl60[1,2,3,4],38/72,v5:38/72(-706),4351,queue3 wl60 vs v5,a78b370
+    cw40_s1 vs v5_s1: 8/18 (+192)
+    cw40_s2 vs v5_s2: 8/18 (+274)
+    cw40_s3 vs v5_s3: 8/18 (-166)
+    cw40_s4 vs v5_s4: 8/18 (+180)
+vs v5         wins 32/72  gem margin +480
+economy (rounds to 1000 vs idle, 9 maps): 4324
+2026-10-16 12:10,cw40[1,2,3,4],32/72,v5:32/72(+480),4324,queue3 cw40 vs v5,a78b370
+    sg200_s1 vs v5_s1: 8/18 (-130)
+    sg200_s2 vs v5_s2: 7/18 (-580)
+    sg200_s3 vs v5_s3: 10/18 (+706)
+    sg200_s4 vs v5_s4: 11/18 (+450)
+vs v5         wins 36/72  gem margin +446
+economy (rounds to 1000 vs idle, 9 maps): 4363
+2026-10-16 12:25,sg200[1,2,3,4],36/72,v5:36/72(+446),4363,queue3 sg200 vs v5,6ae1f5f
+QUEUE3 DONE

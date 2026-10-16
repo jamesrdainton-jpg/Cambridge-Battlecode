@@ -14,10 +14,10 @@ Running record of everything tried on the bot: setup, discovered game mechanics,
 | | |
 |---|---|
 | **ZIP to upload** | `submissions\cambridge-bot-latest.zip` in the repo folder (on James's PC: `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`) |
-| Same file as | `submissions\cambridge-bot-2026-10-16.zip` (content hash `627283f38422`) |
-| Bot | `bots/mybot` = frozen `v5`, DEBUG off. 16.5 KB: `src/main.py`, `src/bot.py`, `src/draft.py`, `src/world.py` |
-| Verified | 2026-10-16: 6/6 wins vs the starter (packs, lanes, monolith), no error lines |
-| New since the previous ZIP | Draft on 3-pick maps: Vendetta, Ryth, Tavi (experiment 54). Two experimental Jungle build flags were added, both off |
+| Same file as | `submissions\cambridge-bot-2026-10-16-2.zip` (content hash `2469c93cbbf3`) |
+| Bot | `bots/mybot` = frozen `v6`, DEBUG off. 17.4 KB: `src/main.py`, `src/bot.py`, `src/draft.py`, `src/world.py` |
+| Verified | 2026-10-16 12:40: 6/6 wins vs the starter (packs, lanes, monolith), no error lines |
+| New since the previous ZIP | Champions wait up to 40 turns (was 25) for their squad before attacking a camp (experiments 68, 77: 80/144 vs v5). The rejected stand-off breaker's code is included but switched off (`STANDOFF_TURNS = 0` plays exactly like v5) |
 
 To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submit release`, which sends `bots/release`, the same code as the ZIP (needs `cambc login` and the Avast exception).
 
@@ -25,6 +25,7 @@ To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submi
 
 | Date | ZIP | Source | What it added | Verified |
 |---|---|---|---|---|
+| 2026-10-16 12:40 | `cambridge-bot-2026-10-16-2.zip` | `mybot` (= `v6`), commit to be recorded once committed | Squad wait 40 turns | 6/6 vs starter |
 | 2026-10-16 | `cambridge-bot-2026-10-16.zip` | `mybot` at commit `85be59a` (= `v5`) | 3-pick draft Vendetta, Ryth, Tavi | 6/6 vs starter |
 | 2026-10-15 | `cambridge-bot-2026-10-15.zip` | `mybot` at commit `40fc0f3` | v4 + cluster targeting, passive altar locks, gold weight 0.15, tribute 30/15, recall travel, safer retreats and recalls | 6/6 vs starter (experiment 51) |
 
@@ -231,6 +232,10 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 75 | The user asked for the latest bot (11:27). `mybot` has the untested stand-off breaker on and queue 3 is running, so per the Latest-bot rule: `tools/release.py --src v5`, without `--verify` | Same ZIP as this morning: `submissions/cambridge-bot-latest.zip` = `cambridge-bot-2026-10-16.zip`, content hash `627283f38422` (verified 6/6 vs starter in experiment 58) | Re-release with the breaker only if queue 3 adopts it |
 | 76 | Queue 3: `so1` (stand-off breaker, `STANDOFF_TURNS` 12 / `AVOID_ROUNDS` 40) vs v5 and v4, commit `d8621cb` | **vs v5: 26/72, −6,704** (5, 6, 7, 8 per seed). vs v4: 69/72, +33,722 (v5 managed 66/72, +29,354). Economy 4,324 (same as v5) | **Rejected.** It cures the v4 stall but loses badly to v5-like play. Likely cause: 12 turns near enemies with nobody hurt is common in normal contested farming, so champions abandon contested camps and altars for 40 rounds and hand them to the opponent. The real livelock is rare against v5-based bots (2 short stalls in 552 games). Set `STANDOFF_TURNS = 0` in `mybot` once queue 3 ends (editing now would mark its remaining CSV lines `+dirty`). Possible retry: only trigger when the team's tributed gems have been flat for 150+ rounds |
 | 77 | Queue 3: `wl40` (`WAIT_LIMIT` 40) with fresh seeds 5–8 vs v5 | 40/72, +496 (11, 9, 11, 9 per seed); economy 4,378. With seeds 1–4: **80/144, +652** | Confirmed small gain, consistent across both sets (about 1.3 standard deviations). Meets the adoption bar set beforehand (80+/144). Choose between 40 and 60 once `wl60` reports |
+| 78 | Queue 3: `wl60` (`WAIT_LIMIT` 60) vs v5 | 38/72, −706; economy 4,351 | Worse than 40: 40 it is |
+| 79 | Queue 3: `cw40` (`CAUTION_WINDOW` 40: lower tribute thresholds for 40 rounds after seeing an enemy) vs v5 | 32/72, +480; economy 4,324 | Rejected; stays 0 |
+| 80 | Queue 3: `sg200` (`SHOP_GOLD` 200) vs v5 | 36/72, +446; economy 4,363 | Neutral; stays 300. Queue 3 complete (12:25) |
+| 81 | Adopted `WAIT_LIMIT = 40`, set `STANDOFF_TURNS = 0` (experiment 76), froze **v6** (`!bots/v6/` added to `.gitignore`). Released with `tools/release.py --verify` | `submissions/cambridge-bot-latest.zip` = `cambridge-bot-2026-10-16-2.zip`, hash `2469c93cbbf3`, 6/6 vs starter, no error lines | v6 is the new baseline. Commit `bots/mybot`, `bots/v6` and `.gitignore` so teammates can rebuild this ZIP |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 
