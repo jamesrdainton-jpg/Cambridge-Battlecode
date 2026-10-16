@@ -61,6 +61,10 @@ Results append to `matches\gauntlet.csv`. **Judge changes on 72 seeded games, no
 1. `so1`, the stand-off breaker, vs v5 and v4 (experiments 72–73: a livelock that left our team scoring nothing for 1,300+ rounds in 7 of 72 games vs v4).
 2. `wl40` with fresh seeds 5–8, then `wl60`, `cw40` (`CAUTION_WINDOW` 40) and `sg200` (`SHOP_GOLD` 200), each vs v5 with the breaker off.
 
+Finished so far:
+- `so1` lost to v5 (26/72) though it beat v4 69/72, so the breaker is rejected. Set `STANDOFF_TURNS = 0` in `mybot` after the queue ends.
+- `wl40` confirmed: 80/144 over both seed sets.
+
 If it was interrupted, check `matches\gauntlet.csv` for lines tagged `queue3`, delete the finished steps from the script and re-run it. The variant lines at the top are safe to repeat.
 
 When it ends:
