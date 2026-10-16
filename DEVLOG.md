@@ -297,6 +297,7 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 105 | Queue 7 (`matches/queue7.sh`, commit `003c37b`): `wd1` (wards) confirmation, seeds 3,4 | 33/68, +4,178 → both sets **71/136, +9,816** | Wards add gems consistently (+4,000 to +5,600 per 68 games) but don't win more games. Below the bar: not adopted |
 | 106 | Queue 7: `gt1` (gold weight 0.4 fading by round 500) confirmation, seeds 3,4 | **41/68, +2,354** (19/34, 22/34) → both sets **79/136, +5,202** (gems positive in every run) | One win under 80/136 (the 42/72 rate). Pre-registered before running more: adopt if seeds 1–8 together reach 159/272 with positive gems; seeds 5–8 queued (queue 8) |
 | 107 | Queue 7: `wg1` = wards + early gold, seeds 1,2 | 34/68, +5,592; economy 14,065 | Neutral wins, strongly positive gems; not adopted |
+| 108 | Queue 8 (`matches/queue8.sh`, commit `903f3e9`): `gt1` confirmation, seeds 5–8, no economy | **77/136, +4,846** (19, 19, 19, 20 of 34 per seed; gems positive in each). Seeds 1–8 together: **156/272 (57.4%), +10,048** | Three wins short of the pre-registered 159/272, so not adopted by that rule. A real but modest gain (z ≈ 2.4, every seed set positive); under the user's process (borderline result confirmed with seeds 5–8) it would count as confirmed. Decision left to the user |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 
