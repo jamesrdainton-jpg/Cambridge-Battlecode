@@ -2,13 +2,39 @@
 
 Running record of everything tried on the bot: setup, discovered game mechanics, tools, every experiment and its result, and the decisions taken. Newest experiments are at the bottom of the experiment log.
 
+## Latest bot
+
+> **When the user asks for "the latest bot":**
+> 1. Run `.venv\Scripts\python.exe tools\release.py --verify` from the project folder. It rebuilds the upload ZIP from `bots/mybot` (DEBUG off), checks it, and plays 6 games against the starter. If a batch is running, leave out `--verify`, because extra games can make batch games fail. If `bots/mybot` has an experimental change turned on, release the last frozen version instead with `--src v5` (or newer).
+> 2. Reply with the ZIP's full path, `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`, and the dated copy it matches (the tool prints both). Say what changed since the previous release.
+> 3. Update the table and the release history below, and add a row to the experiment log.
+>
+> `tools\release.py --check` reports whether the latest ZIP still matches `bots/mybot`, without building anything.
+
+| | |
+|---|---|
+| **ZIP to upload** | `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip` |
+| Same file as | `submissions\cambridge-bot-2026-10-16.zip` (content hash `627283f38422`) |
+| Bot | `bots/mybot` = frozen `v5`, DEBUG off. 16.5 KB: `src/main.py`, `src/bot.py`, `src/draft.py`, `src/world.py` |
+| Verified | 2026-10-16: 6/6 wins vs the starter (packs, lanes, monolith), no error lines |
+| New since the previous ZIP | Draft on 3-pick maps: Vendetta, Ryth, Tavi (experiment 54). Two experimental Jungle build flags were added, both off |
+
+To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submit release`, which sends `bots/release`, the same code as the ZIP (needs `cambc login` and the Avast exception).
+
+**Release history** (the ZIPs live in `submissions/`, which is not in git):
+
+| Date | ZIP | Source | What it added | Verified |
+|---|---|---|---|---|
+| 2026-10-16 | `cambridge-bot-2026-10-16.zip` | `mybot` = `v5` | 3-pick draft Vendetta, Ryth, Tavi | 6/6 vs starter |
+| 2026-10-15 | `cambridge-bot-2026-10-15.zip` | `mybot` | v4 + cluster targeting, passive altar locks, gold weight 0.15, tribute 30/15, recall travel, safer retreats and recalls | 6/6 vs starter (experiment 51) |
+
 ## Setup
 
 - **Toolchain.** Official CLI `cambc` 2.1.6 from PyPI (`pip install cambc`). `cambc init` created `sdk/`, `bots/`, `cambc.toml`; `cambc new mybot --lang python` created the Python starter; `cambc maps pull` downloaded the 9 competition maps.
 - **Avast.** Avast "Web/Mail Shield" HTTPS scanning re-signs TLS and cambc rejects it (`invalid peer certificate: UnknownIssuer`). Fixed by adding a battlecode.co.uk exception in Avast. `SSL_CERT_FILE` does not help (cambc bundles its own roots).
 - **Python.** Bots run on an embedded WASI Python 3.13 with only the standard library plus the bot's own files. Local dev venv `.venv` uses Python 3.13 (installed with the Python install manager) and holds `cambc`, `pyright`, `ruff`, `pytest` (`requirements-dev.txt`). The venv is not relocatable: recreate it if the folder moves.
 - **Location.** 2026-10-14: project moved from OneDrive to `C:\Users\james\GitHub\Cambridge-Battlecode` (OneDrive sync slowed batches and locked folders). Copy verified file-by-file, venv recreated, matches reproduced identical results.
-- **Git.** Remote `origin` = `https://github.com/jamesrdainton-jpg/Cambridge-Battlecode.git` (keep it private during the competition). `.gitignore` tracks only `mybot`, `v1`–`v4`, `starter`, `idle`, `probe` under `bots/`; experiment variants, build caches, the venv, `matches/` and `replays/` stay local (a first commit is about 118 files, 1.7 MB).
+- **Git.** Remote `origin` = `https://github.com/jamesrdainton-jpg/Cambridge-Battlecode.git` (keep it private during the competition). `.gitignore` tracks only `mybot`, `v1`–`v5`, `starter`, `idle`, `probe` under `bots/`; experiment variants, build caches, the venv, `matches/` and `replays/` stay local (a first commit is about 118 files, 1.7 MB).
 
 ## Testing tools (`tools/`)
 
@@ -19,10 +45,11 @@ Running record of everything tried on the bot: setup, discovered game mechanics,
 | `acts.py matches/arena/<run> [--round N]` | Sums the per-champion activity tallies (`ACTS` debug lines): time spent fighting camps, walking, waiting, capturing, tributing, recalling, dead. |
 | `variant.py NAME [--src BOT] [--draft ...] [--set "bot.py:OLD=>NEW"]` | Clones a bot (default `bots/mybot`) into a variant with a changed draft order or constants (DEBUG off) for A/B tests. |
 | `gauntlet.py BOT [--vs v4,starter] [--seeds 1,2,3,4] [--maps m1,m2] [--no-econ] [--note ...]` | Plays BOT against each opponent on all maps (or `--maps`) from both sides, plus the economy benchmark vs idle, and appends a summary line to `matches/gauntlet.csv`. With `--seeds`, plays seeded copies of BOT **and** of each opponent that has the SEED hook (see below), so both sides are perturbed alike. |
+| `release.py [--src mybot] [--verify] [--check]` | Builds the upload ZIP: copies the bot into `bots/release` with DEBUG off (refuses unless `SEED = 0`), runs `cambc bundle`, and saves `submissions/cambridge-bot-YYYY-MM-DD.zip` (later different releases that day get `-2`, `-3`; an identical rebuild reuses the file) plus a copy as `submissions/cambridge-bot-latest.zip`. Checks that the ZIP holds exactly the bot's `.py` files, identical to the source apart from DEBUG, with `DEBUG = False`, `SEED = 0`, and that every file compiles. `--verify` plays 6 games vs the starter and fails unless all are won with no error lines. `--check` only reports whether the latest ZIP matches the source. Prints the ZIP's full path. |
 
 **Noise.** Games are deterministic, but any small code change cascades into different games, so a single 18-game set moves by roughly ±2–3 wins and ±500 gems even when nothing meaningful changed. `bot.py` has a testing-only `SEED` constant: a non-zero value perturbs target scores by up to 2%, so seeded copies play different games. `gauntlet.py --seeds 1,2,3,4` uses this to get 72 games per opponent. Production keeps `SEED = 0`.
 
-Reference bots: `starter` (official starter), `idle` (drafts then does nothing — pure economy benchmark), `probe` (dumps map layouts), frozen versions `v1`–`v4` (`v2`–`v4` have the SEED hook).
+Reference bots: `starter` (official starter), `idle` (drafts then does nothing — pure economy benchmark), `probe` (dumps map layouts), frozen versions `v1`–`v5` (`v2`–`v5` have the SEED hook). `release` is the DEBUG-off copy that `tools/release.py` bundles; it is regenerated, not edited.
 
 Bot stdout is only stored inside replay bundles (`.repl26a` is a zip with `team-a.stdout` / `team-b.stdout`); the tools read the logs from there. The replay viewer is never opened.
 
@@ -79,7 +106,7 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 ## Bot architecture (`bots/mybot/src`)
 
 - `main.py` — main loop, dispatches draft vs champion turns, catches and logs exceptions so a bug never skips `end_turn`.
-- `draft.py` — fixed priority list (Vendetta, Varg, Ryth, Marcella, Tavi, …) with an optional per-team-size override (`BY_SIZE`).
+- `draft.py` — fixed priority list (Vendetta, Varg, Ryth, Marcella, Tavi, …) with an optional per-team-size override (`BY_SIZE`); 3-pick maps take Vendetta, Ryth, Tavi.
 - `world.py` — static map data cached once per champion (walk-blocking tiles, altars, spawn, camp groups) plus knowledge of each group (alive / reward waiting / respawning, last seen camp HP); lazily cached distance fields.
 - `bot.py` — the champion brain, each turn: shop → fight/retreat → recall → tribute → farm.
   - **Farming.** Each champion scores every camp group by value (gems + tapering gold weight) divided by team champion-time (champions needed × (travel + kill time) + capture + tribute trip). Groups that need several champions (elks, wolf packs) get a required-champion count; champions claim targets in shared memory (one byte each, top bit = "I'm at the target and ready"), wait just outside camp range until enough allies are ready (25-turn timeout), poke with abilities meanwhile, and step off spawn tiles after capturing.
@@ -146,11 +173,15 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 48 | Batch 8 (5th pick on 5-pick maps, 4 seeds × corners/elkring/lanes/monolith vs `base8` = Tavi 5th): `p5S` Stellar 5th | **13/32, −3,212** | Tavi stays 5th over Stellar |
 | 49 | Batch 8: `p5V` Vesper 5th | Invalid: only 8 of 32 games recorded (2/8, −698) | Re-run |
 | 50 | Paused for the night (user sleeping the PC). Stopped mid-batch-8 | Not yet run: `p5C`, `p5W`, `p4T`, `p4S`, `p4C` (batch 8), `dE` re-test (batch 9), gold weight 0 / 0.075 (batch 10), verification game for the release ZIP | Re-queue on resume (see HANDOFF.md) |
-| 51 | Resumed 2026-10-16. Verification of the release copy (`bots/release`, same source as the upload ZIP) vs starter on packs/lanes/monolith | 6/6 wins, no errors | Upload ZIP verified. Re-queued the unfinished tests (`matches/queue1.sh`) |
+| 51 | Resumed on the evening of 2026-10-15 (19:00; file and CSV timestamps). Verification of the release copy (`bots/release`, same source as the upload ZIP) vs starter on packs/lanes/monolith | 6/6 wins, no errors | Upload ZIP verified. Re-queued the unfinished tests (`matches/queue1.sh`) |
 | 52 | Batch 8 complete. 5th pick vs Tavi (32 games each on corners/elkring/lanes/monolith): Stellar 13/32 (−3,212), Vesper 11/32 (−2,438), Cassi & Issac 14/32 (−1,062), Willow 13/32 (−1,920) | All alternatives lose | Tavi stays 5th |
 | 53 | Batch 8: 4th pick vs Marcella (24 games each on interlock/rows): Tavi 9/24 (−1,340), Stellar 10/24 (−1,432), **Cassi & Issac 13/24 (+1,046)** | Marcella beats Tavi/Stellar; Cassi & Issac slightly ahead but within noise | Re-test Cassi & Issac with more seeds before switching |
 | 54 | Batch 9: `dE` (Vendetta, Ryth, Tavi on 3-pick maps) re-test with seeds 9–16 vs `lk1` | 28/48 (−318). Combined with batch 3: **58/96 wins (60%)**, gems level (−338) | Wins more of the close games (~2 SD above even). Adopted: `draft.py` `BY_SIZE = {3: (Vendetta, Ryth, Tavi)}` |
 | 55 | Batch 10: `gw0` (gold weight 0) vs `gw1` (0.15) | 35/72, +1,784; economy 4,514 (gw1: 4,406) | No gain and slower farming; gold still matters a little. Keep 0.15 unless 0.075 wins |
+| 56 | Batch 10: `gw075` (gold weight 0.075) vs `gw1` (0.15). Finished at 09:10 on 2026-10-16, after the PC woke (the rest of queue 1 ran 19:03–19:31 on 2026-10-15) | 37/72, −90; economy 4,470 (gw1: 4,406) | Neutral and slightly slower farming. With `gw0` also neutral, `GOLD_WEIGHT` stays 0.15. Queue 1 complete |
+| 57 | Checked the previous session's last, untested edit to `mybot`: the flags `TANK_JUNGLE_FIRST` (tanks buy the Jungle health emblem first) and `JUNGLE_AWARE` (squad sizing counts the emblem's 30% camp-damage cut), both off. The emblem bookkeeping runs even with the flags off | The `ItemType.JUNGLE_EMBLEM_*` names exist in the SDK, and `item_count()` is indexed the same way the shop code already uses | Safe to ship with the flags off |
+| 58 | Froze the current `mybot` as **v5**: v4 plus every change adopted through experiment 54 (cluster targeting, passive locks, gold weight 0.15, tribute 30/15, recall travel, safer retreats, 3-pick draft). Added `!bots/v5/` to `.gitignore`. New `tools/release.py` builds the upload ZIP in one step (see Testing tools) | Release `submissions/cambridge-bot-2026-10-16.zip` (also saved as `cambridge-bot-latest.zip`, hash `627283f38422`): **6/6 vs starter** on packs, lanes and monolith, no error lines | v5 is the new baseline that variants are judged against. See "Latest bot" at the top |
+| 59 | Queue 2 started (`matches/queue2.sh`, log in `matches/queue2.log`), each test 72 seeded games plus economy unless noted: `v5` vs `v4` (cumulative gain); `tj1` (`TANK_JUNGLE_FIRST`); `ja1` (`JUNGLE_AWARE`); `nf45` / `nf65` (`NEED_FRAC` 0.45 / 0.65, default 0.55); `wl15` / `wl40` (`WAIT_LIMIT` 15 / 40, default 25); `gh2` (`GEM_HUNT` 0.2); `p4C2` (Cassi & Issac as 4th pick, seeds 7–18 on interlock and rows, 48 games) | Pending | — |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 

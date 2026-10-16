@@ -16,6 +16,7 @@ bots/*
 !bots/v2/
 !bots/v3/
 !bots/v4/
+!bots/v5/
 !bots/starter/
 !bots/idle/
 !bots/probe/
