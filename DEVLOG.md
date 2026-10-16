@@ -293,6 +293,7 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 101 | Queue 6: `gt1` gold weight 0.4 early, fading to 15% by round 500 (`GOLD_TAPER` 500) | **38/68, +2,848**; economy 13,357 | Borderline: confirm with seeds 3,4 |
 | 102 | Queue 6: `sh1` recall to shop at 150 gold at any health | 33/68, +42; economy **12,958** (fastest unopposed farming of the queue) | Neutral head-to-head; not adopted |
 | 103 | Queue 6: `dc5` Cassi & Issac as the 5th pick on 5-pick maps instead of Tavi (six champions) | **31/68, −5,114**; economy 13,710 | Worse with our logic. Pros' Cassi & Issac and Stellar use is not something our bot gets for free (likely ability poking from range 4 with focus builds) |
+| 104 | Why we die on the platform: for each of our 75 inferred deaths (15 games), counted enemy basic attacks on that champion in the window before it (respawn takes 60 rounds) | **59 of 75 deaths (79%) followed enemy champion attacks**, 16 had none (camps). Fragment 17 champion-kill deaths in 2 games, interlock 10 in one, eight 6, lanes 6, monolith 6, pilgrimage 7 | Strong teams win fights against us, and every kill also takes the gems we carry. Their drafts stack stuns (Cassi, Ren, Tavi, Prism) and Stellar's burst; our Lanchester ratio (HP × damage) ignores stun chains. Top open problem; it can't be reproduced locally with our own lineage |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 
