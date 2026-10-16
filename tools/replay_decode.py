@@ -19,7 +19,8 @@ Format, validated turn by turn against traced games (DEVLOG experiment 97):
      07 cancel channel  (none; inferred: always followed by a move or recall)
      08 buy consumable  u32 consumable (2 = altar lock), u32 count
      09 use consumable  u8 consumable, i32 x, i32 y
-     0a place ward      i32 x, i32 y (not used by our bots; inferred from the payload and the SDK's place_ward)
+     0a place ward      i32 x, i32 y (inferred from the payload and the SDK's place_ward)
+     0b sell item       u32 item
 Turn order: every round the teams alternate champion by champion in draft order (Cassi & Issac are two
 champions), team A starts round 1 and the starting team swaps each round, and the larger team's extra
 champions go last. Deaths are inferred: a champion that reappears more than 3 tiles from its last tile,
@@ -39,7 +40,7 @@ from common import ROOT
 PICKS = ["Ryth", "Vesper", "Vendetta", "Cassi&Issac", "Stellar", "Prism", "Marcella", "Willow", "Ren", "Varg", "Tavi"]
 FAMILIES = ["Monster", "Power", "Durability", "Treasure", "Jungle", "Home", "Bruiser"]
 ITEMS = [f"{fam} {stat} {kind}" for fam in FAMILIES for stat in ("S", "F", "H") for kind in ("shard", "emblem")]
-PAYLOAD = {0: 4, 1: 8, 2: 9, 3: 17, 4: 0, 5: 8, 6: 8, 7: 0, 8: 8, 9: 9, 10: 8}
+PAYLOAD = {0: 4, 1: 8, 2: 9, 3: 17, 4: 0, 5: 8, 6: 8, 7: 0, 8: 8, 9: 9, 10: 8, 11: 4}
 
 
 def replays(path: Path) -> list[tuple[str, bytes]]:
