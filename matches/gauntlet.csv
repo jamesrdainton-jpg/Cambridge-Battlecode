@@ -57,3 +57,6 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-16 12:25,sg200[1,2,3,4],36/72,v5:36/72(+446),4363,queue3 sg200 vs v5,6ae1f5f
 2026-10-16 14:32,sp1[1,2],33/68,v6:33/68(+196),12245,queue4 sp1 ignore spawn campers vs v6,1109b8e+dirty
 2026-10-16 14:36,v6[1,2],48/68,meta:48/68(+10054),,queue4 v6 vs meta (platform draft),8ca77ef+dirty
+2026-10-16 14:54,po1[1,2],34/68,v6:34/68(-1250),13816,queue5 po1 monolith poke vs v6,aeb5d93
+2026-10-16 15:00,ct1[1,2],35/68,v6:35/68(+1080),14982,queue5 ct1 camp tile fix vs v6,aeb5d93
+2026-10-16 15:06,ts1[1,2],34/68,v6:34/68(+1086),13809,queue5 ts1 stall-gated stand-off breaker vs v6,aeb5d93

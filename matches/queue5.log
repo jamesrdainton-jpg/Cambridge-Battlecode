@@ -1,0 +1,19 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\po1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ct1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ts1
+    po1_s1 vs v6_s1: 17/34 (-626)
+    po1_s2 vs v6_s2: 17/34 (-624)
+vs v6         wins 34/68  gem margin -1250
+economy (rounds to 1000 vs idle, summed over 17 maps): 13816
+2026-10-16 14:54,po1[1,2],34/68,v6:34/68(-1250),13816,queue5 po1 monolith poke vs v6,aeb5d93
+    ct1_s1 vs v6_s1: 18/34 (+1158)
+    ct1_s2 vs v6_s2: 17/34 (-78)
+vs v6         wins 35/68  gem margin +1080
+economy (rounds to 1000 vs idle, summed over 17 maps): 14982
+2026-10-16 15:00,ct1[1,2],35/68,v6:35/68(+1080),14982,queue5 ct1 camp tile fix vs v6,aeb5d93
+    ts1_s1 vs v6_s1: 16/34 (-4)
+    ts1_s2 vs v6_s2: 18/34 (+1090)
+vs v6         wins 34/68  gem margin +1086
+economy (rounds to 1000 vs idle, summed over 17 maps): 13809
+2026-10-16 15:06,ts1[1,2],34/68,v6:34/68(+1086),13809,queue5 ts1 stall-gated stand-off breaker vs v6,aeb5d93
+QUEUE5 DONE
