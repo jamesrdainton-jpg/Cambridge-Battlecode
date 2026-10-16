@@ -1194,8 +1194,8 @@ class Bot:
                 if 0 < need < squad:
                     need = squad
             if need == 0:
-                # Only this champion's time: walk there, then out-of-reach ability damage shared with other pokers.
-                cost = d + wait + hp_left / (poke_dps * (others + 1)) + 5 + 0.5 * g.near_altar + g.gems / 10
+                # Team champion-rounds, as below: every poker walks there; the kill costs hp / one poker's damage.
+                cost = (others + 1) * (d + wait) + hp_left / poke_dps + 5 + 0.5 * g.near_altar + g.gems / 10
             else:
                 k = others + 1
                 if k < need:

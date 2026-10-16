@@ -55,3 +55,5 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-16 11:55,wl60[1,2,3,4],38/72,v5:38/72(-706),4351,queue3 wl60 vs v5,a78b370
 2026-10-16 12:10,cw40[1,2,3,4],32/72,v5:32/72(+480),4324,queue3 cw40 vs v5,a78b370
 2026-10-16 12:25,sg200[1,2,3,4],36/72,v5:36/72(+446),4363,queue3 sg200 vs v5,6ae1f5f
+2026-10-16 14:32,sp1[1,2],33/68,v6:33/68(+196),12245,queue4 sp1 ignore spawn campers vs v6,1109b8e+dirty
+2026-10-16 14:36,v6[1,2],48/68,meta:48/68(+10054),,queue4 v6 vs meta (platform draft),8ca77ef+dirty

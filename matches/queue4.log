@@ -1,0 +1,11 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\sp1
+    sp1_s1 vs v6_s1: 17/34 (+560)
+    sp1_s2 vs v6_s2: 16/34 (-364)
+vs v6         wins 33/68  gem margin +196
+economy (rounds to 1000 vs idle, 9 maps): 12245
+2026-10-16 14:32,sp1[1,2],33/68,v6:33/68(+196),12245,queue4 sp1 ignore spawn campers vs v6,1109b8e+dirty
+    v6_s1 vs meta_s1: 23/34 (+5504)
+    v6_s2 vs meta_s2: 25/34 (+4550)
+vs meta       wins 48/68  gem margin +10054
+2026-10-16 14:36,v6[1,2],48/68,meta:48/68(+10054),,queue4 v6 vs meta (platform draft),8ca77ef+dirty
+QUEUE4 DONE

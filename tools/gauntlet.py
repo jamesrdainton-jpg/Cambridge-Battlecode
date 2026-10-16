@@ -98,11 +98,11 @@ def main() -> None:
             rounds += run_arena(bot, "idle", one_side=True)[3]
         rounds //= len(bots)
         econ = str(rounds)
-        print(f"economy (rounds to 1000 vs idle, 9 maps): {rounds}")
+        print(f"economy (rounds to 1000 vs idle, summed over {len(list((ROOT / "maps").glob("*.map26a")))} maps): {rounds}")
     stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     maps_note = f" maps={args.maps}" if args.maps else ""
     line = (f"{stamp},{args.bot}{'[' + args.seeds + ']' if args.seeds else ''},{total_w}/{total_g},"
-            f"{' '.join(parts)},{econ},{args.note},{git_commit('bots', 'maps')}\n")
+            f"{' '.join(parts)},{econ},{args.note}{maps_note},{git_commit('bots', 'maps')}\n")
     log = ROOT / "matches" / "gauntlet.csv"
     if not log.exists():
         log.write_text("time,bot,wins,per_opponent,economy_rounds,note,commit\n")
