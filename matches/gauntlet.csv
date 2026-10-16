@@ -60,3 +60,8 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-16 14:54,po1[1,2],34/68,v6:34/68(-1250),13816,queue5 po1 monolith poke vs v6,aeb5d93
 2026-10-16 15:00,ct1[1,2],35/68,v6:35/68(+1080),14982,queue5 ct1 camp tile fix vs v6,aeb5d93
 2026-10-16 15:06,ts1[1,2],34/68,v6:34/68(+1086),13809,queue5 ts1 stall-gated stand-off breaker vs v6,aeb5d93
+2026-10-16 15:28,wd1[1,2],38/68,v6:38/68(+5638),13830,queue6 wd1 vs v6,8725b00
+2026-10-16 15:34,pw1[1,2],35/68,v6:35/68(-1608),13847,queue6 pw1 vs v6,8725b00
+2026-10-16 15:41,gt1[1,2],38/68,v6:38/68(+2848),13357,queue6 gt1 vs v6,45e6574
+2026-10-16 15:51,sh1[1,2],33/68,v6:33/68(+42),12958,queue6 sh1 vs v6,45e6574
+2026-10-16 16:01,dc5[1,2],31/68,v6:31/68(-5114),13710,queue6 dc5 vs v6,45e6574

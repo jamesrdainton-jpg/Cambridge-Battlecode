@@ -1,0 +1,31 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\wd1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\pw1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\gt1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\sh1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\dc5
+    wd1_s1 vs v6_s1: 19/34 (+2596)
+    wd1_s2 vs v6_s2: 19/34 (+3042)
+vs v6         wins 38/68  gem margin +5638
+economy (rounds to 1000 vs idle, summed over 17 maps): 13830
+2026-10-16 15:28,wd1[1,2],38/68,v6:38/68(+5638),13830,queue6 wd1 vs v6,8725b00
+    pw1_s1 vs v6_s1: 16/34 (-1450)
+    pw1_s2 vs v6_s2: 19/34 (-158)
+vs v6         wins 35/68  gem margin -1608
+economy (rounds to 1000 vs idle, summed over 17 maps): 13847
+2026-10-16 15:34,pw1[1,2],35/68,v6:35/68(-1608),13847,queue6 pw1 vs v6,8725b00
+    gt1_s1 vs v6_s1: 20/34 (+2092)
+    gt1_s2 vs v6_s2: 18/34 (+756)
+vs v6         wins 38/68  gem margin +2848
+economy (rounds to 1000 vs idle, summed over 17 maps): 13357
+2026-10-16 15:41,gt1[1,2],38/68,v6:38/68(+2848),13357,queue6 gt1 vs v6,45e6574
+    sh1_s1 vs v6_s1: 19/34 (+2002)
+    sh1_s2 vs v6_s2: 14/34 (-1960)
+vs v6         wins 33/68  gem margin +42
+economy (rounds to 1000 vs idle, summed over 17 maps): 12958
+2026-10-16 15:51,sh1[1,2],33/68,v6:33/68(+42),12958,queue6 sh1 vs v6,45e6574
+    dc5_s1 vs v6_s1: 16/34 (-1674)
+    dc5_s2 vs v6_s2: 15/34 (-3440)
+vs v6         wins 31/68  gem margin -5114
+economy (rounds to 1000 vs idle, summed over 17 maps): 13710
+2026-10-16 16:01,dc5[1,2],31/68,v6:31/68(-5114),13710,queue6 dc5 vs v6,45e6574
+QUEUE6 DONE
