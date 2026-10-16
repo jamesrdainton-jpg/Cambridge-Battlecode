@@ -75,6 +75,13 @@ TEAM_STALL_ROUNDS = 0
 # Melee approach avoids camp spawn tiles: on contest Vendetta stepped onto a dead camp's spawn tile next to its
 # target, step_off() moved it back next turn, and it repeated that for 1,700+ turns.
 CAMP_TILE_FIX = False
+# Put our ward (free, one each, relocatable every turn, 6-tile vision) on the bush tile within 2 nearest our target,
+# as strong platform teams do: 71% of their wards sit in bushes, near camps and altars (experiment 97).
+WARDS = False
+# Skip the Monster emblem: buy Power (six shards' worth, no passive) first, like strong teams' builds.
+POWER_FIRST = False
+# Gold's weight in target scoring fades linearly to 15% of GOLD_WEIGHT at this round.
+GOLD_TAPER = 1200
 # Platform telemetry with DEBUG off: "T DIED" per death and "T ACTS" activity counts every 250 rounds.
 # Printing only, so decisions are unchanged.
 TELEMETRY = False
@@ -159,6 +166,9 @@ class Bot:
         self.build = BUILD_FOCUS if self.kind in FOCUS_CHAMPS else BUILD_STR
         if TANK_JUNGLE_FIRST and self.kind in TANK_CHAMPS:
             self.build = BUILD_TANK
+        if POWER_FIRST:
+            self.build = [("POWER", stat, n) if fam == "MONSTER" else (fam, stat, n) for fam, stat, n in self.build]
+        self.ward_at = None
         self.splash = me.passive() == cambc.PassiveType.SPLASH_ATTACK
         self.aoe_mod = 0.0
         self.poke_mod = 0.0  # damage per turn per point of focus from abilities that can hit camps
@@ -309,6 +319,8 @@ class Bot:
         f0 = cambc.fuel_remaining() if DEBUG else 0
         self.near_n = 0
         self._turn()
+        if WARDS and self.act not in ("dead", "recall", "submit", "tp", "?"):
+            self.ward_bush()
         if TELEMETRY and not DEBUG:
             self.telemetry()
         if DEBUG:
@@ -368,6 +380,32 @@ class Bot:
             self.tel_near = self.near_n
         if self.now % 250 == 0:
             print(f"T ACTS r{self.now} {name} " + " ".join(f"{k}={v}" for k, v in sorted(acts.items())))
+
+    def ward_bush(self):
+        """Move our ward onto the bush tile within 2 nearest our target (bushes block sight); keep it while near."""
+        pos = self.pos
+        ward = self.ward_at
+        if ward is not None and cheb(ward, pos) <= 4:
+            return
+        near = Bitboard()
+        near.draw_chebyshev(pos, 2)
+        near &= self.world.bushes
+        if near.is_empty():
+            return
+        g = self.target
+        focus = g.anchor if g is not None else self.world.enemy_spawn_center
+        best = None
+        best_d = 999
+        for p in near.positions():
+            d = cheb(p, focus)
+            if d < best_d:
+                best_d = d
+                best = p
+        try:
+            if best is not None and self.me.place_ward(best):
+                self.ward_at = best
+        except Error:
+            pass
 
     def team_stalled(self):
         """True when our team's tributed gems haven't changed for TEAM_STALL_ROUNDS rounds."""
@@ -1131,7 +1169,7 @@ class Bot:
         self.mark("sg_claims")
         dps = self.dps_now
         n_allies = self.n_allies
-        gold_w = GOLD_WEIGHT * max(0.15, 1.0 - now / 1200)
+        gold_w = GOLD_WEIGHT * max(0.15, 1.0 - now / GOLD_TAPER)
         need_k = 1.0 / (NEED_FRAC * self.max_hp * dps)
         if JUNGLE_AWARE and self.jungle:
             need_k *= 0.7  # our camp damage taken is 30% lower

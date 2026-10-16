@@ -43,8 +43,8 @@ PAYLOAD = {0: 4, 1: 8, 2: 9, 3: 17, 4: 0, 5: 8, 6: 8, 7: 0, 8: 8, 9: 9, 10: 8}
 
 
 def replays(path: Path) -> list[tuple[str, bytes]]:
-    if path.suffix == ".repl26a":
-        return [(path.name, path.read_bytes())]
+    if path.suffix == ".repl26a" and not path.read_bytes().startswith(b"PK"):
+        return [(path.name, path.read_bytes())]  # a bare replay (arena bundles are zips with this suffix)
     out = []
     with zipfile.ZipFile(path) as z:
         for name in z.namelist():
