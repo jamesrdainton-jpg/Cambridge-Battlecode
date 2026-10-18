@@ -78,7 +78,7 @@ RECALL_SAFE = 0
 # Fight on the lowest strength ratio seen in the last FIGHT_MEMO rounds (0 = this turn's only). Debug logs vs v8:
 # Ryth chasing a lone Tavi flipped between 6.4 (an ally 7 tiles back counted) and 0.2 (one step on, it wasn't)
 # every turn, so it neither closed in nor got away and lost 1,000 health to free shots.
-FIGHT_MEMO = 0
+FIGHT_MEMO = 2
 # Against enemy champions in reach, cast a stun (Ryth's area stun, Tavi's damage-and-stun) before the basic attack.
 # hit() spent the one cast per turn on the attack reset, so Ryth and Tavi never stunned a champion they could hit.
 CC_FIRST = False
