@@ -1,6 +1,6 @@
 # Handover — Cambridge Battlecode 2026 bot
 
-State as of 2026-10-18. The full history of every experiment is in [DEVLOG.md](DEVLOG.md); rows 82–109 are the platform-data session of 2026-10-16. This note is the short version for picking the work back up.
+State as of 2026-10-18 21:00 UTC (competition sprint; rows 120–132 of DEVLOG). The full history of every experiment is in [DEVLOG.md](DEVLOG.md); rows 82–109 are the platform-data session of 2026-10-16. This note is the short version for picking the work back up.
 
 **Team rule:** more than one person works on this repo, each on their own computer, so every result must be reproducible on a different computer from a git commit. Commit code before testing it, record the commit and the exact command, keep queue scripts and `matches\gauntlet.csv` in git, and use the pinned cambc with the committed maps. Details are in the "Team rule" section near the top of DEVLOG.md.
 
@@ -12,14 +12,39 @@ State as of 2026-10-18. The full history of every experiment is in [DEVLOG.md](D
 - **Maps:** `maps\` is the platform's current **17-map pool**: 8 maps are new (ambush, contest, eight, fragment, pilgrimage, rushbait-v2, stampede, swirl) and 6 were updated. Every result before DEVLOG row 82 was on the old engine and the old 9 maps.
 - **Avast:** exclude `battlecode.co.uk` in Avast's Web Shield, or `cambc maps pull` / `login` / `submit` fail.
 
-## The bot to submit
+## The bot to submit (competition, 2026-10-18 evening)
 
-- **Upload ZIP:** `submissions\cambridge-bot-latest.zip` (on James's PC `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`). It is the same file as `cambridge-bot-2026-10-18.zip`, content hash `8d32bd566f06`. It is **v7**, built from commit `8cc11b8` with DEBUG off, and verified 6/6 vs the starter on cambc 2.2.2. ZIPs aren't in git: on another computer, rebuild with `tools\release.py`, which gives the same hash from the same commit.
-- **v7 = v6 + early gold:** `GOLD_WEIGHT` 0.4 (was 0.15), fading to 15% of that by round 500 (`GOLD_TAPER`, was 1200). It went 156/272 (57.4%), +10,048 gems vs v6 over seeds 1–8, with every seed set positive. It was adopted by the user's decision, 3 wins short of the pre-registered 159/272.
+- **Upload ZIP: `submissions/cambridge-bot-latest.zip`**, which is **v10**: content hash `43c90c9220c2`, built from commit `36013cc` with DEBUG off, and verified 6/6 vs the starter on cambc 2.2.5 with no error lines. `submissions/` is normally ignored, but this one ZIP is **committed on branch `claude/adoring-fermat-jthwy1`**, so it can be downloaded from GitHub. It is the same file as `cambridge-bot-2026-10-18-2.zip`. Rebuild it anywhere with `tools/release.py --src v10` (or `--src mybot`, which now equals v10 apart from DEBUG); the content hash comes out the same.
+- **v10 = v8 + `FIGHT_SHIELD` + `WARDS` + `CAST_FIRST`** (v8 = v7 + `IGNORE_SPAWN_CAMPERS` + `CAMP_TILE_FIX`).
+  - **vs v8: 55/68, +13,016** (seeds 1,2) and 24/34, +6,020 (seed 3). It farms faster too: economy 11,623 vs ~12,100.
+  - **vs `meta`** (the strong teams' draft): **33/34, +11,258** (seed 3); the partial seed-1 run went 18 of 22.
+  - Our champions died **283 times vs v8's 552** in the 68 games.
+- **Why not v11** (v10 + `FIGHT_MEMO` 2):
+  - Against v10 it is only 108/204 (seeds 1–6: 42, 32, 34 of 68) and +5,644 gems, which is not significant.
+  - On seed 3 it did worse than v10 against the two other opponents: vs v8 19/34 against v10's 24/34. It beat `meta` 58/68 on seeds 1,2.
+  - It is frozen in `bots/v11` for later testing.
 - **When the user asks for the latest bot:** run `.venv\Scripts\python.exe tools\release.py --verify` (leave out `--verify` while a batch runs) and give the ZIP's full path. The steps are in "Latest bot" at the top of DEVLOG.md.
-- **Working copy:** `bots\mybot\src` (DEBUG on) = v7 plus switched-off flags (below). **Frozen versions:** `bots\v1`–`v7`; v7 is the baseline for tests. Freeze the next as `v8` with `tools\variant.py v8`.
+- **Working copy:** `bots/mybot/src` (DEBUG on) = v10 plus switched-off flags. **Frozen versions:** `bots/v1`–`v11`; v10 is the baseline for tests.
+- **This machine runs one batch at a time.** Two `run-batch` processes at 18 jobs each run a 15 GB machine out of memory, and the killed games count as losses (DEVLOG 124). Always check `batch.log` for `FAILED` lines.
 
-### Flags in `mybot` that are off (each tested vs v6, not adopted)
+### Competition sprint results (DEVLOG rows 120–132)
+
+| Flag | What it does | Result | Status |
+|---|---|---|---|
+| `FIGHT_SHIELD` | Varg casts its self-shield in fights (`support()` only ran while farming) | 40/68, +5,246 vs v8 | **in v10** |
+| `WARDS` + `CAST_FIRST` | On top of the shield: wards on bushes near the target; ranged champions cast before the basic attack | 55/68, +13,016 vs v8 (with the shield) | **in v10** |
+| `FIGHT_MEMO` 2 | Fight on the lowest strength ratio of the last 2 rounds (stops chase/flee flip-flops) | 108/204, +5,644 vs v10 (seeds 1–6) | off (v11) |
+| `FIGHT_MEMO` 3 | Same, 3 rounds | 27/68, −3,538 vs v11 | off |
+| `RECALL_SAFE` 4 | No recall within 4 rounds of an enemy within 10 tiles | 15 of 30 valid games vs v10 | off |
+| `CC_FIRST` | Ryth and Tavi stun champions before the basic attack | 34/68, +1,564 vs v10 | off |
+| `TRIBUTE_BIG/MID` 20/10 | Bank gems sooner | 35/68, +916 vs v10 | off (30/15) |
+| `FIGHT_GEM_EXTRA` 0.5 | Gem carriers more cautious | 36/68, +118 vs v11 | off (0.25) |
+| `FIGHT_ENGAGE` 1.1 | Chase sooner | 37/68, −1,074 vs v11 | off (1.3) |
+| `ALLY_RANGE` 5 | Count fewer allies in the ratio | 26/68, −4,112 vs v11 | off (7) |
+
+Cloud sessions A–D ran some of these on their own machines; their `gauntlet.csv` rows are on branches `claude/sprint-a-fight-thresholds`, `claude/sprint-b-fight-memory`, `claude/sprint-c-confirm-v11` and `claude/sprint-d-economy`.
+
+### Older flags in `mybot` (tested vs v6; `IGNORE_SPAWN_CAMPERS` and `CAMP_TILE_FIX` are now on, `WARDS` is on in v10)
 
 | Flag | What it does | Result vs v6 (68 games unless noted) |
 |---|---|---|
@@ -67,7 +92,7 @@ On Mac/Linux use `.venv/bin/python` and `.venv/bin/cambc`. **Testing standard on
 
 Nothing is queued or running.
 
-## Paused 2026-10-18 ~16:30 (user short on usage; resume in ~2 hours)
+## Paused 2026-10-18 ~16:30 (superseded by the evening sprint above; kept for the agent briefs)
 
 Since the v7 release: upgraded to **cambc 2.2.5** (platform replays are now format 3; game play is identical to 2.2.2). Analysed v7's 25 platform games: **11/25 wins**, the early gold gap mostly closed, 3-pick maps 2/7, and 80% of our deaths are to champions in small fights (DEVLOG rows 110–119). New flags in `mybot`, all off and all neutral vs v7 so far:
 - `CAST_FIRST`: ranged champions cast before their basic attack, fixing Tavi's skipped stun (30/68, +644).
@@ -80,6 +105,8 @@ Since the v7 release: upgraded to **cambc 2.2.5** (platform replays are now form
 3. **Economy:** measure where turns go (DEBUG `ACTS` lines vs `idle`) and cut the biggest waste; the target is rounds-to-1000 per map with no head-to-head loss.
 
 ## What to do next
+
+0. **After the competition:** download the platform games and check deaths with `tools/replay_decode.py`. v10 halved our deaths against v8 locally (283 vs 552), so see whether that holds against real teams. The fight path still never calls `support()` for heals (we draft no healer), and FIGHT_MEMO 2 is a candidate that needs more seeds (it is neutral-to-positive head-to-head and worse vs v8 on seed 3).
 
 1. **Fights against stun-heavy teams.** 79% of our platform deaths are to champions. Pros stack stuns (Cassi, Ren, Tavi, Prism) and Stellar burst; our fight ratio (HP × damage) ignores stuns. Likely gains: more caution against stun-heavy enemy drafts, and banking gems before contested areas. Testing against v7 alone won't show this, so first build an opponent that fights like the pros (focus up, stun then burst).
 2. **Play ability champions properly.** Ranged champions with damaging abilities should stand at range 4 (camps hit at 3) and cast; build focus. That's what the pros' Power F builds suggest. Then re-test the pro draft (Cassi & Issac, Stellar, Ren), which brings an extra champion.

@@ -13,11 +13,11 @@ Running record of everything tried on the bot: setup, discovered game mechanics,
 
 | | |
 |---|---|
-| **ZIP to upload** | `submissions\cambridge-bot-latest.zip` in the repo folder (on James's PC: `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`) |
-| Same file as | `submissions\cambridge-bot-2026-10-18.zip` (content hash `8d32bd566f06`), built from commit `8cc11b8` |
-| Bot | `bots/mybot` = frozen `v7`, DEBUG off. 19.5 KB: `src/main.py`, `src/bot.py`, `src/draft.py`, `src/world.py` |
-| Verified | 2026-10-18: 6/6 wins vs the starter (packs, lanes, monolith) on cambc 2.2.2, no error lines |
-| New since the previous ZIP | Gold counts for more early: `GOLD_WEIGHT` 0.4 (was 0.15), fading to 15% of that by round 500 (`GOLD_TAPER`, was 1200). Measured 156/272 (57.4%), +10,048 gems vs v6 over seeds 1–8 on the 17-map pool (experiments 101, 106, 108), echoing the pros' faster early gold (experiment 98). Also included, switched off: spawn-camper fix, monolith poke, stall-gated breaker, camp-tile fix, wards, Power-first build, telemetry |
+| **ZIP to upload** | `submissions/cambridge-bot-latest.zip` (committed on branch `claude/adoring-fermat-jthwy1`; on James's PC: `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip` after rebuilding) |
+| Same file as | `submissions/cambridge-bot-2026-10-18-2.zip` (content hash `43c90c9220c2`), built from commit `36013cc` |
+| Bot | `bots/v10` (= `bots/mybot` with DEBUG off), 20.4 KB: `src/main.py`, `src/bot.py`, `src/draft.py`, `src/world.py` |
+| Verified | 2026-10-18 19:48 UTC: 6/6 wins vs the starter (packs, lanes, monolith) on cambc 2.2.5, no error lines |
+| New since the previous ZIP | v8's map fixes (`IGNORE_SPAWN_CAMPERS`, `CAMP_TILE_FIX`) plus **`FIGHT_SHIELD`** (Varg shields in fights), **`WARDS`** and **`CAST_FIRST`**: 55/68, +13,016 vs v8; 33/34 vs `meta` (seed 3); deaths 283 vs 552 (experiments 122–123, 129, 132) |
 
 To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submit release`, which sends `bots/release`, the same code as the ZIP (needs `cambc login` and the Avast exception).
 
@@ -25,6 +25,7 @@ To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submi
 
 | Date | ZIP | Source | What it added | Verified |
 |---|---|---|---|---|
+| 2026-10-18 19:48 UTC | `cambridge-bot-2026-10-18-2.zip` | `v10` at commit `36013cc` | v8 map fixes + fight shield + wards + cast-first | 6/6 vs starter (cambc 2.2.5) |
 | 2026-10-18 | `cambridge-bot-2026-10-18.zip` | `mybot` at commit `8cc11b8` (= `v7`) | Early gold weighting (0.4 fading by round 500) | 6/6 vs starter (cambc 2.2.2) |
 | 2026-10-16 12:40 | `cambridge-bot-2026-10-16-2.zip` | `mybot` at commit `93aee14` (= `v6`) | Squad wait 40 turns | 6/6 vs starter |
 | 2026-10-16 | `cambridge-bot-2026-10-16.zip` | `mybot` at commit `85be59a` (= `v5`) | 3-pick draft Vendetta, Ryth, Tavi | 6/6 vs starter |
@@ -322,6 +323,7 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 129 | Cloud session C: **v11 vs meta** (the strong teams' draft on our logic), seeds 1,2 | **58/68, +19,500** | v11 is robust against the pro draft (v6 beat meta 48/68) |
 | 130 | Cloud sessions A and B on v11, seeds 1,2: `fe11` (FIGHT_ENGAGE 1.1) **37/68, −1,074**; `fm3` (FIGHT_MEMO 3) **27/68, −3,538** | Neutral; worse | Neither adopted. FIGHT_MEMO 3 is clearly worse than 2 |
 | 131 | Queue 13 (`matches/queue13.sh`): `ge50` (FIGHT_GEM_EXTRA 0.25 → 0.5) vs v11, seeds 1,2 | **36/68, +118** (16/34 −860; 20/34 +978) | Neutral; not adopted |
+| 132 | **Final pick for the competition: v10.** v11 (v10 + FIGHT_MEMO 2) vs v10 over seeds 1–6: 42/68, 32/68, 34/68 = **108/204, +5,644** (not significant). Against the two other opponents on seed 3 (session C): v10 vs v8 **24/34, +6,020** vs v11's 19/34, +2,734; v10 vs meta **33/34, +11,258** (v11 vs meta seeds 1,2: 58/68, +19,500). Session B: `ar5` (ALLY_RANGE 5) 26/68, −4,112 vs v11 | v10's lead over v8 is large and repeated; v11's gain over v10 isn't established, and it did worse vs v8 | **Submit v10** (`cambridge-bot-2026-10-18-2.zip`, hash `43c90c9220c2`, committed on the branch). `mybot` reset to v10's flags (FIGHT_MEMO 0) |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 
