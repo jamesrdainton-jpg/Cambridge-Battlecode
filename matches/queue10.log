@@ -1,0 +1,13 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\cf1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\fix1
+    cf1_s1 vs v7_s1: 12/34 (-1258)
+    cf1_s2 vs v7_s2: 18/34 (+1902)
+vs v7         wins 30/68  gem margin +644
+economy (rounds to 1000 vs idle, summed over 17 maps): 13231
+2026-10-18 16:19,cf1[1,2],30/68,v7:30/68(+644),13231,queue10 cf1 vs v7,b2e8087
+    fix1_s1 vs v7_s1: 18/34 (+1704)
+    fix1_s2 vs v7_s2: 14/34 (-876)
+vs v7         wins 32/68  gem margin +828
+economy (rounds to 1000 vs idle, summed over 17 maps): 12118
+2026-10-18 16:25,fix1[1,2],32/68,v7:32/68(+828),12118,queue10 fix1 vs v7,bdd7b9b
+QUEUE10 DONE
