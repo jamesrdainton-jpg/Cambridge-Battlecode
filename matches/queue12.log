@@ -10,3 +10,7 @@ vs v10        wins 15/68  gem margin -1592
     fm2_s2 vs v10_s2: 20/34 (+2106)
 vs v10        wins 42/68  gem margin +4888
 2026-10-18 20:08,fm2[1,2],42/68,v10:42/68(+4888),,queue12 fm2 vs v10,215f5c2
+    cc1_s1 vs v10_s1: 17/34 (+1060)
+    cc1_s2 vs v10_s2: 17/34 (+504)
+vs v10        wins 34/68  gem margin +1564
+2026-10-18 20:15,cc1[1,2],34/68,v10:34/68(+1564),,queue12 cc1 vs v10,b6917e4
