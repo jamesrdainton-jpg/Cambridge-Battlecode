@@ -2,3 +2,7 @@ created /home/user/Cambridge-Battlecode/bots/rs4
 created /home/user/Cambridge-Battlecode/bots/fm2
 created /home/user/Cambridge-Battlecode/bots/cc1
 created /home/user/Cambridge-Battlecode/bots/tb20
+    rs4_s1 vs v10_s1: 0/34 (+0)
+    rs4_s2 vs v10_s2: 15/34 (-1592)
+vs v10        wins 15/68  gem margin -1592
+2026-10-18 20:00,rs4[1,2],15/68,v10:15/68(-1592),,queue12 rs4 vs v10,d555ef0
