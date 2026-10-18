@@ -23,6 +23,7 @@ bots/*
 !bots/v5/
 !bots/v6/
 !bots/v7/
+!bots/v8/
 !bots/meta/
 !bots/starter/
 !bots/idle/
