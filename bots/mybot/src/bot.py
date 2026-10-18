@@ -68,6 +68,9 @@ LOW_HP_REACH = 2
 # after it skipped every walking-exclusive ability (Tavi's 2.2x stun): our Tavi cast at camps 0.09 times per
 # basic attack, pros' ranged champions 0.18-0.25 (experiment 116).
 CAST_FIRST = False
+# Cast a self-shield (Varg) during fights when an enemy champion can hit us next turn or we are losing health.
+# support() only ran while farming, so Varg shielded 0.10 times per basic attack vs strong teams' 0.18.
+FIGHT_SHIELD = False
 # Lower the engage threshold by this much when the best target carries 40+ gems (0 = off).
 GEM_HUNT = 0.0
 # Stand-off breaker: after this many turns facing enemies within 9 tiles with nobody on either side losing
@@ -76,7 +79,7 @@ STANDOFF_TURNS = 0
 AVOID_ROUNDS = 40
 # Ignore enemy champions standing inside their own spawn region unless something is hurting us: we can't
 # reach them there, and on maps whose spawns touch (rushbait-v2) they kept us "retreating" at spawn forever.
-IGNORE_SPAWN_CAMPERS = False
+IGNORE_SPAWN_CAMPERS = True
 # Poke camp groups too strong to fight (monoliths: 20,000 HP, 200 damage) from range 4 with damaging abilities,
 # outside their range-3 reach. Only champions with a damaging ability do it, when it scores best.
 MONOLITH_POKE = False
@@ -85,7 +88,7 @@ MONOLITH_POKE = False
 TEAM_STALL_ROUNDS = 0
 # Melee approach avoids camp spawn tiles: on contest Vendetta stepped onto a dead camp's spawn tile next to its
 # target, step_off() moved it back next turn, and it repeated that for 1,700+ turns.
-CAMP_TILE_FIX = False
+CAMP_TILE_FIX = True
 # Put our ward (free, one each, relocatable every turn, 6-tile vision) on the bush tile within 2 nearest our target,
 # as strong platform teams do: 71% of their wards sit in bushes, near camps and altars (experiment 97).
 WARDS = False
@@ -708,6 +711,8 @@ class Bot:
             if x[5] <= self.rng and x[2] <= burst:
                 self.hit(x[0], x[1], champion=True)
                 return True
+        if FIGHT_SHIELD:
+            self.shield_up(closest)
         if STANDOFF_TURNS and (not TEAM_STALL_ROUNDS or self.team_stalled()) and self.standoff_check(near, closest):
             return False  # a stand-off: leave enemies that aren't fighting alone and work away from them
         extra = FIGHT_GEM_EXTRA if self.gems >= 20 else 0.0
@@ -809,6 +814,19 @@ class Bot:
             self.basic_attack(unit)
             self.use_reset(unit)
             self.cast_offense(unit, upos, champion=champion)
+
+    def shield_up(self, closest):
+        """Cast a ready self-shield when an enemy champion can hit us next turn or something is hurting us."""
+        if not self.can_cast or (closest > 1 and not self.taking_damage()):
+            return
+        for i in (0, 1):
+            if self.ab_kind[i] == K_SHIELD and self.abilities[i].cooldown() == 0:
+                try:
+                    if self.abilities[i].use():
+                        self.can_cast = False
+                except Error:
+                    pass
+                return
 
     def burst(self):
         """Damage this champion can deal this turn with a basic attack and a ready damage ability."""
