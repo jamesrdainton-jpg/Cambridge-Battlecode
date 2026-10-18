@@ -5,7 +5,7 @@ Running record of everything tried on the bot: setup, discovered game mechanics,
 ## Latest bot
 
 > **When the user asks for "the latest bot":**
-> 1. Run `.venv\Scripts\python.exe tools\release.py --verify` from the project folder (on Mac/Linux, `.venv/bin/python tools/release.py --verify`). It rebuilds the upload ZIP from `bots/mybot` (DEBUG off), checks it, and plays 6 games against the starter. If a batch is running, leave out `--verify`, because extra games can make batch games fail. If `bots/mybot` has an experimental change turned on, release the last frozen version instead with `--src v5` (or newer). `submissions/` is not in git, so on a fresh clone this step creates the ZIP; the same commit always gives the same content hash.
+> 1. Run `.venv\Scripts\python.exe tools\release.py --verify` from the project folder (on Mac/Linux, `.venv/bin/python tools/release.py --verify`). It rebuilds the upload ZIP from `bots/mybot` (DEBUG off), checks it, and plays 6 games against the starter. If a batch is running, leave out `--verify`, because extra games can make batch games fail. If `bots/mybot` has an experimental change turned on, release the last frozen version instead with `--src v7` (or newer). `submissions/` is not in git, so on a fresh clone this step creates the ZIP; the same commit always gives the same content hash.
 > 2. Reply with the ZIP's full path on the computer you are on (the tool prints it; on James's PC it is `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`) and the dated copy it matches. Say what changed since the previous release.
 > 3. Update the table and the release history below, and add a row to the experiment log.
 >
@@ -14,10 +14,10 @@ Running record of everything tried on the bot: setup, discovered game mechanics,
 | | |
 |---|---|
 | **ZIP to upload** | `submissions\cambridge-bot-latest.zip` in the repo folder (on James's PC: `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`) |
-| Same file as | `submissions\cambridge-bot-2026-10-16-2.zip` (content hash `2469c93cbbf3`) |
-| Bot | `bots/mybot` = frozen `v6`, DEBUG off. 17.4 KB: `src/main.py`, `src/bot.py`, `src/draft.py`, `src/world.py` |
-| Verified | 2026-10-16 12:40: 6/6 wins vs the starter (packs, lanes, monolith), no error lines |
-| New since the previous ZIP | Champions wait up to 40 turns (was 25) for their squad before attacking a camp (experiments 68, 77: 80/144 vs v5). The rejected stand-off breaker's code is included but switched off (`STANDOFF_TURNS = 0` plays exactly like v5) |
+| Same file as | `submissions\cambridge-bot-2026-10-18.zip` (content hash `8d32bd566f06`), built from commit `8cc11b8` |
+| Bot | `bots/mybot` = frozen `v7`, DEBUG off. 19.5 KB: `src/main.py`, `src/bot.py`, `src/draft.py`, `src/world.py` |
+| Verified | 2026-10-18: 6/6 wins vs the starter (packs, lanes, monolith) on cambc 2.2.2, no error lines |
+| New since the previous ZIP | Gold counts for more early: `GOLD_WEIGHT` 0.4 (was 0.15), fading to 15% of that by round 500 (`GOLD_TAPER`, was 1200). Measured 156/272 (57.4%), +10,048 gems vs v6 over seeds 1–8 on the 17-map pool (experiments 101, 106, 108), echoing the pros' faster early gold (experiment 98). Also included, switched off: spawn-camper fix, monolith poke, stall-gated breaker, camp-tile fix, wards, Power-first build, telemetry |
 
 To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submit release`, which sends `bots/release`, the same code as the ZIP (needs `cambc login` and the Avast exception).
 
@@ -25,7 +25,8 @@ To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submi
 
 | Date | ZIP | Source | What it added | Verified |
 |---|---|---|---|---|
-| 2026-10-16 12:40 | `cambridge-bot-2026-10-16-2.zip` | `mybot` (= `v6`), commit to be recorded once committed | Squad wait 40 turns | 6/6 vs starter |
+| 2026-10-18 | `cambridge-bot-2026-10-18.zip` | `mybot` at commit `8cc11b8` (= `v7`) | Early gold weighting (0.4 fading by round 500) | 6/6 vs starter (cambc 2.2.2) |
+| 2026-10-16 12:40 | `cambridge-bot-2026-10-16-2.zip` | `mybot` at commit `93aee14` (= `v6`) | Squad wait 40 turns | 6/6 vs starter |
 | 2026-10-16 | `cambridge-bot-2026-10-16.zip` | `mybot` at commit `85be59a` (= `v5`) | 3-pick draft Vendetta, Ryth, Tavi | 6/6 vs starter |
 | 2026-10-15 | `cambridge-bot-2026-10-15.zip` | `mybot` at commit `40fc0f3` | v4 + cluster targeting, passive altar locks, gold weight 0.15, tribute 30/15, recall travel, safer retreats and recalls | 6/6 vs starter (experiment 51) |
 
@@ -298,6 +299,7 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 106 | Queue 7: `gt1` (gold weight 0.4 fading by round 500) confirmation, seeds 3,4 | **41/68, +2,354** (19/34, 22/34) → both sets **79/136, +5,202** (gems positive in every run) | One win under 80/136 (the 42/72 rate). Pre-registered before running more: adopt if seeds 1–8 together reach 159/272 with positive gems; seeds 5–8 queued (queue 8) |
 | 107 | Queue 7: `wg1` = wards + early gold, seeds 1,2 | 34/68, +5,592; economy 14,065 | Neutral wins, strongly positive gems; not adopted |
 | 108 | Queue 8 (`matches/queue8.sh`, commit `903f3e9`): `gt1` confirmation, seeds 5–8, no economy | **77/136, +4,846** (19, 19, 19, 20 of 34 per seed; gems positive in each). Seeds 1–8 together: **156/272 (57.4%), +10,048** | Three wins short of the pre-registered 159/272, so not adopted by that rule. A real but modest gain (z ≈ 2.4, every seed set positive); under the user's process (borderline result confirmed with seeds 5–8) it would count as confirmed. Decision left to the user |
+| 109 | User decision (2026-10-18): adopt early gold despite the 3-win shortfall. `mybot` defaults `GOLD_WEIGHT = 0.4`, `GOLD_TAPER = 500`; frozen **v7** (`!bots/v7/` in `.gitignore`), commit `8cc11b8`; v7 = the tested `gt1` code. `tools/release.py --verify` | `submissions/cambridge-bot-latest.zip` = `cambridge-bot-2026-10-18.zip`, hash `8d32bd566f06`: **6/6 vs starter**, no error lines | v7 is the new baseline and the ZIP to upload |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 
@@ -342,6 +344,8 @@ Economy benchmark vs idle (rounds to 1,000 gems summed over 9 maps), DEBUG off.
 | s3 | 150 gold below 90% HP | 4,494 |
 
 ## Next ideas
+
+Current next steps are in HANDOFF.md ("What to do next"); the list below is from the first days.
 
 - Squad play: test pairs / whole-team movement (local numbers win fights) against spread-out farming.
 - Better ability use on camp clusters (AoE centred on the tile that hits most camps).
