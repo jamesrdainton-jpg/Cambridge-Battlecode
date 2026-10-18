@@ -1,0 +1,41 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ar4
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\lh1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\lh2
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\d3a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\d3b
+    ar4_s1 vs v7_s1: 17/34 (+1880)
+    ar4_s2 vs v7_s2: 16/34 (-170)
+vs v7         wins 33/68  gem margin +1710
+economy (rounds to 1000 vs idle, summed over 17 maps): 13656
+2026-10-18 15:43,ar4[1,2],33/68,v7:33/68(+1710),13656,queue9 ar4 vs v7,c699403
+    lh1_s1 vs v7_s1: 19/34 (-1790)
+    lh1_s2 vs v7_s2: 15/34 (-2922)
+vs v7         wins 34/68  gem margin -4712
+economy (rounds to 1000 vs idle, summed over 17 maps): 13490
+2026-10-18 15:48,lh1[1,2],34/68,v7:34/68(-4712),13490,queue9 lh1 vs v7,c699403
+    lh2_s1 vs v7_s1: 15/34 (-2692)
+    lh2_s2 vs v7_s2: 17/34 (-274)
+vs v7         wins 32/68  gem margin -2966
+economy (rounds to 1000 vs idle, summed over 17 maps): 13357
+2026-10-18 15:53,lh2[1,2],32/68,v7:32/68(-2966),13357,queue9 lh2 vs v7,c699403
+    d3a_s1 vs v7_s1: 6/8 (+642)
+    d3a_s2 vs v7_s2: 4/8 (-150)
+    d3a_s3 vs v7_s3: 0/8 (-2034)
+    d3a_s4 vs v7_s4: 4/8 (-1284)
+    d3a_s5 vs v7_s5: 5/8 (+416)
+    d3a_s6 vs v7_s6: 3/8 (-266)
+    d3a_s7 vs v7_s7: 0/8 (-2240)
+    d3a_s8 vs v7_s8: 4/8 (-1310)
+vs v7         wins 26/64  gem margin -6226
+2026-10-18 15:57,d3a[1,2,3,4,5,6,7,8],26/64,v7:26/64(-6226),,queue9 d3a 3-pick draft vs v7 maps=collision,expanse,fragment,packs,c699403
+    d3b_s1 vs v7_s1: 3/8 (-1561)
+    d3b_s2 vs v7_s2: 3/8 (-2167)
+    d3b_s3 vs v7_s3: 3/8 (-1159)
+    d3b_s4 vs v7_s4: 4/8 (-837)
+    d3b_s5 vs v7_s5: 3/8 (-1833)
+    d3b_s6 vs v7_s6: 2/8 (-2425)
+    d3b_s7 vs v7_s7: 3/8 (-937)
+    d3b_s8 vs v7_s8: 3/8 (-699)
+vs v7         wins 24/64  gem margin -11618
+2026-10-18 16:01,d3b[1,2,3,4,5,6,7,8],24/64,v7:24/64(-11618),,queue9 d3b 3-pick draft vs v7 maps=collision,expanse,fragment,packs,c699403
+QUEUE9 DONE
