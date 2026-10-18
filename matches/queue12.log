@@ -14,3 +14,9 @@ vs v10        wins 42/68  gem margin +4888
     cc1_s2 vs v10_s2: 17/34 (+504)
 vs v10        wins 34/68  gem margin +1564
 2026-10-18 20:15,cc1[1,2],34/68,v10:34/68(+1564),,queue12 cc1 vs v10,b6917e4
+    tb20_s1 vs v10_s1: 18/34 (+398)
+    tb20_s2 vs v10_s2: 17/34 (+518)
+vs v10        wins 35/68  gem margin +916
+economy (rounds to 1000 vs idle, summed over 17 maps): 11673
+2026-10-18 20:26,tb20[1,2],35/68,v10:35/68(+916),11673,queue12 tb20 vs v10,efd586b
+QUEUE12 DONE

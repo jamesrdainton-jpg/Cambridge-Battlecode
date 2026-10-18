@@ -81,3 +81,4 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-18 20:00,rs4[1,2],15/68,v10:15/68(-1592),,queue12 rs4 vs v10 INVALID (out of memory: seed 1 not played; DEVLOG 124),d555ef0
 2026-10-18 20:08,fm2[1,2],42/68,v10:42/68(+4888),,queue12 fm2 vs v10,215f5c2
 2026-10-18 20:15,cc1[1,2],34/68,v10:34/68(+1564),,queue12 cc1 vs v10,b6917e4
+2026-10-18 20:26,tb20[1,2],35/68,v10:35/68(+916),11673,queue12 tb20 vs v10,efd586b
