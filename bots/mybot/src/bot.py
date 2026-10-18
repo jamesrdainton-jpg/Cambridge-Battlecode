@@ -48,9 +48,9 @@ RETARGET_EVERY = 8
 NEED_FRAC = 0.55
 # Turns a champion waits outside camp range for the rest of a squad before attacking anyway.
 WAIT_LIMIT = 40
-# Target scoring: weight of a camp's gold relative to its gems (tapers to 15% of this by round 1020),
+# Target scoring: weight of a camp's gold relative to its gems (fades to 15% of this by GOLD_TAPER; 0.4 by 500 adopted in v7),
 # and the value multiplier for camps closer to the enemy spawn than ours.
-GOLD_WEIGHT = 0.15
+GOLD_WEIGHT = 0.4
 ENEMY_SIDE = 0.85
 # Fight thresholds on the strength ratio (ours/theirs): retreat below, engage (chase) at or above.
 # Champions carrying 20+ gems add FIGHT_GEM_EXTRA to both (more cautious).
@@ -81,7 +81,7 @@ WARDS = False
 # Skip the Monster emblem: buy Power (six shards' worth, no passive) first, like strong teams' builds.
 POWER_FIRST = False
 # Gold's weight in target scoring fades linearly to 15% of GOLD_WEIGHT at this round.
-GOLD_TAPER = 1200
+GOLD_TAPER = 500
 # Platform telemetry with DEBUG off: "T DIED" per death and "T ACTS" activity counts every 250 rounds.
 # Printing only, so decisions are unchanged.
 TELEMETRY = False
