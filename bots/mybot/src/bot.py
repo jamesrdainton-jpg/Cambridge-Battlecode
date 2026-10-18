@@ -75,6 +75,10 @@ FIGHT_SHIELD = False
 # within 10 tiles: walk home instead. Debug logs vs v8 showed recalls begun 6-8 tiles from a chaser that were
 # interrupted and ended in death (0 = v8: only this turn's sightings, retreat recalls at 8+ tiles and when stuck).
 RECALL_SAFE = 0
+# Fight on the lowest strength ratio seen in the last FIGHT_MEMO rounds (0 = this turn's only). Debug logs vs v8:
+# Ryth chasing a lone Tavi flipped between 6.4 (an ally 7 tiles back counted) and 0.2 (one step on, it wasn't)
+# every turn, so it neither closed in nor got away and lost 1,000 health to free shots.
+FIGHT_MEMO = 0
 # Lower the engage threshold by this much when the best target carries 40+ gems (0 = off).
 GEM_HUNT = 0.0
 # Stand-off breaker: after this many turns facing enemies within 9 tiles with nobody on either side losing
@@ -207,6 +211,7 @@ class Bot:
         self.acts = {}
         self.jungle = False
         self.history = []
+        self.ratio_hist = []
         self.why = ""
         self.last_ratio = None
         self.has_lock = False
@@ -703,6 +708,13 @@ class Bot:
             ratio *= 1.4
         if cheb(pos, world.enemy_spawn_center) <= 7:
             ratio *= 0.6
+        if FIGHT_MEMO:
+            hist = [x for x in self.ratio_hist if self.now - x[0] <= FIGHT_MEMO]
+            hist.append((self.now, ratio))
+            self.ratio_hist = hist
+            for x in hist:
+                if x[1] < ratio:
+                    ratio = x[1]
         closest = min(x[5] - x[3] for x in near)  # how soon someone can hit me
         frac = self.hp / self.max_hp
         if DEBUG:
