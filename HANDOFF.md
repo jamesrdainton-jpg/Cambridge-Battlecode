@@ -17,7 +17,7 @@ State as of 2026-10-18 21:00 UTC (competition sprint; rows 120–132 of DEVLOG).
 - **Upload ZIP: `submissions/cambridge-bot-latest.zip`**, which is **v10**: content hash `43c90c9220c2`, built from commit `36013cc` with DEBUG off, and verified 6/6 vs the starter on cambc 2.2.5 with no error lines. `submissions/` is normally ignored, but this one ZIP is **committed on branch `claude/adoring-fermat-jthwy1`**, so it can be downloaded from GitHub. It is the same file as `cambridge-bot-2026-10-18-2.zip`. Rebuild it anywhere with `tools/release.py --src v10` (or `--src mybot`, which now equals v10 apart from DEBUG); the content hash comes out the same.
 - **v10 = v8 + `FIGHT_SHIELD` + `WARDS` + `CAST_FIRST`** (v8 = v7 + `IGNORE_SPAWN_CAMPERS` + `CAMP_TILE_FIX`).
   - **vs v8: 55/68, +13,016** (seeds 1,2) and 24/34, +6,020 (seed 3). It farms faster too: economy 11,623 vs ~12,100.
-  - **vs `meta`** (the strong teams' draft): **33/34, +11,258** (seed 3); the partial seed-1 run went 18 of 22.
+  - **vs `meta`** (the strong teams' draft): **33/34, +11,258** (seed 3; v11 went 31/34 on the same seed); the partial seed-1 run went 18 of 22.
   - Our champions died **283 times vs v8's 552** in the 68 games.
 - **Why not v11** (v10 + `FIGHT_MEMO` 2):
   - Against v10 it is only 108/204 (seeds 1–6: 42, 32, 34 of 68) and +5,644 gems, which is not significant.
