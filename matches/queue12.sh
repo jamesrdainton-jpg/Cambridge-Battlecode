@@ -13,7 +13,7 @@ G="$PY tools/gauntlet.py"
 OFF="bot.py:DEBUG = True=>DEBUG = False"
 $V tb20 --set "$OFF" --set "bot.py:TRIBUTE_BIG = 30=>TRIBUTE_BIG = 20" --set "bot.py:TRIBUTE_MID = 15=>TRIBUTE_MID = 10" || exit 1
 $V rs4 --set "$OFF" --set "bot.py:RECALL_SAFE = 0=>RECALL_SAFE = 4" || exit 1
-for n in tb20 rs4; do
-  $G $n --vs v8 --seeds 1,2 --note "queue12 $n vs v8" 2>&1 | grep -v "^created"
-done
+$G tb20 --vs v8 --seeds 1,2 --note "queue12 tb20 vs v8" 2>&1 | grep -v "^created"
+# rs4 changes nothing against idle opponents: skip the economy run
+$G rs4 --vs v8 --seeds 1,2 --no-econ --note "queue12 rs4 vs v8" 2>&1 | grep -v "^created"
 echo QUEUE12 DONE

@@ -9,7 +9,6 @@ V="$PY tools/variant.py"
 G="$PY tools/gauntlet.py"
 OFF="bot.py:DEBUG = True=>DEBUG = False"
 $V fm2 --set "$OFF" --set "bot.py:FIGHT_MEMO = 0=>FIGHT_MEMO = 2" || exit 1
-for n in fm2; do
-  $G $n --vs v8 --seeds 1,2 --note "queue13 $n vs v8" 2>&1 | grep -v "^created"
-done
+# fm2 changes nothing against idle opponents: skip the economy run
+$G fm2 --vs v8 --seeds 1,2 --no-econ --note "queue13 fm2 vs v8" 2>&1 | grep -v "^created"
 echo QUEUE13 DONE
