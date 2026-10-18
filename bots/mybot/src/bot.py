@@ -79,6 +79,9 @@ RECALL_SAFE = 0
 # Ryth chasing a lone Tavi flipped between 6.4 (an ally 7 tiles back counted) and 0.2 (one step on, it wasn't)
 # every turn, so it neither closed in nor got away and lost 1,000 health to free shots.
 FIGHT_MEMO = 0
+# Against enemy champions in reach, cast a stun (Ryth's area stun, Tavi's damage-and-stun) before the basic attack.
+# hit() spent the one cast per turn on the attack reset, so Ryth and Tavi never stunned a champion they could hit.
+CC_FIRST = False
 # Lower the engage threshold by this much when the best target carries 40+ gems (0 = off).
 GEM_HUNT = 0.0
 # Stand-off breaker: after this many turns facing enemies within 9 tiles with nobody on either side losing
@@ -822,6 +825,8 @@ class Bot:
 
     def hit(self, unit, upos, champion):
         """Basic attack, attack reset and offensive cast on a unit in range (ranged champions cast first if CAST_FIRST)."""
+        if CC_FIRST and champion:
+            self.cast_offense(unit, upos, champion=True, kinds=(K_AOE, K_CC))
         if CAST_FIRST and self.ranged:
             self.cast_offense(unit, upos, champion=champion)
             self.basic_attack(unit)
@@ -926,14 +931,14 @@ class Bot:
                     self.basic_attack(unit)
                     return
 
-    def cast_offense(self, unit, upos, champion):
+    def cast_offense(self, unit, upos, champion, kinds=(K_DAMAGE, K_AOE, K_CC)):
         """Cast damage/stun abilities at a unit in range. Returns True if something was cast."""
         if not self.can_cast:
             return False
         d = cheb(upos, self.pos)
         for i in (0, 1):
             k = self.ab_kind[i]
-            if k not in (K_DAMAGE, K_AOE, K_CC):
+            if k not in kinds:
                 continue
             info = self.ab_info[i]
             if d > info.range:
