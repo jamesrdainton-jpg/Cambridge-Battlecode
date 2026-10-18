@@ -57,6 +57,13 @@ ENEMY_SIDE = 0.85
 FIGHT_RETREAT = 0.9
 FIGHT_ENGAGE = 1.3
 FIGHT_GEM_EXTRA = 0.25
+# Allies within this many tiles count on our side of the fight ratio (platform deaths: 72% had an ally within 6
+# tiles yet still died, so far allies may not really be fighting).
+ALLY_RANGE = 7
+# Retreat whatever the ratio below this health fraction when an enemy could hit us within LOW_HP_REACH moves
+# (stuns reach 4 tiles; 49% of our platform champion deaths had a single attacker).
+LOW_HP_RETREAT = 0.25
+LOW_HP_REACH = 2
 # Lower the engage threshold by this much when the best target carries 40+ gems (0 = off).
 GEM_HUNT = 0.0
 # Stand-off breaker: after this many turns facing enemies within 9 tiles with nobody on either side losing
@@ -665,7 +672,7 @@ class Bot:
         for a in self.allies:
             try:
                 ap = a.position()
-                if cheb(ap, pos) > 7:
+                if cheb(ap, pos) > ALLY_RANGE:
                     continue
                 our_hp += a.health()
                 prof = PROFILE[a.champion_name()]
@@ -704,7 +711,7 @@ class Bot:
         extra = FIGHT_GEM_EXTRA if self.gems >= 20 else 0.0
         retreat_at = FIGHT_RETREAT + extra
         engage_at = FIGHT_ENGAGE + extra
-        if ratio < retreat_at or (frac < 0.25 and closest <= 2):
+        if ratio < retreat_at or (frac < LOW_HP_RETREAT and closest <= LOW_HP_REACH):
             in_range = [x for x in near if x[5] <= self.rng]
             if in_range and not self.ranged and self.can_attack:
                 self.basic_attack(min(in_range, key=lambda x: x[2])[0])
