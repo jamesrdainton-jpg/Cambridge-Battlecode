@@ -318,6 +318,10 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 125 | Queue 12 (`matches/queue12.sh`): `fm2` = **FIGHT_MEMO 2** (fight on the lowest strength ratio of the last 2 rounds) vs v10, seeds 1,2, no economy run | **42/68, +4,888** (22/34 +2,782; 20/34 +2,106); all 68 games played | **Adopted** in `mybot` on top of v10 |
 | 126 | Queue 12: `cc1` = **CC_FIRST** (Ryth and Tavi cast their stun at champions in reach before the basic attack) vs v10, seeds 1,2 | **34/68, +1,564** (17/34 +1,060; 17/34 +504) | Neutral; not adopted. **v11 frozen** = v10 + FIGHT_MEMO 2 as the baseline for the parallel cloud sessions |
 | 127 | Queue 12: `tb20` = TRIBUTE_BIG 20 / TRIBUTE_MID 10 vs v10, seeds 1,2 | **35/68, +916** (18/34 +398; 17/34 +518); economy 11,673 (v10 11,623) | Neutral; not adopted. Parallel cloud sessions started on v11 (DEVLOG 128+): A fight thresholds, B fight memory / ally range / shield distance, C v11 confirmation (seeds 3,4 vs v10; meta; v8), D squad sizing / shop gold |
+| 128 | Cloud session C (branch `claude/sprint-c-confirm-v11`): **v11 vs v10, seeds 3,4** | **32/68, +556** → with `fm2` (seeds 1,2): **74/136, +5,444** | FIGHT_MEMO is positive over four seed sets but not conclusive; seeds 5,6 run below |
+| 129 | Cloud session C: **v11 vs meta** (the strong teams' draft on our logic), seeds 1,2 | **58/68, +19,500** | v11 is robust against the pro draft (v6 beat meta 48/68) |
+| 130 | Cloud sessions A and B on v11, seeds 1,2: `fe11` (FIGHT_ENGAGE 1.1) **37/68, −1,074**; `fm3` (FIGHT_MEMO 3) **27/68, −3,538** | Neutral; worse | Neither adopted. FIGHT_MEMO 3 is clearly worse than 2 |
+| 131 | Queue 13 (`matches/queue13.sh`): `ge50` (FIGHT_GEM_EXTRA 0.25 → 0.5) vs v11, seeds 1,2 | **36/68, +118** (16/34 −860; 20/34 +978) | Neutral; not adopted |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 
