@@ -71,6 +71,10 @@ CAST_FIRST = False
 # Cast a self-shield (Varg) during fights when an enemy champion can hit us next turn or we are losing health.
 # support() only ran while farming, so Varg shielded 0.10 times per basic attack vs strong teams' 0.18.
 FIGHT_SHIELD = False
+# Don't start a recall (it takes 5 turns, and damage cancels it) within this many rounds of seeing an enemy champion
+# within 10 tiles: walk home instead. Debug logs vs v8 showed recalls begun 6-8 tiles from a chaser that were
+# interrupted and ended in death (0 = v8: only this turn's sightings, retreat recalls at 8+ tiles and when stuck).
+RECALL_SAFE = 0
 # Lower the engage threshold by this much when the best target carries 40+ gems (0 = off).
 GEM_HUNT = 0.0
 # Stand-off breaker: after this many turns facing enemies within 9 tiles with nobody on either side losing
@@ -854,7 +858,7 @@ class Bot:
         if in_camp_range and self.taking_damage() and self.escape(zone):
             return  # a camp is hitting us: get out of its range before anything else
         far = min(x[5] for x in near)
-        if far >= 8 and not in_camp_range:
+        if far >= (10 if RECALL_SAFE else 8) and not in_camp_range:
             sd = world.spawn_field().get(self.pos)
             if sd is not None and sd > 8 and self.try_recall():
                 return
@@ -867,7 +871,7 @@ class Bot:
         # Could not move (blocked in): recall if nobody can reach us before it starts.
         if not in_camp_range:
             for x in near:
-                if x[5] - x[3] <= 1:
+                if x[5] - x[3] <= (RECALL_SAFE if RECALL_SAFE else 1):
                     return
             self.try_recall()
 
@@ -1045,7 +1049,8 @@ class Bot:
             if sd is not None and sd <= 6:
                 self.go(self.world.my_spawn)
                 return True
-            if self.enemy_seen == self.now and frac < 0.5:
+            seen = self.now - self.enemy_seen <= RECALL_SAFE if RECALL_SAFE else self.enemy_seen == self.now
+            if seen and frac < 0.5:
                 # An enemy is within 10 tiles: a recall would likely be interrupted. Walk home instead.
                 self.go(self.world.my_spawn, avoid=self.danger())
                 return True
