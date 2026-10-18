@@ -1,4 +1,4 @@
-# v5 vs v4, every map from both sides; cambc 2.2.2, platform pool of 2026-10-16 (17 maps)
+# v5 vs v4, every map from both sides; cambc 2.2.5, platform pool of 2026-10-16 (17 maps)
 ambush A=v5 B=v4 TEAM A WIN (v5) round= 955 gems~966-712@950 errlines=0
 ambush A=v4 B=v5 TEAM B WIN (v5) round= 882 gems~500-880@875 errlines=0
 collision A=v5 B=v4 TEAM A WIN (v5) round= 553 gems~988-0@550 errlines=0

@@ -418,6 +418,8 @@ module Error_code : sig
       | Invalid_action_sell_already_sold
       | Invalid_action_sell_gold_overflow
       | Invalid_action_sell_not_on_spawn
+      | Draft_already_picked
+      | Draft_no_champion_selected
       | Unknown of int
 
   (** Every value, in declaration order. *)
@@ -1823,6 +1825,8 @@ module Draft_memory : sig
 end
 
 module Debug : sig
+  (** Drawing is available during draft and gameplay. Both teams' drawings last
+      for the current round and clear at the next round, or when gameplay begins. *)
   (** [draw_dot p rgb] draws a debug dot in the replay.
       @param p Tile to mark.
       @param rgb Packed [0xRRGGBB] colour. *)

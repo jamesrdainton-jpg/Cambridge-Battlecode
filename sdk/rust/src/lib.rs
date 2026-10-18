@@ -44,7 +44,8 @@ pub mod vision {
 pub mod draft {
     pub use crate::world::{current_draft, draft_pick as pick, draft_team_size as team_size};
 }
-/// Replay debug drawing.
+/// Replay debug drawing during draft and gameplay. Drawings last for the current
+/// round; both teams clear at the next round, or when draft transitions to gameplay.
 pub mod debug {
     pub use crate::world::{debug_draw_dot as draw_dot, debug_draw_line as draw_line};
 }
@@ -214,6 +215,8 @@ pub mod __private {
     #[cfg(cambc_debug)]
     impl Drop for DebugGuard {
         fn drop(&mut self) {
+            // Refund the guard's own call overhead before restoring.
+            unsafe { crate::sys::fuel_adjust(1) };
             unsafe { crate::sys::fuel_resume() }
         }
     }

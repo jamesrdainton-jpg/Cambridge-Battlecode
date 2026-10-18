@@ -4,9 +4,9 @@ Usage: python tools/replay_decode.py FILE [FILE ...] [--team a|b] [--buys]
 FILE is a .repl26a, a platform match download (.zip with replay.repl26a inside) or a match-group .zip
 (zips inside). Files are read in memory only.
 
-Format, validated turn by turn against traced games (DEVLOG experiment 97):
-  magic "a62per", format byte at offset 10, the embedded map file, u32 record count, then records:
-  04 00 <u32 pick> 00                 draft pick, alternating team A / team B
+Format, validated turn by turn against traced games (DEVLOG experiments 96 and 110):
+  magic "a62per", format byte at offset 10 (2 = cambc 2.2.2, 3 = cambc 2.2.5), the embedded map file, u32 record count, then records:
+  04 00 <u32 pick> 00                 draft pick, alternating team A / team B (format 3: 04 01 <u32> ff, then 03 00)
   03 <u8 reason>                      end of one champion's turn
   00 <u8 action> <payload>            champion action:
      00 (unknown)       u32 (other teams only; maybe the CLI's "turn priority")
@@ -60,7 +60,7 @@ def replays(path: Path) -> list[tuple[str, bytes]]:
 def decode(data: bytes, maps: dict[str, bytes]) -> dict:
     """Map name, drafts and per-champion actions [(round, action, args)] for each team."""
     name, mb = next(((n, b) for n, b in maps.items() if b in data), ("?", b""))
-    if not mb or data[10] != 2:
+    if not mb or data[10] not in (2, 3):
         return {"map": name, "error": "unknown map" if not mb else f"replay format {data[10]} unsupported"}
     o = data.find(mb) + len(mb)
     count = struct.unpack_from("<I", data, o)[0]
@@ -70,14 +70,18 @@ def decode(data: bytes, maps: dict[str, bytes]) -> dict:
     cur: list = []
     n = 0
     error = ""
+    draft_end = False
     while n < count and o < len(data):
         tag = data[o]
         if tag == 4:
             picks.append(struct.unpack_from("<I", data, o + 2)[0])
             o += 7
+            draft_end = data[10] >= 3  # format 3 ends every draft pick with its own end-of-turn record
         elif tag == 3:
-            turns.append(cur)
-            cur = []
+            if not draft_end:
+                turns.append(cur)
+                cur = []
+            draft_end = False
             o += 2
         elif tag == 0 and data[o + 1] in PAYLOAD:
             sub = data[o + 1]
