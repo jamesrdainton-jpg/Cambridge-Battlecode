@@ -67,7 +67,7 @@ LOW_HP_REACH = 2
 # Ranged champions cast before their basic attack. Their attack uses the movement allowance, and casting
 # after it skipped every walking-exclusive ability (Tavi's 2.2x stun): our Tavi cast at camps 0.09 times per
 # basic attack, pros' ranged champions 0.18-0.25 (experiment 116).
-CAST_FIRST = False
+CAST_FIRST = True
 # Cast a self-shield (Varg) during fights when an enemy champion can hit us next turn or we are losing health.
 # support() only ran while farming, so Varg shielded 0.10 times per basic attack vs strong teams' 0.18.
 FIGHT_SHIELD = True
@@ -102,7 +102,7 @@ TEAM_STALL_ROUNDS = 0
 CAMP_TILE_FIX = True
 # Put our ward (free, one each, relocatable every turn, 6-tile vision) on the bush tile within 2 nearest our target,
 # as strong platform teams do: 71% of their wards sit in bushes, near camps and altars (experiment 97).
-WARDS = False
+WARDS = True
 # Skip the Monster emblem: buy Power (six shards' worth, no passive) first, like strong teams' builds.
 POWER_FIRST = False
 # Gold's weight in target scoring fades linearly to 15% of GOLD_WEIGHT at this round.
