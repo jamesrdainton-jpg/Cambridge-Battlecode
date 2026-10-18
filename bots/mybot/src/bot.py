@@ -70,7 +70,7 @@ LOW_HP_REACH = 2
 CAST_FIRST = False
 # Cast a self-shield (Varg) during fights when an enemy champion can hit us next turn or we are losing health.
 # support() only ran while farming, so Varg shielded 0.10 times per basic attack vs strong teams' 0.18.
-FIGHT_SHIELD = False
+FIGHT_SHIELD = True
 # Don't start a recall (it takes 5 turns, and damage cancels it) within this many rounds of seeing an enemy champion
 # within 10 tiles: walk home instead. Debug logs vs v8 showed recalls begun 6-8 tiles from a chaser that were
 # interrupted and ended in death (0 = v8: only this turn's sightings, retreat recalls at 8+ tiles and when stuck).
