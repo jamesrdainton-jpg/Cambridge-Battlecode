@@ -41,6 +41,8 @@ State as of 2026-10-18 21:00 UTC (competition sprint; rows 120–132 of DEVLOG).
 | `FIGHT_GEM_EXTRA` 0.5 | Gem carriers more cautious | 36/68, +118 vs v11 | off (0.25) |
 | `FIGHT_ENGAGE` 1.1 | Chase sooner | 37/68, −1,074 vs v11 | off (1.3) |
 | `ALLY_RANGE` 5 | Count fewer allies in the ratio | 26/68, −4,112 vs v11 | off (7) |
+| `NEED_FRAC` 0.7 | Fewer champions per camp | 34/68, +190 vs v11; economy 11,304 (faster) | off (0.55) |
+| `SHOP_GOLD` 200 | Shop sooner | 32/68, +782 vs v11 | off (300) |
 
 Cloud sessions A–D ran some of these on their own machines; their `gauntlet.csv` rows are on branches `claude/sprint-a-fight-thresholds`, `claude/sprint-b-fight-memory`, `claude/sprint-c-confirm-v11` and `claude/sprint-d-economy`.
 
