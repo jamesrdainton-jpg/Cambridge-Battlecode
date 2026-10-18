@@ -64,6 +64,10 @@ ALLY_RANGE = 7
 # (stuns reach 4 tiles; 49% of our platform champion deaths had a single attacker).
 LOW_HP_RETREAT = 0.25
 LOW_HP_REACH = 2
+# Ranged champions cast before their basic attack. Their attack uses the movement allowance, and casting
+# after it skipped every walking-exclusive ability (Tavi's 2.2x stun): our Tavi cast at camps 0.09 times per
+# basic attack, pros' ranged champions 0.18-0.25 (experiment 116).
+CAST_FIRST = False
 # Lower the engage threshold by this much when the best target carries 40+ gems (0 = off).
 GEM_HUNT = 0.0
 # Stand-off breaker: after this many turns facing enemies within 9 tiles with nobody on either side losing
@@ -702,9 +706,7 @@ class Bot:
         burst = self.burst()
         for x in near:
             if x[5] <= self.rng and x[2] <= burst:
-                self.basic_attack(x[0])
-                self.use_reset(x[0])
-                self.cast_offense(x[0], x[1], champion=True)
+                self.hit(x[0], x[1], champion=True)
                 return True
         if STANDOFF_TURNS and (not TEAM_STALL_ROUNDS or self.team_stalled()) and self.standoff_check(near, closest):
             return False  # a stand-off: leave enemies that aren't fighting alone and work away from them
@@ -733,9 +735,7 @@ class Bot:
             engage_at = max(retreat_at + 0.1, engage_at - GEM_HUNT)
         engage = ratio >= engage_at
         if d <= self.rng:
-            self.basic_attack(e)
-            self.use_reset(e)
-            self.cast_offense(e, ep, champion=True)
+            self.hit(e, ep, champion=True)
             return True
         in_range = [x for x in near if x[5] <= self.rng]
         if in_range and self.can_attack and (not self.ranged or not engage):
@@ -798,6 +798,17 @@ class Bot:
         if self.now >= self.avoid_until or self.avoid_zone is None:
             return avoid
         return self.avoid_zone if avoid is None else (avoid | self.avoid_zone)
+
+    def hit(self, unit, upos, champion):
+        """Basic attack, attack reset and offensive cast on a unit in range (ranged champions cast first if CAST_FIRST)."""
+        if CAST_FIRST and self.ranged:
+            self.cast_offense(unit, upos, champion=champion)
+            self.basic_attack(unit)
+            self.use_reset(unit)
+        else:
+            self.basic_attack(unit)
+            self.use_reset(unit)
+            self.cast_offense(unit, upos, champion=champion)
 
     def burst(self):
         """Damage this champion can deal this turn with a basic attack and a ready damage ability."""
@@ -1419,9 +1430,7 @@ class Bot:
                 self.step_away(cp, 4)
             return
         if d <= self.rng:
-            self.basic_attack(camp)
-            self.use_reset(camp)
-            self.cast_offense(camp, cp, champion=False)
+            self.hit(camp, cp, champion=False)
             return
         self.cast_offense(camp, cp, champion=False)
         if self.can_attack:

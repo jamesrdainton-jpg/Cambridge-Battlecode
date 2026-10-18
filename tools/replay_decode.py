@@ -12,7 +12,7 @@ Format, validated turn by turn against traced games (DEVLOG experiments 96 and 1
      00 (unknown)       u32 (other teams only; maybe the CLI's "turn priority")
      01 move            i32 x, i32 y (destination)
      02 attack          u8 target kind, u32 target, 4 bytes
-     03 cast            u8 slot, u32 target entity, 4 bytes, i32 x, i32 y (-1 when no tile)
+     03 cast            u8 slot, 3 bytes, u8 target kind (0 none, 1 champion, 2 camp), u32 target, i32 x, i32 y (-1 = no tile)
      04 recall          (none)
      05 submit gems     i32 altar x, i32 altar y
      06 buy item        u32 item, u32 count
@@ -93,7 +93,7 @@ def decode(data: bytes, maps: dict[str, bytes]) -> dict:
             elif sub == 2:
                 args = (p[0], struct.unpack_from("<I", p, 1)[0])
             elif sub == 3:
-                args = (p[0], struct.unpack_from("<I", p, 1)[0]) + struct.unpack_from("<ii", p, 9)
+                args = (p[0], p[4], struct.unpack_from("<I", p, 5)[0]) + struct.unpack_from("<ii", p, 9)
             elif sub == 9:
                 args = (p[0],) + struct.unpack_from("<ii", p, 1)
             else:
