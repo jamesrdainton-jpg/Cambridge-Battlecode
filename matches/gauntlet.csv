@@ -85,3 +85,4 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-18 20:34,ge50[1,2],36/68,v11:36/68(+118),,queue13 ge50 vs v11,47647ac
 2026-10-18 20:41,v11[5,6],34/68,v10:34/68(+200),,confirm v11 vs v10 seeds 5,6,27ee920
 2026-10-18 20:45,v11[3],31/34,meta:31/34(+11290),,v11 vs meta seed 3 (vs v10 vs meta seed 3 in session C),2fb618f
+2026-10-19 13:07,v12[1,2],45/68,v10:45/68(+11138),10504,v12 final: v10 + shop 150/any HP + pro draft 4-5 + pro packs 150 + claim on kill; poke off,826b5cc

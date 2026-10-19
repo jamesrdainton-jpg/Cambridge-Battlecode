@@ -1,8 +1,22 @@
 # Handover — Cambridge Battlecode 2026 bot
 
-State as of 2026-10-18 21:00 UTC (competition sprint; rows 120–132 of DEVLOG). The full history of every experiment is in [DEVLOG.md](DEVLOG.md); rows 82–109 are the platform-data session of 2026-10-16. This note is the short version for picking the work back up.
+State as of 2026-10-19 (v12 built from the research report; DEVLOG rows 135–142). Before that: the 2026-10-18 competition sprint (rows 120–134) and the platform-data session of 2026-10-16 (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md); the evidence behind v12 is in [research/2026-10-19/REPORT.md](research/2026-10-19/REPORT.md).
 
 **Team rule:** more than one person works on this repo, each on their own computer, so every result must be reproducible on a different computer from a git commit. Commit code before testing it, record the commit and the exact command, keep queue scripts and `matches\gauntlet.csv` in git, and use the pinned cambc with the committed maps. Details are in the "Team rule" section near the top of DEVLOG.md.
+
+## The bot to submit (2026-10-19): v12
+
+- **Upload ZIP: `submissions/cambridge-bot-latest.zip`** = **v12**: content hash `7c7fa17be827`, built from commit `826b5cc` with DEBUG off, verified 6/6 vs the starter on cambc 2.2.5 with no error lines. It is committed, so it can be downloaded from GitHub; it is the same file as `cambridge-bot-2026-10-19.zip`. Rebuild anywhere with `tools/release.py --src v12`
+- **v12 = v10 + three changes** (all in `bots/mybot` as flags; v12 = mybot with DEBUG off):
+  1. **Spend gold as it comes in:** shop whenever carrying 150+ gold at any health (`SHOP_GOLD` 150, `SHOP_HP` 1.01), only while the build has stages left (a final Power 60 stage was added), and never start a shopping recall while hurt, next to an enemy or in a camp's reach (`SHOP_SAFE`). v10 hoarded ~400 gold per team and scored 0 gems on contest.
+  2. **Pro draft on 4- and 5-pick maps** (`draft.py` `PRO_DRAFT = (4, 5)`: Cassi & Issac, Stellar, Ren, + Ryth, + Varg), with **pack farming until round 150** for that draft only (`PACK_UNTIL` 150, `PACK_PRO_ONLY`). 3-pick maps keep Vendetta, Ryth, Tavi (platform 5/6 with it); packs with our draft lost 8/32.
+  3. **`CLAIM_ON_KILL`:** a melee champion that kills a group's last camp steps onto its spawn tile in the same turn, so an enemy can't take the capture.
+- **Local results** (seeded, every map from both sides):
+  - **v12 vs v10 (gauntlet, seeds 1,2): 45/68, +11,138**; economy 10,504 (v10 11,623). 3-pick maps 10/16, 4-pick 12/16, 5-pick 23/36; contest 4/4 (v10 scored 0 gems there unopposed).
+  - The shopping package vs v10: 44/68, +6,728. The pro draft vs our draft on the 13 maps where they differ: 33/52, +4,996 (contest, rows, stampede 4/4).
+- **Switched off after testing:** boss poking (`MONOLITH_POKE`, with the fixed poke ring, capture step and shared poke health): 3/16 vs v10 on contest + stampede, against 10/16 with it off. The chase check (`research/2026-10-19/patches/chase.py`) was neutral (34/68, +36).
+- **Previous submission:** v10 (`cambridge-bot-2026-10-18-2.zip`, hash `43c90c9220c2`): 13/30 on the platform on 2026-10-18.
+- **After a day of platform games:** download them and run the report's scripts (`research/2026-10-19/tools/ourgames.py`, `teamstats.py`, `deaths2.py`) to see whether the economy gap closed and how the pro draft does on 4- and 5-pick maps. The weak maps for the pro draft locally are corners, monolith and pilgrimage (1/4 each vs our draft).
 
 ## Where everything is
 
@@ -12,7 +26,7 @@ State as of 2026-10-18 21:00 UTC (competition sprint; rows 120–132 of DEVLOG).
 - **Maps:** `maps\` is the platform's current **17-map pool**: 8 maps are new (ambush, contest, eight, fragment, pilgrimage, rushbait-v2, stampede, swirl) and 6 were updated. Every result before DEVLOG row 82 was on the old engine and the old 9 maps.
 - **Avast:** exclude `battlecode.co.uk` in Avast's Web Shield, or `cambc maps pull` / `login` / `submit` fail.
 
-## The bot to submit (competition, 2026-10-18 evening)
+## Previous submission: v10 (competition, 2026-10-18 evening)
 
 - **Upload ZIP: `submissions/cambridge-bot-latest.zip`**, which is **v10**: content hash `43c90c9220c2`, built from commit `36013cc` with DEBUG off, and verified 6/6 vs the starter on cambc 2.2.5 with no error lines. `submissions/` is normally ignored, but this one ZIP is **committed on branch `claude/adoring-fermat-jthwy1`**, so it can be downloaded from GitHub. It is the same file as `cambridge-bot-2026-10-18-2.zip`. Rebuild it anywhere with `tools/release.py --src v10` (or `--src mybot`, which now equals v10 apart from DEBUG); the content hash comes out the same.
 - **v10 = v8 + `FIGHT_SHIELD` + `WARDS` + `CAST_FIRST`** (v8 = v7 + `IGNORE_SPAWN_CAMPERS` + `CAMP_TILE_FIX`).
@@ -24,7 +38,7 @@ State as of 2026-10-18 21:00 UTC (competition sprint; rows 120–132 of DEVLOG).
   - On seed 3 it did worse than v10 against the two other opponents: vs v8 19/34 against v10's 24/34. It beat `meta` 58/68 on seeds 1,2.
   - It is frozen in `bots/v11` for later testing.
 - **When the user asks for the latest bot:** run `.venv\Scripts\python.exe tools\release.py --verify` (leave out `--verify` while a batch runs) and give the ZIP's full path. The steps are in "Latest bot" at the top of DEVLOG.md.
-- **Working copy:** `bots/mybot/src` (DEBUG on) = v10 plus switched-off flags. **Frozen versions:** `bots/v1`–`v11`; v10 is the baseline for tests.
+- **Working copy (now):** `bots/mybot/src` (DEBUG on) = v12 plus switched-off flags (`MONOLITH_POKE`, `POKE_AVOID_ENEMY`, ...). **Frozen versions:** `bots/v1`–`v12`; v12 is the baseline for new tests.
 - **This machine runs one batch at a time.** Two `run-batch` processes at 18 jobs each run a 15 GB machine out of memory, and the killed games count as losses (DEVLOG 124). Always check `batch.log` for `FAILED` lines.
 
 ### Competition sprint results (DEVLOG rows 120–132)
@@ -72,10 +86,11 @@ The first two are real bug fixes on single maps. A 68-game gauntlet can't see th
 
 ## Settled by testing (don't redo without a new reason)
 
-- **Spread out.** Pairs and whole-team squads lose.
+- **Spread out** with our draft: pairs and whole-team squads lose, and early packs lost 8/32 on 3-pick maps (DEVLOG 138). The pro draft farms in packs until round 150 (v12).
 - **Fight thresholds.** Retreat below 0.9, engage at 1.3 (old engine; real matches now suggest revisiting fights, see next steps).
-- **Gold:** 0.4 fading by round 500 beats 0.15 (v7). Shopping at 150 gold at any health is neutral (sh1 33/68).
-- **Draft (with our logic):** 3 picks Vendetta, Ryth, Tavi; Tavi 5th, Marcella 4th. The platform meta draft loses with our logic (48/68 for v6), and so does Cassi & Issac as 5th pick.
+- **Gold:** 0.4 fading by round 500 beats 0.15 (v7). Shopping at 150 gold at any health was neutral vs v6 (sh1 33/68) but wins vs v10 once it stops when the build is finished (v12: 44/68, +6,728; DEVLOG 136–137).
+- **Draft:** 3 picks Vendetta, Ryth, Tavi. On 4- and 5-pick maps the pro draft (Cassi & Issac, Stellar, Ren, + Ryth, + Varg) with early packs now beats our draft (25/32 and 40/72; DEVLOG 138, 140). The older "pro draft loses with our logic" results (v6, v7) predate prompt shopping.
+- **Boss poking** (`MONOLITH_POKE`, even with the fixed ring, capture step and shared poke health) loses contested boss maps: 3/16 vs 10/16 with it off (DEVLOG 139).
 - **Squad sizing and items.** `NEED_FRAC` 0.55. Wait 40 turns for the squad (60 and 15 are worse). Jungle-first, Jungle-aware sizing, `GEM_HUNT` and Power-first are neutral or worse.
 
 ## How to run things (from the project folder)
