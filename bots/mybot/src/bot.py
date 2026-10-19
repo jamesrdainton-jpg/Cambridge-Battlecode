@@ -93,7 +93,7 @@ AVOID_ROUNDS = 40
 IGNORE_SPAWN_CAMPERS = True
 # Poke camp groups too strong to fight (monoliths: 20,000 HP, 200 damage) from range 4 with damaging abilities,
 # outside their range-3 reach. Only champions with a damaging ability do it, when it scores best.
-MONOLITH_POKE = True
+MONOLITH_POKE = False
 # Poke fix: rebuild the poke ring each turn from the live camps in view (the cached ring kept pokers on tiles next to
 # dead camps forever: on stampede Tavi stood still for hundreds of turns) and aim area casts at the in-range tile
 # covering the most live camps.
@@ -132,7 +132,7 @@ TRIBUTE_BIG = 30
 TRIBUTE_MID = 15
 # Before this round every champion farms the group claimed by the lowest-slot ally (pack farming, as the strong
 # platform teams do: 76% of their early camp hits come from 3+ champions on one group); 0 = off.
-PACK_UNTIL = 0
+PACK_UNTIL = 150
 # Pack farming only when we drafted the pro roster (Cassi & Issac or Stellar): with our draft it lost 8/32 on
 # the 3-pick maps (fragment 0/8).
 PACK_PRO_ONLY = True

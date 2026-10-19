@@ -8,7 +8,7 @@ PRIORITY = (CD.VENDETTA, CD.VARG, CD.RYTH, CD.MARCELLA, CD.TAVI, CD.STELLAR, CD.
 BY_SIZE = {3: (CD.VENDETTA, CD.RYTH, CD.TAVI), 4: (CD.VENDETTA, CD.VARG, CD.RYTH, CD.TAVI)}
 # The strong platform teams' draft by team size (Cassi & Issac, Stellar, Ren, then Ryth, then Varg), used instead of
 # BY_SIZE for the team sizes listed in PRO_DRAFT (() = off).
-PRO_DRAFT = ()
+PRO_DRAFT = (4, 5)
 PRO_BY_SIZE = {3: (CD.CASSI_AND_ISSAC, CD.STELLAR, CD.REN), 4: (CD.CASSI_AND_ISSAC, CD.STELLAR, CD.REN, CD.RYTH),
                5: (CD.CASSI_AND_ISSAC, CD.STELLAR, CD.REN, CD.RYTH, CD.VARG)}
 
