@@ -1,0 +1,130 @@
+######## g1
+1413643a-match-group-598cfd2b-3bb8-4ad3-b146-26aee0839c21/01-02774bf4-46cb-473e-9456-a061239b5e6a: corners, 549 rounds
+  A Varg, Stellar, Cassi, Issac, Ryth, Ren
+    tributes 2 (first r53, every 37.0 rounds), recalls 20, deaths 63 [101, 116, 298, 462, 480, 176, 207, 297, 324, 327, 339, 373], attacks camp/champion 307/188, casts 253, locks 1, wards 15
+  B Stellar, Ren, Cassi, Issac, Ryth, Varg
+    tributes 36 (first r65, every 13.7 rounds), recalls 39, deaths 70 [62, 76, 121, 157, 166, 233, 236, 271, 305, 477, 61, 63], attacks camp/champion 510/183, casts 381, locks 0, wards 107
+1413643a-match-group-598cfd2b-3bb8-4ad3-b146-26aee0839c21/02-b00bb56e-0305-4dc3-8c3c-8acd5dc15e44: eight, 547 rounds
+  A Varg, Stellar, Cassi, Issac, Ryth, Ren
+    tributes 11 (first r37, every 48.9 rounds), recalls 38, deaths 62 [281, 282, 332, 391, 502, 2, 39, 104, 117, 121, 174, 231], attacks camp/champion 340/124, casts 306, locks 2, wards 12
+  B Stellar, Ren, Cassi, Issac, Ryth, Varg
+    tributes 22 (first r68, every 22.3 rounds), recalls 43, deaths 54 [105, 129, 209, 228, 282, 327, 418, 447, 463, 70, 138, 175], attacks camp/champion 503/141, casts 358, locks 0, wards 135
+1413643a-match-group-598cfd2b-3bb8-4ad3-b146-26aee0839c21/03-fa99592f-ba99-4ad8-a4ed-cdd6153abc15: elkring, 532 rounds
+  A Varg, Stellar, Cassi, Issac, Ryth, Ren
+    tributes 21 (first r46, every 23.6 rounds), recalls 47, deaths 101 [21, 75, 171, 196, 220, 259, 364, 508, 11, 32, 44, 167], attacks camp/champion 798/51, casts 297, locks 8, wards 34
+  B Stellar, Ren, Cassi, Issac, Ryth, Varg
+    tributes 34 (first r66, every 13.9 rounds), recalls 41, deaths 40 [265, 449, 462, 78, 154, 230, 252, 329, 335, 349, 387, 400], attacks camp/champion 811/42, casts 376, locks 0, wards 128
+1413643a-match-group-598cfd2b-3bb8-4ad3-b146-26aee0839c21/04-0ae8b951-a37b-4777-9b1c-1fa8df1febbe: packs, 560 rounds
+  A Ren, Stellar, Cassi, Issac
+    tributes 19 (first r43, every 28.3 rounds), recalls 33, deaths 41 [95, 107, 137, 309, 332, 374, 425, 513, 42, 75, 83, 108], attacks camp/champion 519/36, casts 218, locks 1, wards 55
+  B Stellar, Ren, Cassi, Issac
+    tributes 19 (first r51, every 27.9 rounds), recalls 34, deaths 33 [129, 255, 334, 479, 71, 84, 131, 158, 173, 186, 255, 335], attacks camp/champion 519/45, casts 281, locks 0, wards 114
+1413643a-match-group-598cfd2b-3bb8-4ad3-b146-26aee0839c21/05-a5686302-4096-49bf-b5a4-54a3a2292537: rows, 351 rounds
+  A Varg, Ryth, Cassi, Issac, Ren
+    tributes 15 (first r48, every 21.0 rounds), recalls 23, deaths 16 [213, 80, 82, 146, 148, 178, 212, 214, 241, 333, 38, 111], attacks camp/champion 633/0, casts 181, locks 0, wards 124
+  B Stellar, Prism, Cassi, Issac, Varg
+    tributes 10 (first r46, every 31.3 rounds), recalls 19, deaths 14 [125, 329, 65, 116, 209, 231, 315, 36, 59, 117, 315, 34], attacks camp/champion 418/0, casts 223, locks 0, wards 104
+######## g2
+58ce3814-match-group-f535711b-20fc-44b7-b408-577a438f525d/01-4f9f1fa3-ef10-41a3-9af8-ca4119272e76: elkring, 509 rounds
+  A Stellar, Ren, Cassi, Issac, Ryth, Varg
+    tributes 28 (first r63, every 16.4 rounds), recalls 40, deaths 48 [77, 187, 267, 460, 76, 117, 204, 266, 80, 93, 147, 200], attacks camp/champion 738/37, casts 352, locks 0, wards 144
+  B Ren, Stellar, Cassi, Issac, Ryth, Varg
+    tributes 23 (first r64, every 20.1 rounds), recalls 2386, deaths 3 [332, 287, 434], attacks camp/champion 702/32, casts 300, locks 4, wards 207
+58ce3814-match-group-f535711b-20fc-44b7-b408-577a438f525d/02-d8de76cb-2c78-444e-9d69-f9c0d90f469a: stampede, 475 rounds
+  A Stellar, Tavi, Prism, Cassi, Issac, Ren
+    tributes 5 (first r156, every 75.2 rounds), recalls 15, deaths 6 [119, 292, 118, 454, 399, 180], attacks camp/champion 265/77, casts 282, locks 0, wards 189
+  B Ren, Stellar, Cassi, Issac, Ryth, Varg
+    tributes 0 (first rNone, every None rounds), recalls 1943, deaths 10 [171, 286, 178, 334, 469, 178, 334, 468, 330, 326], attacks camp/champion 31/60, casts 113, locks 0, wards 156
+58ce3814-match-group-f535711b-20fc-44b7-b408-577a438f525d/03-84aae3ed-3316-42ea-a62c-45a4018d3c3b: fragment, 516 rounds
+  A Stellar, Ren, Cassi, Issac
+    tributes 19 (first r76, every 24.0 rounds), recalls 29, deaths 27 [49, 141, 243, 469, 79, 128, 130, 140, 157, 161, 168, 319], attacks camp/champion 456/24, casts 267, locks 0, wards 119
+  B Ren, Stellar, Cassi, Issac
+    tributes 6 (first r26, every 84.4 rounds), recalls 1073, deaths 11 [198, 407, 195, 296, 201, 328, 422, 516, 201, 328, 515], attacks camp/champion 342/7, casts 143, locks 1, wards 153
+58ce3814-match-group-f535711b-20fc-44b7-b408-577a438f525d/04-eecb7d49-a603-42db-9e1f-3b645f93910e: rushbait-v2, 545 rounds
+  A Stellar, Ren, Cassi, Issac, Ryth
+    tributes 18 (first r105, every 25.7 rounds), recalls 27, deaths 13 [535, 185, 109, 159, 169, 389, 415, 432, 534, 212, 379, 516], attacks camp/champion 624/11, casts 310, locks 0, wards 139
+  B Ren, Stellar, Cassi, Issac, Ryth
+    tributes 26 (first r112, every 16.6 rounds), recalls 2474, deaths 0 [], attacks camp/champion 621/5, casts 223, locks 1, wards 162
+58ce3814-match-group-f535711b-20fc-44b7-b408-577a438f525d/05-aa7c8aff-fcf9-4a7d-a060-35bfa0eadcad: monolith, 453 rounds
+  A Stellar, Ren, Cassi, Issac, Ryth, Varg
+    tributes 29 (first r79, every 13.2 rounds), recalls 23, deaths 22 [306, 350, 124, 273, 399, 85, 158, 220, 272, 395, 155, 178], attacks camp/champion 691/42, casts 304, locks 0, wards 72
+  B Ren, Stellar, Cassi, Issac, Ryth, Varg
+    tributes 24 (first r66, every 15.8 rounds), recalls 2177, deaths 2 [332, 428], attacks camp/champion 597/42, casts 240, locks 3, wards 142
+######## g3
+5f895da6-match-group-31b18f70-e1ab-4bc0-9e60-090794a4d073/01-a9cab80e-1fd7-4ad2-aa4e-209e972ce669: packs, 437 rounds
+  A Ren, Stellar, Cassi, Issac
+    tributes 16 (first r40, every 26.3 rounds), recalls 35, deaths 15 [55, 419, 46, 54, 139, 333, 386, 388, 397, 401, 241, 279], attacks camp/champion 509/8, casts 189, locks 0, wards 48
+  B Stellar, Ren, Cassi, Issac
+    tributes 17 (first r51, every 23.9 rounds), recalls 25, deaths 16 [100, 130, 136, 170, 192, 353, 419, 62, 86, 127, 233, 295], attacks camp/champion 534/15, casts 231, locks 0, wards 100
+5f895da6-match-group-31b18f70-e1ab-4bc0-9e60-090794a4d073/02-e926b73a-f352-4a7f-8db3-d3e829f5b884: interlock, 574 rounds
+  A Ren, Stellar, Cassi, Issac, Ryth
+    tributes 29 (first r44, every 18.5 rounds), recalls 41, deaths 9 [138, 363, 316, 451, 308, 362, 73, 348, 418], attacks camp/champion 628/25, casts 279, locks 0, wards 74
+  B Stellar, Ren, Cassi, Issac, Ryth
+    tributes 20 (first r51, every 26.3 rounds), recalls 26, deaths 28 [86, 141, 199, 253, 273, 369, 389, 411, 426, 533, 197, 313], attacks camp/champion 561/31, casts 285, locks 0, wards 155
+5f895da6-match-group-31b18f70-e1ab-4bc0-9e60-090794a4d073/03-2d02e4e8-bcdc-4dff-b800-f976733f0d7b: stampede, 517 rounds
+  A Ren, Stellar, Cassi, Issac, Ryth, Varg
+    tributes 0 (first rNone, every None rounds), recalls 10, deaths 13 [111, 151, 213, 344, 490, 158, 342, 496, 158, 342, 496, 276], attacks camp/champion 364/46, casts 225, locks 0, wards 116
+  B Stellar, Tavi, Prism, Cassi, Issac, Ren
+    tributes 3 (first r187, every 147.0 rounds), recalls 13, deaths 19 [227, 227, 245, 329, 386, 488, 228, 231, 487, 129, 159, 163], attacks camp/champion 212/108, casts 307, locks 0, wards 187
+5f895da6-match-group-31b18f70-e1ab-4bc0-9e60-090794a4d073/04-9315c72b-72bf-4d77-a5bb-8b7c63541e7f: rushbait-v2, 570 rounds
+  A Ren, Stellar, Cassi, Issac, Ryth
+    tributes 15 (first r119, every 32.1 rounds), recalls 50, deaths 23 [7, 267, 271, 565, 568, 570, 6, 98, 117, 267, 279, 75], attacks camp/champion 639/15, casts 296, locks 0, wards 11
+  B Stellar, Ren, Cassi, Issac, Ryth
+    tributes 12 (first r132, every 32.7 rounds), recalls 31, deaths 24 [4, 5, 114, 249, 295, 315, 346, 425, 181, 6, 87, 113], attacks camp/champion 653/25, casts 321, locks 0, wards 164
+5f895da6-match-group-31b18f70-e1ab-4bc0-9e60-090794a4d073/05-727fcf15-1737-4ffa-8d39-f61d3e823d05: eight, 473 rounds
+  A Ren, Stellar, Cassi, Issac, Ryth, Varg
+    tributes 6 (first r82, every 52.2 rounds), recalls 43, deaths 36 [56, 240, 439, 85, 307, 321, 359, 422, 83, 100, 210, 289], attacks camp/champion 284/59, casts 244, locks 0, wards 42
+  B Stellar, Ren, Cassi, Issac, Ryth, Varg
+    tributes 15 (first r91, every 26.4 rounds), recalls 36, deaths 49 [106, 122, 162, 230, 254, 332, 415, 439, 105, 191, 403, 406], attacks camp/champion 488/97, casts 331, locks 0, wards 115
+######## g4
+c48b754e-match-group-18cb66ad-b256-44ef-8577-8aca59bd8949/01-16b9c897-bc99-4d63-ad89-5e1f88d3cd41: monolith, 467 rounds
+  A Vendetta, Varg, Ryth, Marcella, Tavi
+    tributes 13 (first r54, every 31.2 rounds), recalls 16, deaths 6 [459, 429, 132, 268, 348, 464], attacks camp/champion 441/12, casts 170, locks 7, wards 26
+  B Cassi, Issac, Stellar, Varg, Tavi, Ren
+    tributes 47 (first r45, every 9.1 rounds), recalls 37, deaths 1 [144], attacks camp/champion 570/11, casts 210, locks 0, wards 0
+c48b754e-match-group-18cb66ad-b256-44ef-8577-8aca59bd8949/02-2641251b-744e-43df-bddf-fd92cf582208: interlock, 977 rounds
+  A Vendetta, Varg, Ryth, Marcella
+    tributes 17 (first r131, every 50.8 rounds), recalls 42, deaths 9 [122, 501, 612, 726, 929, 752, 105, 336, 628], attacks camp/champion 526/49, casts 246, locks 4, wards 201
+  B Cassi, Issac, Ren, Stellar, Tavi
+    tributes 35 (first r30, every 27.6 rounds), recalls 44, deaths 10 [342, 858, 342, 858, 369, 248, 745, 356, 499, 626], attacks camp/champion 440/45, casts 323, locks 0, wards 0
+c48b754e-match-group-18cb66ad-b256-44ef-8577-8aca59bd8949/03-f0db4fdb-6d53-4386-bc66-5309c5cc6d34: stampede, 1299 rounds
+  A Vendetta, Varg, Ryth, Marcella, Tavi
+    tributes 1 (first r1015, every None rounds), recalls 39, deaths 15 [705, 844, 1068, 1208, 1021, 1227, 522, 954, 1289, 294, 1055, 1190], attacks camp/champion 740/95, casts 351, locks 1, wards 347
+  B Stellar, Prism, Willow, Ryth, Tavi
+    tributes 7 (first r558, every 117.5 rounds), recalls 50, deaths 3 [401, 1059, 730], attacks camp/champion 629/119, casts 312, locks 0, wards 0
+c48b754e-match-group-18cb66ad-b256-44ef-8577-8aca59bd8949/04-bca8b28b-a5ec-4e8b-90ac-0544709d9f1a: lanes, 550 rounds
+  A Vendetta, Varg, Ryth, Marcella, Tavi
+    tributes 36 (first r63, every 13.7 rounds), recalls 18, deaths 5 [312, 411, 434, 540, 438], attacks camp/champion 574/7, casts 217, locks 5, wards 162
+  B Cassi, Issac, Ren, Stellar, Vendetta, Tavi
+    tributes 42 (first r51, every 12.1 rounds), recalls 41, deaths 3 [450, 375, 465], attacks camp/champion 600/9, casts 273, locks 0, wards 0
+c48b754e-match-group-18cb66ad-b256-44ef-8577-8aca59bd8949/05-75cabd47-4a3b-4b95-b43f-a2709b0d3fef: fragment, 1060 rounds
+  A Vendetta, Ryth, Tavi
+    tributes 26 (first r75, every 39.3 rounds), recalls 17, deaths 15 [121, 374, 632, 722, 840, 1046, 415, 706, 851, 104, 240, 364], attacks camp/champion 439/75, casts 249, locks 10, wards 139
+  B Stellar, Ren, Tavi
+    tributes 46 (first r44, every 21.1 rounds), recalls 35, deaths 14 [189, 452, 541, 930, 314, 571, 703, 807, 974, 313, 464, 685], attacks camp/champion 306/50, casts 223, locks 0, wards 0
+######## g5
+f5431822-match-group-4a2267a6-01b6-471d-a287-f67ad6e2bb2e/01-e174412e-5b59-4dd3-8391-116d9f5f6ab6: expanse, 527 rounds
+  A Cassi, Issac, Stellar, Varg
+    tributes 24 (first r49, every 20.3 rounds), recalls 21, deaths 20 [128, 291, 399, 516, 189, 192, 202, 398, 53, 145, 178, 204], attacks camp/champion 447/0, casts 187, locks 0, wards 0
+  B Cassi, Issac, Stellar, Varg
+    tributes 22 (first r41, every 22.7 rounds), recalls 21, deaths 1 [451], attacks camp/champion 451/0, casts 193, locks 4, wards 287
+f5431822-match-group-4a2267a6-01b6-471d-a287-f67ad6e2bb2e/02-cd227329-486e-41e1-95c7-193cde94978e: eight, 509 rounds
+  A Stellar, Ren, Cassi, Issac, Ryth, Varg
+    tributes 16 (first r63, every 29.1 rounds), recalls 40, deaths 49 [151, 224, 294, 321, 339, 407, 504, 75, 84, 151, 163, 214], attacks camp/champion 518/53, casts 350, locks 0, wards 147
+  B Cassi, Issac, Stellar, Varg, Tavi, Ren
+    tributes 1 (first r167, every None rounds), recalls 16, deaths 24 [270, 199, 244, 327, 427, 437, 143, 244, 271, 408, 438, 407], attacks camp/champion 240/37, casts 220, locks 1, wards 385
+f5431822-match-group-4a2267a6-01b6-471d-a287-f67ad6e2bb2e/03-49d9f117-f512-4179-9c94-09e547326818: pilgrimage, 573 rounds
+  A Stellar, Ren, Cassi, Issac, Ryth, Varg
+    tributes 12 (first r104, every 42.0 rounds), recalls 25, deaths 35 [148, 268, 305, 410, 571, 94, 236, 411, 484, 154, 177, 202], attacks camp/champion 448/67, casts 249, locks 0, wards 149
+  B Cassi, Issac, Stellar, Varg, Tavi, Ren
+    tributes 3 (first r491, every 38.5 rounds), recalls 13, deaths 15 [191, 303, 402, 511, 137, 401, 182, 239, 304, 192, 476, 512], attacks camp/champion 315/53, casts 263, locks 1, wards 530
+f5431822-match-group-4a2267a6-01b6-471d-a287-f67ad6e2bb2e/04-a6ee442c-29a9-4d4b-81ea-a285b4f5ce32: rows, 350 rounds
+  A Stellar, Prism, Cassi, Issac, Varg
+    tributes 12 (first r46, every 25.7 rounds), recalls 18, deaths 17 [125, 337, 341, 65, 116, 297, 36, 59, 117, 237, 259, 315], attacks camp/champion 411/0, casts 222, locks 0, wards 83
+  B Cassi, Issac, Stellar, Varg, Tavi
+    tributes 6 (first r89, every 51.2 rounds), recalls 16, deaths 0 [], attacks camp/champion 432/0, casts 201, locks 1, wards 239
+f5431822-match-group-4a2267a6-01b6-471d-a287-f67ad6e2bb2e/05-6440534c-561c-4b0a-9b16-88ab1c61809f: interlock, 508 rounds
+  A Stellar, Ren, Cassi, Issac, Ryth
+    tributes 23 (first r51, every 20.4 rounds), recalls 22, deaths 20 [187, 116, 303, 390, 430, 455, 51, 112, 131, 135, 241, 338], attacks camp/champion 464/32, casts 254, locks 0, wards 125
+  B Stellar, Cassi, Issac, Tavi, Ren
+    tributes 7 (first r70, every 68.2 rounds), recalls 19, deaths 11 [239, 393, 469, 239, 375, 375, 431, 499, 116, 394, 470], attacks camp/champion 420/25, casts 246, locks 3, wards 251
