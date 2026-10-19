@@ -4,7 +4,7 @@ Scope: research only. No competition bot (`bots/mybot`, `bots/v*`) was changed a
 
 ## 0. Read this first: the baseline is v10, not v8
 
-The brief described v8 (DEVLOG rows 1–119) as the current bot. The unmerged branch `claude/adoring-fermat-jthwy1` (2026-10-18 evening) goes further. It froze v9–v11, picked **v10 = v8 + `FIGHT_SHIELD` + `WARDS` + `CAST_FIRST`** as the competition submission, and logged DEVLOG rows 120–134. v10 beat v8 55/68 (+13,016) and halved local deaths. All 30 of our platform games you uploaded are v10: they have our draft and place wards, which v7/v8 never did. This report therefore uses v10 as the baseline (copied into `bots/rs_v10` from that branch). It doesn't re-propose anything in rows 120–134 (`FIGHT_SHIELD`, `WARDS`, `CAST_FIRST`, `FIGHT_MEMO` 2/3, `RECALL_SAFE`, `CC_FIRST`, tribute 20/10, `FIGHT_GEM_EXTRA` 0.5, `FIGHT_ENGAGE` 1.1, `ALLY_RANGE` 5, `NEED_FRAC` 0.7, `SHOP_GOLD` 200 alone). **Merge that branch into `main`**: today `main` has no v9–v11, so anyone starting from `main` repeats the sprint.
+The brief described v8 (DEVLOG rows 1–119) as the current bot. The unmerged branch `claude/adoring-fermat-jthwy1` (2026-10-18 evening) goes further. It froze v9–v11, picked **v10 = v8 + `FIGHT_SHIELD` + `WARDS` + `CAST_FIRST`** as the competition submission, and logged DEVLOG rows 120–134. v10 beat v8 55/68 (+13,016) and halved local deaths. All 30 of our uploaded platform games are v10: they have our draft, and every game on a map with bushes places wards, which v7/v8 never did. Expanse has no bushes, so its 0 wards is expected. This report therefore uses v10 as the baseline (copied into `bots/rs_v10` from that branch). It doesn't re-propose anything in rows 120–134 (`FIGHT_SHIELD`, `WARDS`, `CAST_FIRST`, `FIGHT_MEMO` 2/3, `RECALL_SAFE`, `CC_FIRST`, tribute 20/10, `FIGHT_GEM_EXTRA` 0.5, `FIGHT_ENGAGE` 1.1, `ALLY_RANGE` 5, `NEED_FRAC` 0.7, `SHOP_GOLD` 200 alone). **Merge that branch into `main`**: today `main` has no v9–v11, so anyone starting from `main` repeats the sprint.
 
 ## 1. Summary
 
@@ -23,9 +23,10 @@ The brief described v8 (DEVLOG rows 1–119) as the current bot. The unmerged br
 | Shop at ≥150 gold at any health | **42/68, +6,046** (20/34, 22/34); seeds 3,4: 37/68, +2,126 (21/34, 16/34) → **79/136, +8,172** | 10,696 (contest 2,000 → 941) |
 | + poke fix (`rs_best`) | **43/68, +4,766** (21/34, 22/34); stampede 4/4, contest 0/4 | 10,629 (stampede 1,038 → 841) |
 | 4-pick Vendetta, Varg, Ryth, **Tavi** (4-pick maps, seeds 1–8) | **41/64, +9,198** (every seed set 5/8 or 6/8, all gem-positive) | — |
-| Pro-style proxy: pro draft + packs until r150 + poke fix + shopping (`rs_proxy`) | **45/68, +7,584** (22/34, 23/34) | **10,159** (stampede 624, contest 862) |
+| Pro-style proxy: pro draft + packs until r150 + poke fix + shopping (`rs_proxy`) | **45/68, +7,584** (22/34, 23/34); seeds 3,4: 40/68, +4,182 (22/34, 18/34) → **85/136, +11,766** | **10,159** (stampede 624, contest 862) |
 | Candidate: shopping + poke fix + Tavi 4-pick (`rs_cand`) | **41/68, +4,506** (19/34, 22/34); **vs the proxy 24/68, −6,008** | — |
 | Packs until r150 only | 33/68, +1,422 (neutral) | 11,880 (−4% excluding contest) |
+| Proxy without packs, vs the proxy | 33/68, −4,898 (packs help the pro draft a little) | — |
 | 4-pick with Cassi & Issac / with Tavi for Varg | 17/32, +356 / 14/32, −1,686 | — |
 
 ### Ranked recommendations
@@ -35,7 +36,7 @@ The brief described v8 (DEVLOG rows 1–119) as the current bot. The unmerged br
 | 1 | **Shop whenever carrying ≥150 gold, at any health** (`SHOP_HP` 1.01, `SHOP_GOLD` 150; two existing constants) | Same income as the pros, ~400 gold idle; contest 0 → win; 79/136, +8,172 vs v10 over seeds 1–4 | Medium–high: strong mechanism, borderline self-play confirmation (run seeds 5–8 as for `gt1`) |
 | 2 | **4-pick draft: Tavi instead of Marcella** | Platform 2/9 (v6 1/4); 41/64, +9,198 locally on the 4-pick maps, every seed set positive | **High** |
 | 3 | **Fix the poke ring, turn boss poking on, and add a capture step** (ring from live camps; aim area casts at the densest tile; when the boss is low or enemies come near, go in and hold its tiles) | 1/7 on boss maps; pros poke from exactly 4; stampede 4/4 vs v10. Without the capture step v10 steals the poked monoliths (contest 0/4), as an opponent did on the platform | High for the bug and stampede; contest needs the capture step |
-| 4 | **Move towards the pro style: pro draft (Cassi & Issac, Stellar, Ren, then Ryth, then Varg) + early packs, on top of #1 and #3; use it as the new sparring partner** | The strongest local configuration measured: the proxy beats v10 45/68 (+7,584) **and** the our-draft candidate 44/68 (+6,008). It matches the platform pros' draft and grouping. Weak spot: fights on small contested maps (fragment, pilgrimage), where it dies 2–3× as often | Medium: strongest local evidence, but local wins have failed to transfer before. Settle it with a platform A/B |
+| 4 | **Move towards the pro style: pro draft (Cassi & Issac, Stellar, Ren, then Ryth, then Varg) + early packs, on top of #1 and #3; use it as the new sparring partner** | The strongest local configuration measured: the proxy beats v10 85/136 (+11,766, seeds 1–4) **and** the our-draft candidate 44/68 (+6,008). It matches the platform pros' draft and grouping. Weak spot: fights on small contested maps (fragment, pilgrimage), where it dies 2–3× as often | Medium–high locally; platform transfer unproven, so settle it with a platform A/B. It bundles #1 and #3 and replaces #2's draft |
 | 5 | **Fights: stop chasing single enemies into their team; retreat towards allies** | 40–48% of local contact deaths follow a chase; in 2/3 of those, more enemies appeared | Medium (deaths are no longer the main gap) |
 | 6 | **Early pack farming** as an option to re-test against the proxy | Pros pack; neutral vs v10 | Low–medium |
 | 7 | Smaller items: react to unseen damage, cap respawn idling, fuel headroom on ambush, value Cassi & Issac as one kill | Section 5 | — |
@@ -47,7 +48,7 @@ The brief described v8 (DEVLOG rows 1–119) as the current bot. The unmerged br
 4. Add #3 with the capture step.
 5. Then run a **platform A/B**, one day each:
    - **v12** = v10 + #1 + #2 + #3 (our draft; locally 41/68 vs v10 without the capture step).
-   - **v13** = v12's fixes + #4's pro draft and early packs (the proxy: 45/68 vs v10, 44/68 vs the v12-like candidate).
+   - **v13** = v12's fixes + #4's pro draft and early packs (the proxy: 85/136 vs v10, 44/68 vs the v12-like candidate).
    Compare per map class with this report's scripts.
 6. Make the proxy the second gauntlet opponent before tuning further.
 
@@ -107,7 +108,7 @@ Measured locally on v10 vs idle (instrumented copy that logs carried gold), comp
 
 - 35% of alive champion-turns carry ≥150 unspent gold (19% carry ≥300). Tavi, who shops remotely, is the exception at 0%.
 - Cause: `maybe_recall()` shops only with ≥300 gold **and** below 75% health (`SHOP_HP`). A champion farming damage-free camps never meets that condition.
-- **Contest exposes it completely.** Its only gems are two monoliths, which the team can only kill once it has bought items. v10 vs idle scored **0 gems in 2,000 rounds**; Vendetta was carrying 1,738 gold at its base 800 HP at round 1,000. v8 scored 800 only because Ryth happened to get hurt, recalled and bought, which unlocked the monolith. v10's `CAST_FIRST` + `WARDS` changed that luck. On the platform, contest went 1/3, with our gems flat at 0 for 400+ rounds in every game.
+- **Contest exposes it completely.** Its only gems are two monoliths, which the team can only kill once it has bought items. v10 vs idle scored **0 gems in 2,000 rounds**; at round 1,000 Vendetta carried 1,038 unspent gold, Varg 982 and Ryth 1,120, all still at base health. v8 scored 800, and so did v10 with `CAST_FIRST` off. A debug trace of the latter shows why: Ryth happened to take monolith damage, recalled and went shopping (health 1,200 → 1,800), and that lowered the squad size needed for the monolith to 5. Turning off `WARDS` instead gave 600. So which runs reach the monolith is luck, decided by whether anyone happens to get hurt. On the platform, contest went 1/3, with our gems flat at 0 for 400+ rounds in every game.
 
 ### 2.4 Boss maps
 
@@ -240,7 +241,7 @@ with home/away modifiers. Each champion's fight snapshots were grouped into enga
 
 - **Probe `rs_proxy`:** v10 + pro draft by size (3: Cassi & Issac, Stellar, Ren; 4: + Ryth; 5: + Varg) + packs until round 150 + poke fix + shopping.
 - **Unopposed: the fastest variant tested.** 10,159 rounds summed (v10 11,856). Stampede 624 against the pros' contested ~500; contest 862; expanse 691; rushbait-v2 623.
-- **vs v10: 45/68, +7,584** (22/34, 23/34).
+- **vs v10: 45/68, +7,584** (22/34, 23/34); **seeds 3,4: 40/68, +4,182** (22/34, 18/34). **Seeds 1–4: 85/136 (62.5%), +11,766**, the strongest result against v10 this session.
   - 4/4 on ambush, eight, expanse, packs, rows, rushbait-v2 and stampede.
   - 0/4 on fragment and pilgrimage; 1/4 on contest, lanes and monolith.
   - `rs_best` (our draft, same fixes) did better on fragment, pilgrimage, monolith and interlock.
@@ -249,7 +250,8 @@ with home/away modifiers. Each champion's fight snapshots were grouped into enga
   1. As the second gauntlet opponent (section 6).
   2. As evidence for a **map-aware draft**: pro draft on rows, rushbait-v2, eight, packs and expanse; our draft on fragment, pilgrimage, monolith and interlock. Re-test with more seeds before trusting per-map splits from 4 games each.
 - **The conservative candidate `rs_cand`** (our draft + shopping + poke fix + Tavi 4-pick) vs the proxy: **24/68, −6,008**. The candidate wins only fragment and monolith (4/4 each) and loses eight, packs and rows 0/4. vs v10 it is 41/68 (+4,506), within noise of `rs_best`.
-- Confirmation (proxy vs v10, seeds 3,4) and a no-packs ablation (pro draft + fixes without packs, vs the proxy): PENDING.
+- **Ablation:** the same proxy without packs vs the proxy: 33/68, −4,898. Packs add a little for the pro draft, mostly in gems; with our draft they were neutral (4.7).
+- **Map split over seeds 1–4 vs v10:** rows 8/8, stampede 8/8, rushbait-v2 7/8, expanse 7/8, ambush 7/8, corners 7/8; lanes 1/8, monolith 1/8, contest 1/8, fragment 2/8, pilgrimage 2/8.
 
 ### 4.6 Fights: stop chasing into the enemy team (rank 5)
 
@@ -285,7 +287,7 @@ with home/away modifiers. Each champion's fight snapshots were grouped into enga
 
 **Proposal:**
 1. **Keep the 68-game gauntlet vs the frozen baseline** as a no-regression check. Positive gems and no worse than ~32/68 counts as a pass.
-2. **Add a pro-style opponent built from our own code:** `rs_proxy` = v10 + pro draft by size (Cassi & Issac, Stellar, Ren, then Ryth, then Varg) + packs until round 150 + fixed boss poke + prompt shopping. It already beats v10 45/68 (+7,584), so it is a stronger sparring partner than v10 or `meta`. Treat a variant's score against it as the main signal. As each pro behaviour is understood better, add it to the proxy.
+2. **Add a pro-style opponent built from our own code:** `rs_proxy` = v10 + pro draft by size (Cassi & Issac, Stellar, Ren, then Ryth, then Varg) + packs until round 150 + fixed boss poke + prompt shopping. It already beats v10 85/136 (+11,766), so it is a stronger sparring partner than v10 or `meta`. Treat a variant's score against it as the main signal. As each pro behaviour is understood better, add it to the proxy.
 3. **Use the platform as the final judge per map class** (boss maps, 4-pick maps), and keep this report's scripts as the standard analysis. `ourgames.py` gives results and gem curves, `teamstats.py` / `damage.py` the economy, `boss.py` boss handling, `cofarm2.py` grouping, `deaths2.py` deaths.
 4. Keep each submission for a full day of platform games, so the 25–30 games are comparable.
 
@@ -297,7 +299,7 @@ with home/away modifiers. Each champion's fight snapshots were grouped into enga
 | `MONOLITH_POKE`: neutral, "clashes with `CAMP_TILE_FIX`" (rows 89–92) | Freeze bug in the cached poke ring; platform 1/7 on boss maps; pros poke at distance 4 | Fixed in the probe: stampede 1,038 → 841 unopposed (with shopping); with shopping vs v10 **43/68**; needs a capture step on contest |
 | "Spread out; pairs and squads lose" (rows 22–23) | Pros farm in packs (76% of early hits by 3+). The old test forced `MIN_SQUAD` through the wait-for-squad logic, on the old engine and maps, against v4 | Early packs neutral vs v10 (33/68), −4% unopposed. Not adopted; test against the proxy |
 | "Marcella 4th" (rows 52–53, old engine, self-play) | 4-pick maps 2/9 (v10) and 1/4 (v6) on the platform; the only draft without Tavi | **Tavi 4th: 41/64, +9,198 vs v10** on the 4-pick maps (seeds 1–8) |
-| "The pro draft and Cassi & Issac lose with our logic" (rows 87, 103, 115) | Those tests had no shopping or poke fix, and v6/v7 fight code | **Pro-style proxy 45/68, +7,584 vs v10** (pro draft + packs + poke fix + shopping). Cassi & Issac alone as the 4th pick: 17/32 |
+| "The pro draft and Cassi & Issac lose with our logic" (rows 87, 103, 115) | Those tests had no shopping or poke fix, and v6/v7 fight code | **Pro-style proxy 85/136, +11,766 vs v10** (pro draft + packs + poke fix + shopping, seeds 1–4). Cassi & Issac alone as the 4th pick: 17/32 |
 
 ## Appendix: how to reproduce
 
