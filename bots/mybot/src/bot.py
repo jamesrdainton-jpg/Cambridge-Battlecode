@@ -181,6 +181,9 @@ WAIT_FIX = False
 # damaging camps (they decide when the group can be tanked), and between casts a ranged poker basic-attacks camps
 # it can hit from outside that reach, standing where it can.
 POKE_SMART = False
+# Share of the estimated poke damage counted in the poke's cost (positioning, cooldown gaps and camps dying make real
+# pokes slower than focus x modifiers; 1.0 = the estimate as is).
+POKE_EFF = 1.0
 # When the basic attack kills a camp, spend the attack reset on another live camp in range at once: Vendetta's kill
 # passive refreshes her cooldowns, which is wasted if the reset was still unused.
 RESET_RETARGET = False
@@ -1333,7 +1336,7 @@ class Bot:
             lead = self.pack_lead()
             if lead is not None and lead is not exclude:
                 for score, g, need, via in cache[1]:
-                    if g is lead and score > 0:
+                    if g is lead and score > 0 and (need != 0 or not POKE_SMART):  # pack followers don't poke
                         self.target_need = need
                         self.target_via = via
                         return g
@@ -1458,6 +1461,7 @@ class Bot:
                 pd = poke_dps
                 if AOE_POKE and aoe_dps:
                     pd += aoe_dps * (g.aoe_coverage() - 1.0)
+                pd *= POKE_EFF
                 cost = (others + 1) * (d + wait) + hp_left / pd + 5 + 0.5 * g.near_altar + g.gems / 10
             else:
                 k = others + 1
