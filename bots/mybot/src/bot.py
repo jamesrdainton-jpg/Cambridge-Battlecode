@@ -168,6 +168,10 @@ FAST_FUEL = 1200000
 # Pack farming: cost the walk for every champion (they all follow the lead). The lead costed it for `need`
 # champions only, so on pilgrimage the whole team of six walked 63 tiles to the enemy side's group as one unit.
 PACK_WALK_ALL = False
+# Packs sized by need: before PACK_UNTIL a champion joins the lead's group only while fewer allies than the group needs
+# already claim it; otherwise it scores targets as usual, claims included. Six champions on one wolf was overkill,
+# and the whole team walking as one unit farmed one group at a time.
+PACK_NEED = False
 # Stun camps: Cassi's stun (no damage) and the damaging stuns (Tavi, Ren, Prism) go on the strongest awake camp that
 # can hit one of us next round. A stunned camp skips its next attack (probe: a wolf pair hit Issac for 20 instead of
 # 40 on the round after each stun); the bot never cast Cassi's stun at camps. A camp whose stun buff still has
@@ -1358,6 +1362,10 @@ class Bot:
             if lead is not None and lead is not exclude:
                 for score, g, need, via in cache[1]:
                     if g is lead and score > 0 and (need != 0 or not POKE_SMART):  # pack followers don't poke
+                        if PACK_NEED:
+                            slots = self.claims().get(g.idx)
+                            if slots and len(slots) >= need:
+                                break  # the lead's group has its squad: choose our own
                         self.target_need = need
                         self.target_via = via
                         return g
@@ -1405,7 +1413,7 @@ class Bot:
             self.mark("sg_export")
         claims = self.claims()
         pack_k = 0
-        if self.now < self.pack_until:
+        if self.now < self.pack_until and not PACK_NEED:
             claims = {}
             if PACK_WALK_ALL:
                 pack_k = self.n_allies
