@@ -7,6 +7,7 @@
 #   zM  = zL without WAIT_STRICT (v12's squad wait)
 #   zN  = zL + FAST_WALK FAST_SCORE
 #   zO  = zN + HP_AWARE
+# First zL vs v12 head-to-head (seeds 1,2), then the economy of all four.
 # Reproduce: git checkout d30816a, then run this.
 cd "$(dirname "$0")/.."
 PY=.venv/bin/python
@@ -19,5 +20,6 @@ mk zL $L0 WAIT_STRICT
 mk zM $L0
 mk zN $L0 WAIT_STRICT FAST_WALK FAST_SCORE
 mk zO $L0 WAIT_STRICT FAST_WALK FAST_SCORE HP_AWARE
+$L h2h zL v12 --seeds 1,2 --jobs 6
 $L econ zL zM zN zO --seeds 1,2 --jobs 6
 echo QUEUE18 DONE

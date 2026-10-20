@@ -1,0 +1,20 @@
+map                  zG         zH         zI         zJ
+ambush              746        756        800        723
+collision           600        600        600        600
+contest            1072        891        988       1030
+corners             486        550        492        505
+eight               454        478        451        463
+elkring             497        497        458        508
+expanse             708        708        708        708
+fragment            606        604        604        604
+interlock           602        577        584        597
+lanes               564        550        528        524
+monolith            464        575        598        578
+packs               467        467        467        467
+pilgrimage          710        579        664        666
+rows                469        502        466        466
+rushbait-v2         654        654        632        624
+stampede            934        565        534        584
+swirl               416        478        480        467
+SUM               10450      10029      10054      10112
+STOPPED after the economy run (2026-10-20 ~22:00): zH/zI/zJ economy 10,029-10,112 vs queue 15's zB 9,610, so zH's head-to-head was skipped for queue 18's zL (zB rebuilt + AWAKE_NEAR).
