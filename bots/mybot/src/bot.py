@@ -205,6 +205,10 @@ POKE_SMART = False
 # Share of the estimated poke damage counted in the poke's cost (positioning, cooldown gaps and camps dying make real
 # pokes slower than focus x modifiers; 1.0 = the estimate as is).
 POKE_EFF = 1.0
+# Poke (MONOLITH_POKE) only on maps where at least this share of the gems sits in groups dealing 200+ damage a round,
+# i.e. where there is little else to farm (stampede and contest: 100%; rows 53%, monolith 63%, pilgrimage 31%).
+# Head to head vs v12, sieges everywhere won stampede 4/4 but lost pilgrimage 0/4, rows and swirl 1/4 (0 = anywhere).
+SIEGE_SHARE = 0.0
 # When the basic attack kills a camp, spend the attack reset on another live camp in range at once: Vendetta's kill
 # passive refreshes her cooldowns, which is wasted if the reset was still unused.
 RESET_RETARGET = False
@@ -359,6 +363,14 @@ class Bot:
         self.spawn_altar = spawn_altar if spawn_altar is not None else W.UNREACHED
         self.target_via = False
         self.walk_fields_done = False
+        self.siege_map = True
+        if SIEGE_SHARE:
+            total = strong = 0
+            for g in self.world.groups:
+                total += g.gems
+                if g.dps >= 200:
+                    strong += g.gems
+            self.siege_map = total > 0 and strong >= SIEGE_SHARE * total
         if DEBUG:
             prev = None
             parts = []
@@ -1459,7 +1471,7 @@ class Bot:
         # Extra damage per neighbouring camp from splash attacks and area abilities.
         cluster_dps = 0.7 * (self.strength_now if self.splash else 0.0) + 0.7 * self.focus_now * self.aoe_mod
         squad = MIN_SQUAD if MIN_SQUAD < n_allies else n_allies
-        poke_dps = self.focus_now * self.poke_mod if MONOLITH_POKE else 0.0
+        poke_dps = self.focus_now * self.poke_mod if MONOLITH_POKE and self.siege_map else 0.0
         aoe_dps = self.focus_now * self.aoe_mod
         current = self.target
         my_slot = self.slot
