@@ -1,10 +1,22 @@
 # Handover — Cambridge Battlecode 2026 bot
 
-State as of 2026-10-19 (v12 built from the research report; DEVLOG rows 135–142). Before that: the 2026-10-18 competition sprint (rows 120–134) and the platform-data session of 2026-10-16 (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md); the evidence behind v12 is in [research/2026-10-19/REPORT.md](research/2026-10-19/REPORT.md).
+State as of 2026-10-20 (v13; DEVLOG rows 143–155, strategy and evidence in [research/2026-10-20/STRATEGY.md](research/2026-10-20/STRATEGY.md)). Before that: v12 from the 2026-10-19 research report (rows 135–142, [research/2026-10-19/REPORT.md](research/2026-10-19/REPORT.md)), the 2026-10-18 competition sprint (rows 120–134) and the platform-data session of 2026-10-16 (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md).
 
 **Team rule:** more than one person works on this repo, each on their own computer, so every result must be reproducible on a different computer from a git commit. Commit code before testing it, record the commit and the exact command, keep queue scripts and `matches\gauntlet.csv` in git, and use the pinned cambc with the committed maps. Details are in the "Team rule" section near the top of DEVLOG.md.
 
-## The bot to submit (2026-10-19): v12
+## The bot to submit (2026-10-20): v13
+
+- **Upload ZIP: `submissions/cambridge-bot-latest.zip`** = **v13**: content hash `b2b4b165e05b`, built from commit `7a674cb` with DEBUG off, verified 6/6 vs the starter on cambc 2.2.5 with no error lines. Committed, so it can be downloaded from GitHub; same file as `cambridge-bot-2026-10-20.zip`. Rebuild anywhere with `tools/release.py --src v13`.
+- **v13 = v12 + three changes** (flags in `bots/mybot`; v13 = mybot with DEBUG off):
+  1. **`MELEE_REACH`**: melee champions rank camps they can't stand next to last. Varg's splash rule chose monolith's Monolith, boxed in by its 8 gem clusters, and stood still for the rest of the game.
+  2. **`WAIT_FIX`**: an expired 40-turn squad wait stays expired until the target changes. It used to reset on the turn it expired, so a champion whose attack didn't wake the group waited another 40 turns, again and again (97 of 100 turns "waiting" in one trace).
+  3. **Sieges on stampede-like maps only**: `MONOLITH_POKE` + `AOE_POKE` (the poke cost counts the camps an area cast hits) + `POKE_SMART` (reach from damaging camps only, single casts on damaging camps, basic attacks between casts), enabled only when 90%+ of the map's gems sit in 200+ damage groups that are clustered for area casts (`SIEGE_SHARE` 0.9, `SIEGE_COV` 2.0). Of the 17 maps that is stampede, whose only gems are one 12-camp group v12 never touched (1,035 rounds to 1,000 unopposed).
+- **Local results** (seeded, every map from both sides): **v13 vs v12: 37/68, +3,376** (seeds 1,2; each seed positive). Ten maps play v12's identical games; stampede 4/4 (+2,880; v12 scores 0); ambush 3/4; no map worse on balance. It can't reach the 40/68 bar by construction (it changes play on few maps; DEVLOG 95). Extra seeds on its maps: DEVLOG 155.
+- **What this session tried and rejected** (all flags off, details in DEVLOG 143–153): a full economy package 8.5% faster unopposed that **lost 28/68** head to head; sieges on every map (stampede always won, contest always lost); `PAIR_KILL`; `AWAKE_RECENT` (a probe proved the rule wrong); packs and squad-wait variants; `HP_AWARE`. Fuel flags `FAST_WALK`/`FAST_SCORE` are off pending a test on their own.
+- **Mechanics established by probe bots** (worth knowing for any future work): stuns stop camps attacking; a camp's stun buff shows `duration` 2 then 1; camps keep attacking a champion that stays in reach after one hit, and sleep only after 2 rounds with nobody near.
+- **Platform**: v12's games were not analysed. This cloud session's network policy blocks `2026a.battlecode.co.uk`; allow it in the environment's settings (Network access, Allowed domains) or download replays by hand. **After a day of v13 games**, compare with v12's day per map class (stampede and monolith first) using `research/2026-10-19/tools/ourgames.py`, `teamstats.py`, `deaths2.py`.
+
+## Previous submission (2026-10-19): v12
 
 - **Upload ZIP: `submissions/cambridge-bot-latest.zip`** = **v12**: content hash `7c7fa17be827`, built from commit `826b5cc` with DEBUG off, verified 6/6 vs the starter on cambc 2.2.5 with no error lines. It is committed, so it can be downloaded from GitHub; it is the same file as `cambridge-bot-2026-10-19.zip`. Rebuild anywhere with `tools/release.py --src v12`
 - **v12 = v10 + three changes** (all in `bots/mybot` as flags; v12 = mybot with DEBUG off):
@@ -38,7 +50,7 @@ State as of 2026-10-19 (v12 built from the research report; DEVLOG rows 135–14
   - On seed 3 it did worse than v10 against the two other opponents: vs v8 19/34 against v10's 24/34. It beat `meta` 58/68 on seeds 1,2.
   - It is frozen in `bots/v11` for later testing.
 - **When the user asks for the latest bot:** run `.venv\Scripts\python.exe tools\release.py --verify` (leave out `--verify` while a batch runs) and give the ZIP's full path. The steps are in "Latest bot" at the top of DEVLOG.md.
-- **Working copy (now):** `bots/mybot/src` (DEBUG on) = v12 plus switched-off flags (`MONOLITH_POKE`, `POKE_AVOID_ENEMY`, ...). **Frozen versions:** `bots/v1`–`v12`; v12 is the baseline for new tests.
+- **Working copy (now):** `bots/mybot/src` (DEBUG on) = v13 plus switched-off flags (see DEVLOG 143–153 for each). **Frozen versions:** `bots/v1`–`v13`; v13 is the baseline for new tests. Sparring partner with pro-style poking: `tools/variant.py proxy --src v12 --set "bot.py:MONOLITH_POKE = False=>MONOLITH_POKE = True" --set "draft.py:PRO_DRAFT = (4, 5)=>PRO_DRAFT = (3, 4, 5)"`.
 - **This machine runs one batch at a time.** Two `run-batch` processes at 18 jobs each run a 15 GB machine out of memory, and the killed games count as losses (DEVLOG 124). Always check `batch.log` for `FAILED` lines.
 
 ### Competition sprint results (DEVLOG rows 120–132)
