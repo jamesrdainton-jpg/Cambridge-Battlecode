@@ -22,7 +22,7 @@ State as of 2026-10-19 (v12 built from the research report; DEVLOG rows 135–14
 
 - **Project folder:** on James's PC, `C:\Users\james\GitHub\Cambridge-Battlecode`. Teammates work in their own clones.
 - **Git:** remote `origin` = `https://github.com/jamesrdainton-jpg/Cambridge-Battlecode.git`. Several people commit and push, so pull before starting. Experiment bots, caches, the venv, replays and `submissions/` stay out of git; results, queue scripts and logs in `matches/` are tracked. Keep the repo private during the competition.
-- **Engine: cambc 2.2.2** (upgraded 2026-10-16; the platform runs a 2.2.x engine). **Teammates must upgrade:** `pip install -r requirements-dev.txt`, then run `tools\repro_check.py`. It must print `REPRODUCED` (34 reference games) before your numbers are comparable.
+- **Engine: cambc 2.2.5** (pinned in `requirements-dev.txt`; the platform runs a 2.2.x engine). **Teammates must upgrade:** `pip install -r requirements-dev.txt`, then run `tools\repro_check.py`. It must print `REPRODUCED` (34 reference games) before your numbers are comparable.
 - **Maps:** `maps\` is the platform's current **17-map pool**: 8 maps are new (ambush, contest, eight, fragment, pilgrimage, rushbait-v2, stampede, swirl) and 6 were updated. Every result before DEVLOG row 82 was on the old engine and the old 9 maps.
 - **Avast:** exclude `battlecode.co.uk` in Avast's Web Shield, or `cambc maps pull` / `login` / `submit` fail.
 
@@ -103,7 +103,11 @@ The first two are real bug fixes on single maps. A 68-game gauntlet can't see th
 .venv\Scripts\python.exe tools\repro_check.py                          # does this PC reproduce the team's games?
 .venv\Scripts\python.exe tools\platform_report.py                      # our platform downloads: result, gems, drafts, fuel
 .venv\Scripts\python.exe tools\replay_decode.py FILE... [--buys]       # any replay: per-team tributes, deaths, buys, wards
+.venv\Scripts\python.exe tools\lab.py econ BOT [BOT...] --seeds 1,2 --jobs 6   # seeded unopposed rounds to 1,000, per map (~15 min per bot)
+.venv\Scripts\python.exe tools\lab.py h2h A B --seeds 1,2 --jobs 6             # seeded head to head, per map, both sides (68 games)
 ```
+
+On a 4-core machine use `--jobs 6` (8+ oversubscribes: each game runs many processes). Noise, measured on v12's seeds 1-3: the 17-map economy sum varies ~95 rounds per seed (~70 for a 2-seed mean); one map 5-55 rounds; even a fuel-only change moved monolith 73 rounds. **Economy is a gate, not a verdict**: queue 18's zL was 8.5% faster unopposed and lost 28/68 head to head.
 
 On Mac/Linux use `.venv/bin/python` and `.venv/bin/cambc`. **Testing standard on 17 maps:** seeds 1,2 = 68 games; adopt at 40/68 with positive gems; confirm borderline results with seeds 3,4 then 5–8. Don't edit `bots\` while a queue runs (the commit column in `gauntlet.csv` turns `+dirty`), and push without `git pull --rebase` while a queue is writing `gauntlet.csv`. Platform downloads go in `replays\platform\` (not in git).
 

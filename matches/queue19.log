@@ -1,0 +1,19 @@
+swirl         2/4    -1008
+packs         0/4     -900
+pilgrimage    1/4    -1492
+monolith      3/4     -436
+rows          1/4     -528
+elkring       2/4     -324
+fragment      1/4    -1236
+per seed: s1 7/14 (-2386)  s2 3/14 (-3538)
+zP5 vs v12: 10/28, gems -5924
+swirl         2/4       +0
+packs         2/4       +0
+pilgrimage    2/4     +280
+monolith      2/4       +0
+rows          2/4       +0
+elkring       2/4       +0
+fragment      2/4       +0
+per seed: s1 7/14 (+136)  s2 7/14 (+144)
+zP1 vs v12: 14/28, gems +280
+STOPPED after zP1 (2026-10-20): zP5 10/28 and zP1 14/28 answered the questions the candidate needed (PAIR_KILL hurts; the pure fixes are safe); zP2-zP4 skipped for queue 20.
