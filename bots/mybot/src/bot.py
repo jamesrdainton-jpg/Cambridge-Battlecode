@@ -1426,7 +1426,18 @@ class Bot:
         n_allies = self.n_allies
         gold_w = GOLD_WEIGHT * max(0.15, 1.0 - now / GOLD_TAPER)
         need_k = 1.0 / (NEED_FRAC * self.max_hp * dps)
-        need_hurt = 1.0 / (NEED_FRAC * max(1.0, self.hp) * dps) if HP_AWARE else need_k
+        need_hurt = need_k
+        if HP_AWARE:
+            hp = self.hp
+            if self.kind in PAIR:
+                # Cassi and Issac die together: the weaker one's health share is ours too.
+                for a in self.allies:
+                    try:
+                        if a.champion_name() in PAIR:
+                            hp = min(hp, self.max_hp * a.health() / max(1.0, a.max_health()))
+                    except Error:
+                        pass
+            need_hurt = 1.0 / (NEED_FRAC * max(1.0, hp) * dps)
         if JUNGLE_AWARE and self.jungle:
             need_k *= 0.7  # our camp damage taken is 30% lower
         # Extra damage per neighbouring camp from splash attacks and area abilities.
