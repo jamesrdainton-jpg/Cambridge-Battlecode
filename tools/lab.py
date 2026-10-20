@@ -69,7 +69,7 @@ def run(name: str, games: list[tuple[str, str, str]], jobs: int) -> dict:
         lines.append(f"../../../bots/{a} ../../../bots/{b} ../../../maps/{m}.map26a {rep}\n")
     manifest = base / "manifest.txt"
     manifest.write_text("".join(lines))
-    proc = subprocess.run([CAMBC, "run-batch", str(manifest), "--jobs", str(jobs), "--color", "never"],
+    proc = subprocess.run([CAMBC, "run-batch", str(manifest), "--jobs", str(jobs), "--color", "never"], check=False,
                           cwd=ROOT, capture_output=True, text=True)
     out = proc.stdout + proc.stderr
     (base / "batch.log").write_text(out)
@@ -145,7 +145,7 @@ def h2h(args) -> None:
     for s, a, b in pairs:
         for m in maps:
             for ta, tb in ((a, b), (b, a)):
-                st, rnd, ga, gb = res[(ta, tb, m)]
+                st, _rnd, ga, gb = res[(ta, tb, m)]
                 mine, theirs = (ga, gb) if ta == a else (gb, ga)
                 win = ("TEAM A WIN" in st and ta == a) or ("TEAM B WIN" in st and tb == a)
                 for acc in (per_map[m], per_seed[s]):
