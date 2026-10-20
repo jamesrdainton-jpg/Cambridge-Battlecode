@@ -180,6 +180,9 @@ PACK_NEED = False
 # 40 on the round after each stun); the bot never cast Cassi's stun at camps. A camp whose stun buff still has
 # duration 2 will skip its next attack already, so it isn't stunned again (duration 1: that skip has happened).
 STUN_CAMPS = False
+# Also aim the damaging stuns (Tavi, Ren, Prism) at that camp instead of the one being focused (off: their damage
+# helps finish the lowest camp, and a dead camp stops attacking for good while a stun buys one round).
+STUN_DAMAGING = False
 # Track which camps of a partly seen group are dead (spawn tile in view, camp gone) and size squads on the live
 # camps' damage: a group whose elks are dead no longer needs the squad its full strength did.
 LIVE_DPS = False
@@ -1803,6 +1806,8 @@ class Bot:
             k = self.ab_kind[i]
             if k == K_CC:
                 info = self.ab_info[i]
+                if info.modifier > 0 and not STUN_DAMAGING:
+                    continue
                 if self.abilities[i].cooldown() == 0 and (self.can_move or not info.exclusive_with_movement):
                     slot = i
             elif k in (K_DAMAGE, K_AOE) and self.abilities[i].cooldown() == 0:
