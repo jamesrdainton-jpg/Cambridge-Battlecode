@@ -3,8 +3,8 @@
 # (queue 16: zG packs 474 and fragment 612 vs v12 427 and 589)? Each zK_<FLAG> = queue 16's zG without that one flag;
 # STUN_CAMPS now covers only damage-free stuns (none in the 3-pick draft), and zKdmg adds STUN_DAMAGING (the old
 # STUN_CAMPS behaviour for Tavi's damaging stun).
-# Built from bots/mybot at commit 585a26e with tools/variant.py (DEBUG off); tools/lab.py econ, seeds 1-3, packs+fragment.
-# Reproduce: git checkout 585a26e, then run this.
+# Built from bots/mybot at commit b67c406 with tools/variant.py (DEBUG off); tools/lab.py econ, seeds 1-3, packs+fragment.
+# Reproduce: git checkout b67c406, then run this.
 cd "$(dirname "$0")/.."
 PY=.venv/bin/python
 V="$PY tools/variant.py"
