@@ -94,7 +94,7 @@ AVOID_ROUNDS = 40
 IGNORE_SPAWN_CAMPERS = True
 # Poke camp groups too strong to fight (monoliths: 20,000 HP, 200 damage) from range 4 with damaging abilities,
 # outside their range-3 reach. Only champions with a damaging ability do it, when it scores best.
-MONOLITH_POKE = False
+MONOLITH_POKE = True
 # Poke fix: rebuild the poke ring each turn from the live camps in view (the cached ring kept pokers on tiles next to
 # dead camps forever: on stampede Tavi stood still for hundreds of turns) and aim area casts at the in-range tile
 # covering the most live camps.
@@ -188,31 +188,31 @@ STUN_DAMAGING = False
 LIVE_DPS = False
 # Poke cost counts area casts by the camps they hit (Group.aoe_cov): the single-target estimate rated Stellar's
 # poke on stampede's 3x4 block of elks and gem clusters at a third of its real rate.
-AOE_POKE = False
+AOE_POKE = True
 # Cassi & Issac die together (94% of strong teams draft them): in the fight ratio the pair counts with the weaker
 # one's health, and a target in the pair is worth both bodies and both bags. Keep off: it inflates the ratio (the
 # weaker one still has to be reached), and queue 19 dropping it from zL lifted 5/28 to 10/28 on seven maps vs v12.
 PAIR_KILL = False
 # Melee champions only target camps they can stand next to: Varg's splash choice (the most crowded camp) picked
 # monolith's Monolith, boxed in by its 8 gem clusters, and walked nowhere for the rest of the game.
-MELEE_REACH = False
+MELEE_REACH = True
 # Once the squad wait has run out, it stays out until the target changes: the old code reset the count on the
 # turn it expired, so a champion whose attack didn't wake the group waited another 40 turns, again and again.
-WAIT_FIX = False
+WAIT_FIX = True
 # Poking: only damaging camps' reach counts (gem and gold clusters never attack), single-target casts go to the
 # damaging camps (they decide when the group can be tanked), and between casts a ranged poker basic-attacks camps
 # it can hit from outside that reach, standing where it can.
-POKE_SMART = False
+POKE_SMART = True
 # Share of the estimated poke damage counted in the poke's cost (positioning, cooldown gaps and camps dying make real
 # pokes slower than focus x modifiers; 1.0 = the estimate as is).
 POKE_EFF = 1.0
 # Poke (MONOLITH_POKE) only on maps where at least this share of the gems sits in groups dealing 200+ damage a round,
 # i.e. where there is little else to farm (stampede and contest: 100%; rows 53%, monolith 63%, pilgrimage 31%).
 # Head to head vs v12, sieges everywhere won stampede 4/4 but lost pilgrimage 0/4, rows and swirl 1/4 (0 = anywhere).
-SIEGE_SHARE = 0.0
+SIEGE_SHARE = 0.9
 # With SIEGE_SHARE, also require the strong groups' area-cast coverage (Group.aoe_coverage, gem-weighted) to reach this:
 # stampede's 3x4 block ~5.4, contest's lone monoliths 1.0 (0 = no requirement).
-SIEGE_COV = 0.0
+SIEGE_COV = 2.0
 # When the basic attack kills a camp, spend the attack reset on another live camp in range at once: Vendetta's kill
 # passive refreshes her cooldowns, which is wasted if the reset was still unused.
 RESET_RETARGET = False
