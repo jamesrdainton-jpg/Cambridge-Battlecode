@@ -210,6 +210,9 @@ POKE_EFF = 1.0
 # i.e. where there is little else to farm (stampede and contest: 100%; rows 53%, monolith 63%, pilgrimage 31%).
 # Head to head vs v12, sieges everywhere won stampede 4/4 but lost pilgrimage 0/4, rows and swirl 1/4 (0 = anywhere).
 SIEGE_SHARE = 0.0
+# With SIEGE_SHARE, also require the strong groups' area-cast coverage (Group.aoe_coverage, gem-weighted) to reach this:
+# stampede's 3x4 block ~5.4, contest's lone monoliths 1.0 (0 = no requirement).
+SIEGE_COV = 0.0
 # When the basic attack kills a camp, spend the attack reset on another live camp in range at once: Vendetta's kill
 # passive refreshes her cooldowns, which is wasted if the reset was still unused.
 RESET_RETARGET = False
@@ -372,6 +375,12 @@ class Bot:
                 if g.dps >= 200:
                     strong += g.gems
             self.siege_map = total > 0 and strong >= SIEGE_SHARE * total
+            if self.siege_map and SIEGE_COV:
+                cov = 0.0
+                for g in self.world.groups:
+                    if g.dps >= 200:
+                        cov += g.gems * g.aoe_coverage()
+                self.siege_map = cov >= SIEGE_COV * strong
         if DEBUG:
             prev = None
             parts = []
