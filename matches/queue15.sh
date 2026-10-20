@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Queue 15 (2026-10-20, cambc 2.2.5, 17 maps, 4-core Linux cloud machine): flag packages on top of v12, built from
-# bots/mybot at commit b633a08 (= v12 + new flags, all off) with tools/variant.py (DEBUG off). Economy and
+# bots/mybot at commit 2f4399b (= v12 + new flags, all off) with tools/variant.py (DEBUG off). Economy and
 # head-to-heads use tools/lab.py (seeded copies of both bots, every map from both sides; replays in matches/lab/).
 #   zb2  all new flags off (should play as v12 apart from fuel-timing noise)
 #   zA   bug fixes and small mechanics: MELEE_REACH, WAIT_FIX, AWAKE_RECENT, RESET_RETARGET, PACK_WALK_ALL, LIVE_DPS,
 #        STUN_CAMPS, PAIR_KILL
 #   zB   zA + boss/strong-group sieges: MONOLITH_POKE, AOE_POKE, POKE_SMART
-# Reproduce: git checkout b633a08, then run this.
+# Reproduce: git checkout 2f4399b, then run this.
 cd "$(dirname "$0")/.."
 PY=.venv/bin/python
 V="$PY tools/variant.py"
