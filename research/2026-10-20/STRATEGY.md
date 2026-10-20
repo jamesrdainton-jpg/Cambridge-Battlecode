@@ -54,11 +54,12 @@ Issac valuation, sieges everywhere) reached 1,000 gems **8.5% faster unopposed**
   are easy kills; a strict squad wait leaves champions idle beside camps. None of that costs anything unopposed.
 - **Sieges are robbed when there is anything else to do.** Every contest test lost (0/4, 1/4, 0/4): the opponent
   walks in and finishes a poked monolith. Sieges only win where nothing else gives gems and the boss group is clustered
-  for area casts (stampede 4/4 every time, v12 scored 0 there).
+  for area casts (stampede 4/4 on seeds 1,2 and 8/8 on seeds 3–6; v12 scores 0 there).
 - **Fight-ratio tweaks are fragile.** Counting Cassi & Issac at the weaker one's health sounded right and lost games
   (removing it: 5/28 → 10/28 on seven maps).
 - **Fixes that only change what was clearly broken are safe**: `MELEE_REACH` + `WAIT_FIX` played the identical games to
-  v12 on six of seven maps and won both pilgrimage games.
+  v12 on six of seven maps and won both pilgrimage games on seeds 1,2; on seeds 3–6 pilgrimage and monolith
+  were 4/8 each (mostly identical games), so they are correctness fixes, not a measured gain (DEVLOG 155).
 
 So the gate for any change is head to head, and the economy benchmark only says whether a change is worth a
 head-to-head. Changes that move champions around the map need the most suspicion.
