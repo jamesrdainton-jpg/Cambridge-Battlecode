@@ -1,0 +1,20 @@
+ambush        3/4     -128
+collision     2/4      -16
+contest       1/4    -1600
+corners       3/4     +410
+eight         2/4     +364
+elkring       0/4    -1224
+expanse       2/4     +338
+fragment      1/4    -1236
+interlock     3/4     +520
+lanes         1/4     +108
+monolith      2/4     -458
+packs         0/4     -900
+pilgrimage    0/4    -1582
+rows          1/4     -528
+rushbait-v2   2/4     -580
+stampede      4/4    +2880
+swirl         1/4    -1544
+per seed: s1 15/34 (-2216)  s2 13/34 (-2960)
+zL vs v12: 28/68, gems -5176
+STOPPED after the head-to-head (2026-10-20): zL lost to v12 28/68 (-5,176), so the economy comparison was replaced by queue 19's layer ablation.
