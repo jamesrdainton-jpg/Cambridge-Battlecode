@@ -165,6 +165,9 @@ FAST_WALK = False
 # least FAST_FUEL fuel is left) instead of a fresh field from our tile every re-target (~0.56M on ambush).
 FAST_SCORE = False
 FAST_FUEL = 1200000
+# Size squads for a new target on our current health, not our maximum: Cassi (400/700) and Issac (300/900) joined an
+# elk pair and died together. The group we are already fighting keeps the maximum, so nobody abandons a half-dead group.
+HP_AWARE = False
 # Pack farming: cost the walk for every champion (they all follow the lead). The lead costed it for `need`
 # champions only, so on pilgrimage the whole team of six walked 63 tiles to the enemy side's group as one unit.
 PACK_WALK_ALL = False
@@ -202,9 +205,10 @@ POKE_EFF = 1.0
 # When the basic attack kills a camp, spend the attack reset on another live camp in range at once: Vendetta's kill
 # passive refreshes her cooldowns, which is wasted if the reset was still unused.
 RESET_RETARGET = False
-# A group counts as awake (attacking, and its reach dangerous) only if one of its camps lost health in the last 2
-# rounds, as the rules say, not whenever a camp is below full health: camps never heal, so one poke from a champion
-# waiting for its squad made the group "awake" for good, which ended the wait and kept its reach marked dangerous.
+# A group counts as awake only if one of its camps lost health in the last 2 rounds (not whenever one is below full
+# health). WRONG, keep off: a probe showed camps keep attacking a champion that stays in range after a single hit
+# (a wolf pair hit Ryth for 40 a round for 12+ rounds after one attack), so a damaged camp stays dangerous while anyone
+# is near it; with this on, Stellar tributed in an elk's reach, couldn't "escape" an unlisted zone and died.
 AWAKE_RECENT = False
 # With AWAKE_RECENT, also hold the squad wait until someone of ours is in the group's reach. Off, the wait ends once a
 # camp is below full health, as before: a waiting caster's poke ends it, and casters then fight alone (in a trace the
@@ -1422,6 +1426,7 @@ class Bot:
         n_allies = self.n_allies
         gold_w = GOLD_WEIGHT * max(0.15, 1.0 - now / GOLD_TAPER)
         need_k = 1.0 / (NEED_FRAC * self.max_hp * dps)
+        need_hurt = 1.0 / (NEED_FRAC * max(1.0, self.hp) * dps) if HP_AWARE else need_k
         if JUNGLE_AWARE and self.jungle:
             need_k *= 0.7  # our camp damage taken is 30% lower
         # Extra damage per neighbouring camp from splash attacks and area abilities.
@@ -1483,7 +1488,8 @@ class Bot:
                 need = 1
                 gd = g.live_dps() if LIVE_DPS and status == W.ALIVE else g.dps
                 if gd:
-                    need = int((gd * hp_left * need_k) ** 0.5 + 0.999)
+                    nk = need_k if g is current and g.idx in self.damaged else need_hurt
+                    need = int((gd * hp_left * nk) ** 0.5 + 0.999)
                     if need > n_allies:
                         if poke_dps <= 0.0:
                             continue

@@ -1,0 +1,20 @@
+map                  zA         zB
+ambush              627        704
+collision           622        622
+contest            1024        862
+corners             497        497
+eight               444        399
+elkring             463        463
+expanse             738        642
+fragment            607        607
+interlock           578        585
+lanes               481        481
+monolith            494        566
+packs               450        450
+pilgrimage          691        612
+rows                455        470
+rushbait-v2         632        632
+stampede           1098        555
+swirl               387        464
+SUM               10287       9610
+STOPPED after the economy run (2026-10-20 21:58): AWAKE_RECENT was found wrong by a probe (camps keep attacking a champion in range after one hit), so the zA/zB head-to-heads were not run. See queue 16.
