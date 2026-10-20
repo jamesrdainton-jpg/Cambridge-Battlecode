@@ -96,6 +96,14 @@ def run(name: str, games: list[tuple[str, str, str]], jobs: int) -> dict:
     return res
 
 
+def run_name(kind: str, bots: list[str], seeds: str, maps: str) -> str:
+    """Replay folder name; includes seeds and maps so different runs never share (and wipe) a folder."""
+    name = f"{kind}-{'-'.join(bots)}-s{seeds.replace(',', '')}"
+    if maps:
+        name += "-" + "".join(m[:3] for m in maps.split(","))
+    return name
+
+
 def all_maps() -> list[str]:
     return sorted(p.stem for p in (ROOT / "maps").glob("*.map26a"))
 
@@ -111,7 +119,7 @@ def econ(args) -> None:
             names[sb] = bot
             for m in maps:
                 games.append((sb, "idle", m))
-    res = run("econ-" + "-".join(args.bots), games, args.jobs)
+    res = run(run_name("econ", args.bots, args.seeds, args.maps), games, args.jobs)
     table = defaultdict(list)
     for (a, _, m), (st, rnd, ga, _) in res.items():
         table[(names[a], m)].append(rnd if "TEAM A WIN" in st else 2000)
@@ -139,7 +147,7 @@ def h2h(args) -> None:
         for m in maps:
             games.append((a, b, m))
             games.append((b, a, m))
-    res = run(f"h2h-{args.bots[0]}-{args.bots[1]}", games, args.jobs)
+    res = run(run_name("h2h", args.bots, args.seeds, args.maps), games, args.jobs)
     per_map = defaultdict(lambda: [0, 0, 0])
     per_seed = defaultdict(lambda: [0, 0, 0])
     for s, a, b in pairs:
