@@ -190,7 +190,8 @@ LIVE_DPS = False
 # poke on stampede's 3x4 block of elks and gem clusters at a third of its real rate.
 AOE_POKE = False
 # Cassi & Issac die together (94% of strong teams draft them): in the fight ratio the pair counts with the weaker
-# one's health, and a target in the pair is worth both bodies and both bags.
+# one's health, and a target in the pair is worth both bodies and both bags. Keep off: it inflates the ratio (the
+# weaker one still has to be reached), and queue 19 dropping it from zL lifted 5/28 to 10/28 on seven maps vs v12.
 PAIR_KILL = False
 # Melee champions only target camps they can stand next to: Varg's splash choice (the most crowded camp) picked
 # monolith's Monolith, boxed in by its 8 gem clusters, and walked nowhere for the rest of the game.
