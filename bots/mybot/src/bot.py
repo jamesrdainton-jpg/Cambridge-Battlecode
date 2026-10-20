@@ -213,6 +213,10 @@ RESET_RETARGET = False
 # (a wolf pair hit Ryth for 40 a round for 12+ rounds after one attack), so a damaged camp stays dangerous while anyone
 # is near it; with this on, Stellar tributed in an elk's reach, couldn't "escape" an unlisted zone and died.
 AWAKE_RECENT = False
+# With AWAKE_RECENT, a damaged camp also stays awake while a champion we can see (us, an ally, a visible enemy) is in its
+# reach, which is the rule the probe showed: it sleeps only after 2 rounds with nobody near. Damaged camps nobody is
+# near no longer block paths (v12 treated every damaged camp as awake for good).
+AWAKE_NEAR = False
 # With AWAKE_RECENT, also hold the squad wait until someone of ours is in the group's reach. Off, the wait ends once a
 # camp is below full health, as before: a waiting caster's poke ends it, and casters then fight alone (in a trace the
 # strict wait tripled the turns spent waiting, 3-4% -> 9-13%; WAIT_LIMIT 40 was tuned with the old behaviour).
@@ -672,6 +676,7 @@ class Bot:
         info = []
         awake = set()
         damaged = set()
+        near_pts = None
         for c in self.camps:
             h = c._handle
             g = cg.get(h)
@@ -696,6 +701,14 @@ class Bot:
                 damaged.add(idx)
                 if not AWAKE_RECENT or now - g.hit_round <= 2:
                     awake.add(idx)
+                elif AWAKE_NEAR and idx not in awake:
+                    cp = g.cell_of[h]
+                    if near_pts is None:
+                        near_pts = self.champion_points()
+                    for q in near_pts:
+                        if -3 <= q[0] - cp.x <= 3 and -3 <= q[1] - cp.y <= 3:
+                            awake.add(idx)
+                            break
             g.status = W.ALIVE
             g.seen = now
             seen.add(idx)
@@ -1864,6 +1877,23 @@ class Bot:
                 if self.ranged:
                     self.can_attack = False
         return ok
+
+    def champion_points(self):
+        """(x, y) of us, our allies and the enemies in view (AWAKE_NEAR)."""
+        pts = [(self.pos.x, self.pos.y)]
+        for u in self.allies:
+            try:
+                q = u.position()
+                pts.append((q.x, q.y))
+            except Error:
+                pass
+        for u in self.enemies:
+            try:
+                q = u.position()
+                pts.append((q.x, q.y))
+            except Error:
+                pass
+        return pts
 
     def in_reach(self, alive):
         """True if we or an ally stand within 3 of one of these camps that deals damage (someone is fighting it)."""
