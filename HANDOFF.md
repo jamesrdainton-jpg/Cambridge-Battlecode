@@ -90,7 +90,9 @@ The first two are real bug fixes on single maps. A 68-game gauntlet can't see th
 - **Fight thresholds.** Retreat below 0.9, engage at 1.3 (old engine; real matches now suggest revisiting fights, see next steps).
 - **Gold:** 0.4 fading by round 500 beats 0.15 (v7). Shopping at 150 gold at any health was neutral vs v6 (sh1 33/68) but wins vs v10 once it stops when the build is finished (v12: 44/68, +6,728; DEVLOG 136–137).
 - **Draft:** 3 picks Vendetta, Ryth, Tavi. On 4- and 5-pick maps the pro draft (Cassi & Issac, Stellar, Ren, + Ryth, + Varg) with early packs now beats our draft (25/32 and 40/72; DEVLOG 138, 140). The older "pro draft loses with our logic" results (v6, v7) predate prompt shopping.
-- **Boss poking** (`MONOLITH_POKE`, even with the fixed ring, capture step and shared poke health) loses contested boss maps: 3/16 vs 10/16 with it off (DEVLOG 139).
+- **Boss poking** (`MONOLITH_POKE`, even with the fixed ring, capture step and shared poke health) loses contested boss maps: 3/16 vs 10/16 with it off (DEVLOG 139). 2026-10-20: with the AoE-aware cost and smarter poke it **wins stampede every time (4/4 in each of three head-to-heads; v12 scores 0 there) and loses contest every time** (0/4, 1/4, 0/4), and sieges on every map lost elsewhere too (DEVLOG 150–152). Hence `SIEGE_SHARE`/`SIEGE_COV`.
+- **Faster unopposed ≠ stronger** (DEVLOG 150): the 8.5%-faster economy package lost 28/68 to v12. Run a head-to-head before believing any economy gain, especially for changes that move champions around (packs, sieges, waits).
+- **Off after testing on 2026-10-20** (DEVLOG 143–152): `PAIR_KILL` (Cassi & Issac at the weaker one's health: lost games), `AWAKE_RECENT` (wrong rule: camps stay awake while anyone is in reach), `WAIT_STRICT`, `PACK_WALK_ALL`, `PACK_NEED`, `HP_AWARE` (economy-negative), `STUN_DAMAGING`. Untested alone: `STUN_CAMPS`, `LIVE_DPS`, `RESET_RETARGET`, `FAST_WALK`/`FAST_SCORE` (fuel; suspected in elkring 0/4), `SHOP_TRIP`, `POKE_EFF`, `AWAKE_NEAR`.
 - **Squad sizing and items.** `NEED_FRAC` 0.55. Wait 40 turns for the squad (60 and 15 are worse). Jungle-first, Jungle-aware sizing, `GEM_HUNT` and Power-first are neutral or worse.
 
 ## How to run things (from the project folder)
@@ -126,6 +128,15 @@ Since the v7 release: upgraded to **cambc 2.2.5** (platform replays are now form
 3. **Economy:** measure where turns go (DEBUG `ACTS` lines vs `idle`) and cut the biggest waste; the target is rounds-to-1000 per map with no head-to-head loss.
 
 ## What to do next
+
+Current list (2026-10-20); the strategy and its evidence are in [research/2026-10-20/STRATEGY.md](research/2026-10-20/STRATEGY.md):
+
+1. **Platform data first.** This session couldn't reach `2026a.battlecode.co.uk` (the cloud environment's network policy blocks it: add it under the environment's allowed domains, or download replays by hand into `replays/platform/`). Compare v13's day with v12's using `research/2026-10-19/tools/ourgames.py`, `teamstats.py`, `deaths2.py`; look at stampede and monolith first.
+2. **Safe sieges beyond stampede**: pokers shouldn't stand alone (poke only with an ally within ~6 tiles, regroup when an enemy appears), and the team converges for the kill; then widen `SIEGE_SHARE`. Test vs v12 and vs `proxy`.
+3. **Fuel**: retest `FAST_WALK` + `FAST_SCORE` alone (ambush peaks 2.48M of 2.5M without them).
+4. **Fights against hidden enemies**: on swirl both packs meet in the bushy centre by round 8 and our ratio read 2–8 with five enemies near; the enemy roster is known from the draft, so count unseen enemies last seen nearby.
+
+Older list:
 
 0. **After the competition:** download the platform games and check deaths with `tools/replay_decode.py`. v10 halved our deaths against v8 locally (283 vs 552), so see whether that holds against real teams. The fight path still never calls `support()` for heals (we draft no healer), and FIGHT_MEMO 2 is a candidate that needs more seeds (it is neutral-to-positive head-to-head and worse vs v8 on seed 3).
 
