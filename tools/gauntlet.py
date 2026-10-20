@@ -22,6 +22,7 @@ PY = sys.executable
 
 
 MAPS = ""
+JOBS = ""
 
 
 def run_arena(bot: str, opp: str, one_side: bool = False) -> tuple[int, int, int, int]:
@@ -30,6 +31,8 @@ def run_arena(bot: str, opp: str, one_side: bool = False) -> tuple[int, int, int
         cmd.append("--one-side")
     if MAPS:
         cmd += ["--maps", MAPS]
+    if JOBS:
+        cmd += ["--jobs", JOBS]
     out = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True).stdout
     wins = games = mine = theirs = rounds = 0
     for line in out.splitlines():
@@ -53,9 +56,11 @@ def main() -> None:
     parser.add_argument("--no-econ", action="store_true")
     parser.add_argument("--seeds", default="", help="comma list of SEED values; plays a seeded copy per seed")
     parser.add_argument("--maps", default="", help="comma list of maps (default: all)")
+    parser.add_argument("--jobs", default="", help="parallel games for cambc run-batch (default: arena.py's 18)")
     args = parser.parse_args()
-    global MAPS
+    global MAPS, JOBS
     MAPS = args.maps
+    JOBS = args.jobs
     bots = [args.bot]
     if args.seeds:
         bots = []

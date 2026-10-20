@@ -21,7 +21,7 @@ CAMP_STR = (20, 60, 0, 0, 200)
 class Group:
     __slots__ = ("idx", "handle", "gold", "gems", "respawn", "kinds", "handles", "cells", "tiles",
                  "anchor", "ax", "ay", "hp_max", "dps", "status", "alive_at", "seen", "hp", "near_altar", "obj",
-                 "enemy_side", "hp_now", "lin", "cell_of", "nbrs", "cluster")
+                 "enemy_side", "hp_now", "lin", "cell_of", "nbrs", "cluster", "aoe_cov", "hit_round")
 
     def __init__(self, idx, obj):
         # Reads the SDK objects' attributes directly: method calls cost ~1k fuel each and this runs
@@ -77,12 +77,14 @@ class Group:
             nbrs[handles[i]] = near
         self.nbrs = nbrs
         self.cluster = total / n
+        self.aoe_cov = None
         self.enemy_side = False
         self.hp_max = hp_max
         self.hp_now = hp_max
         self.dps = dps
         self.status = ALIVE
         self.alive_at = 0
+        self.hit_round = -100  # last round a camp of the group was seen losing health
         self.seen = -1
         # Last seen health per camp handle (missing = full).
         self.hp = {}
@@ -90,6 +92,26 @@ class Group:
 
     def hp_left(self):
         return self.hp_now
+
+    def aoe_coverage(self):
+        """Camps an area cast (radius 1) hits on average while poking: the most camps in any 3x3 window, capped by
+        how many of the biggest camp the group's health is worth (one monolith's 20,000 dwarfs 8 gem clusters),
+        and three quarters of that because camps die during the siege. Computed on first use."""
+        cov = self.aoe_cov
+        if cov is None:
+            best = 1
+            if len(self.cells) > 1:
+                centres = {}
+                for c in self.cells:
+                    x = c.x
+                    y = c.y
+                    for cx in (x - 1, x, x + 1):
+                        for cy in (y - 1, y, y + 1):
+                            centres[(cx, cy)] = centres.get((cx, cy), 0) + 1
+                best = max(centres.values())
+            big = max(CAMP_HP[k] for k in self.kinds)
+            cov = self.aoe_cov = max(1.0, 0.75 * min(best, self.hp_max / big))
+        return cov
 
     def refresh_hp(self):
         total = 0
@@ -101,6 +123,17 @@ class Group:
     def reset_hp(self):
         self.hp = {}
         self.hp_now = self.hp_max
+
+    def live_dps(self):
+        """Damage per round of the camps not known to be dead."""
+        hp = self.hp
+        if not hp:
+            return self.dps
+        dps = 0
+        for h, k in zip(self.handles, self.kinds):
+            if hp.get(h, 1) > 0:
+                dps += CAMP_STR[k]
+        return dps
 
 
 class World:

@@ -31,6 +31,7 @@ BUILD_FOCUS = [("MONSTER", "F", 5), ("POWER", "F", 5), ("JUNGLE", "H", 5), ("POW
 BUILD_TANK = [("JUNGLE", "H", 5), ("MONSTER", "S", 5), ("POWER", "S", 5), ("POWER", "S", 10),
               ("DURABILITY", "H", 5), ("POWER", "S", 30), ("POWER", "H", 30), ("POWER", "S", 60)]
 FOCUS_CHAMPS = (CT.STELLAR, CT.PRISM, CT.CASSI)
+PAIR = (CT.CASSI, CT.ISSAC)
 TANK_CHAMPS = (CT.RYTH, CT.VARG, CT.MARCELLA)
 # Tanks (Ryth, Varg, Marcella) buy the Jungle health emblem (30% less camp damage) first.
 TANK_JUNGLE_FIRST = False
@@ -153,8 +154,42 @@ SHOP_HP = 1.01
 SHOP_SAFE = True
 SHOP_NEAR = 0
 SHOP_NEAR_GOLD = 9999
+# Pack farming: cost the walk for every champion (they all follow the lead). The lead costed it for `need`
+# champions only, so on pilgrimage the whole team of six walked 63 tiles to the enemy side's group as one unit.
+PACK_WALK_ALL = False
+# Stun camps: Cassi's stun (no damage) and the damaging stuns (Tavi, Ren, Prism) go on the strongest awake camp that
+# can hit one of us next round. A stunned camp skips its next attack (probe: a wolf pair hit Issac for 20 instead of
+# 40 on the round after each stun); the bot never cast Cassi's stun at camps. A camp whose stun buff still has
+# duration 2 will skip its next attack already, so it isn't stunned again (duration 1: that skip has happened).
+STUN_CAMPS = False
+# Track which camps of a partly seen group are dead (spawn tile in view, camp gone) and size squads on the live
+# camps' damage: a group whose elks are dead no longer needs the squad its full strength did.
+LIVE_DPS = False
+# Poke cost counts area casts by the camps they hit (Group.aoe_cov): the single-target estimate rated Stellar's
+# poke on stampede's 3x4 block of elks and gem clusters at a third of its real rate.
+AOE_POKE = False
+# Cassi & Issac die together (94% of strong teams draft them): in the fight ratio the pair counts with the weaker
+# one's health, and a target in the pair is worth both bodies and both bags.
+PAIR_KILL = False
+# Melee champions only target camps they can stand next to: Varg's splash choice (the most crowded camp) picked
+# monolith's Monolith, boxed in by its 8 gem clusters, and walked nowhere for the rest of the game.
+MELEE_REACH = False
+# Once the squad wait has run out, it stays out until the target changes: the old code reset the count on the
+# turn it expired, so a champion whose attack didn't wake the group waited another 40 turns, again and again.
+WAIT_FIX = False
+# Poking: only damaging camps' reach counts (gem and gold clusters never attack), single-target casts go to the
+# damaging camps (they decide when the group can be tanked), and between casts a ranged poker basic-attacks camps
+# it can hit from outside that reach, standing where it can.
+POKE_SMART = False
+# When the basic attack kills a camp, spend the attack reset on another live camp in range at once: Vendetta's kill
+# passive refreshes her cooldowns, which is wasted if the reset was still unused.
+RESET_RETARGET = False
+# A group counts as awake (attacking, and its reach dangerous) only if one of its camps lost health in the last 2
+# rounds, as the rules say, not whenever a camp is below full health: camps never heal, so one poke from a champion
+# waiting for its squad made the group "awake" for good, which ended the wait and kept its reach marked dangerous.
+AWAKE_RECENT = False
 
-DIRS = (Vec2(1, 0), Vec2(-1, 0), Vec2(0, 1), Vec2(0, -1), Vec2(1, 1), Vec2(1, -1), Vec2(-1, 1), Vec2(-1, -1))
+DIRS =(Vec2(1, 0), Vec2(-1, 0), Vec2(0, 1), Vec2(0, -1), Vec2(1, 1), Vec2(1, -1), Vec2(-1, 1), Vec2(-1, -1))
 
 
 class _Profiles(dict):
@@ -619,17 +654,34 @@ class Bot:
                 if cp != g.cell_of[h]:
                     self.log(f"CAMPMOVED {h} at {cp.x},{cp.y} spawn {g.cell_of[h].x},{g.cell_of[h].y} hp={hp}")
             ghp = g.hp
-            if ghp.get(h) != hp:
+            old = ghp.get(h)
+            if old != hp:
+                if AWAKE_RECENT and hp < (camp_hp[k] if old is None else old):
+                    g.hit_round = now
                 ghp[h] = hp
                 g.refresh_hp()
             idx = g.idx
-            if hp < camp_hp[k]:
+            if hp < camp_hp[k] and (not AWAKE_RECENT or now - g.hit_round <= 2):
                 awake.add(idx)
             g.status = W.ALIVE
             g.seen = now
             seen.add(idx)
         self.camp_info = info
         self.awake = awake
+        vis = None
+        if LIVE_DPS and info:
+            # Camps of a group in view whose spawn tile is visible but which aren't there are dead.
+            live = {x[0]._handle for x in info}
+            for g in {x[1] for x in info}:
+                ghp = g.hp
+                for h, cell in zip(g.handles, g.cells):
+                    if h in live or ghp.get(h) == 0:
+                        continue
+                    if vis is None:
+                        vis = vision.visible_tiles()
+                    if vis.is_set(cell):
+                        ghp[h] = 0
+                        g.refresh_hp()
         if POKE_SHARE and MONOLITH_POKE:
             self.read_poke(seen)
         # Tiles within range of awake, damaging camps (per group, so a target's own zone can be excluded).
@@ -644,7 +696,6 @@ class Bot:
                     z.draw_chebyshev(p, 3)
         self.zones = zones
         # Groups in view whose camps are not: cleared (reward waiting) or respawning.
-        vis = None
         px = self.pos.x
         py = self.pos.y
         bx = px // 10
@@ -737,11 +788,21 @@ class Bot:
                 our_dps += a.strength() * prof[0] + a.focus() * prof[1]
             except Error:
                 pass
+        pair_hp = None
+        pair_gems = 0
+        if PAIR_KILL:
+            pair = [x for x in near if self.kinds.get(int(x[0])) in PAIR]
+            if len(pair) == 2:
+                pair_hp = min(pair[0][2], pair[1][2])
+                pair_gems = pair[0][6] + pair[1][6]
         their_hp = 0.0
         their_dps = 0.0
         for x in near:
             w = 1.0 if x[5] <= 7 else 0.5
-            their_hp += w * x[2]
+            if pair_hp is not None and self.kinds.get(int(x[0])) in PAIR:
+                their_hp += w * pair_hp / 2  # one kill takes both
+            else:
+                their_hp += w * x[2]
             their_dps += w * x[4]
         ratio = (our_hp * our_dps) / max(1.0, their_hp * their_dps)
         self.last_ratio = ratio
@@ -786,7 +847,10 @@ class Bot:
         best = near[0]
         best_v = -1.0
         for x in near:
-            v = (100.0 + 2.0 * x[6]) / (x[2] + 50.0)
+            if pair_hp is not None and self.kinds.get(int(x[0])) in PAIR:
+                v = (200.0 + 2.0 * pair_gems) / (x[2] + 50.0)
+            else:
+                v = (100.0 + 2.0 * x[6]) / (x[2] + 50.0)
             if x[5] <= self.rng:
                 v *= 2.0
             v /= 1.0 + 0.1 * x[5]
@@ -959,7 +1023,9 @@ class Bot:
                 if ab.cooldown() == 0:
                     try:
                         if not unit.is_visible() or unit.health() <= 0:
-                            return
+                            unit = self.next_camp(unit) if RESET_RETARGET else None
+                            if unit is None:
+                                return
                         if cheb(unit.position(), self.pos) > self.rng:
                             return
                         ab.use()
@@ -969,6 +1035,24 @@ class Bot:
                     self.can_attack = True
                     self.basic_attack(unit)
                     return
+
+    def next_camp(self, dead):
+        """A live camp of the same group in basic-attack range other than the one just killed (None if none, or if
+        it was a champion: another group's camp would wake that group)."""
+        if not isinstance(dead, cambc.Camp):
+            return None
+        group = self.world.camp_group.get(dead._handle)
+        best = None
+        for c, g, k, p, hp in self.camp_info:
+            if g is not group or c._handle == dead._handle or cheb(p, self.pos) > self.rng:
+                continue
+            try:
+                h = c.health()
+            except Error:
+                continue
+            if h > 0 and (best is None or h < best[1]):
+                best = (c, h)
+        return best[0] if best is not None else None
 
     def cast_offense(self, unit, upos, champion, kinds=(K_DAMAGE, K_AOE, K_CC)):
         """Cast damage/stun abilities at a unit in range. Returns True if something was cast."""
@@ -1291,8 +1375,11 @@ class Bot:
         dist = field.export_linear_buffer()
         self.mark("sg_export")
         claims = self.claims()
+        pack_k = 0
         if self.now < self.pack_until:
             claims = {}
+            if PACK_WALK_ALL:
+                pack_k = self.n_allies
         self.mark("sg_claims")
         dps = self.dps_now
         n_allies = self.n_allies
@@ -1304,6 +1391,7 @@ class Bot:
         cluster_dps = 0.7 * (self.strength_now if self.splash else 0.0) + 0.7 * self.focus_now * self.aoe_mod
         squad = MIN_SQUAD if MIN_SQUAD < n_allies else n_allies
         poke_dps = self.focus_now * self.poke_mod if MONOLITH_POKE else 0.0
+        aoe_dps = self.focus_now * self.aoe_mod
         current = self.target
         my_slot = self.slot
         out = []
@@ -1352,8 +1440,9 @@ class Bot:
             else:
                 hp_left = g.hp_now if status == W.ALIVE else g.hp_max
                 need = 1
-                if g.dps:
-                    need = int((g.dps * hp_left * need_k) ** 0.5 + 0.999)
+                gd = g.live_dps() if LIVE_DPS and status == W.ALIVE else g.dps
+                if gd:
+                    need = int((gd * hp_left * need_k) ** 0.5 + 0.999)
                     if need > n_allies:
                         if poke_dps <= 0.0:
                             continue
@@ -1366,11 +1455,16 @@ class Bot:
                 if POKE_AVOID_ENEMY and now - self.poke_enemy.get(g.idx, -1000) < POKE_AVOID_ENEMY:
                     continue
                 # Team champion-rounds, as below: every poker walks there; the kill costs hp / one poker's damage.
-                cost = (others + 1) * (d + wait) + hp_left / poke_dps + 5 + 0.5 * g.near_altar + g.gems / 10
+                pd = poke_dps
+                if AOE_POKE and aoe_dps:
+                    pd += aoe_dps * (g.aoe_coverage() - 1.0)
+                cost = (others + 1) * (d + wait) + hp_left / pd + 5 + 0.5 * g.near_altar + g.gems / 10
             else:
                 k = others + 1
                 if k < need:
                     k = need
+                if pack_k:
+                    k = pack_k
                 gdps = dps + cluster_dps * g.cluster if cluster_dps else dps
                 # Team champion-rounds spent: everyone involved walks and fights, one captures and tributes.
                 cost = k * (d + wait) + hp_left / gdps + 5 + 0.5 * g.near_altar + g.gems / 10
@@ -1476,6 +1570,7 @@ class Bot:
         for c in g.cells:
             roots.draw_chebyshev(c, 1)
         roots &= ~(self.world.block | self.world.all_camp_tiles)
+        self.act = "standby" if g.status == W.RESPAWN and cheb(g.anchor, self.pos) <= 2 else "walk"
         if not self.go(roots, avoid=self.keep_away(self.danger(exclude=g))) and cheb(g.anchor, self.pos) <= 2:
             g.status = W.ALIVE
 
@@ -1492,6 +1587,9 @@ class Bot:
         best_key = None
         aoe_pos = None
         aoe_n = -1
+        free = None
+        if MELEE_REACH and not self.ranged and len(alive) > 1:
+            free = ~(self.world.block | self.occ)
         for x in alive:
             h = x[0]._handle
             n = 0
@@ -1503,6 +1601,12 @@ class Bot:
                 aoe_pos = x[3]
             # Splash hits every neighbour of the target, so Varg hits the most crowded camp first.
             key = (-n if self.splash else 0, x[4], cheb(x[3], pos))
+            if free is not None and cheb(x[3], pos) > 1:
+                ring = Bitboard()
+                ring.draw_chebyshev(x[3], 1)
+                ring &= free
+                if ring.is_empty():
+                    key = (1,) + key  # boxed in by other camps: hit those first
             if best_key is None or key < best_key:
                 best_key = key
                 best = x
@@ -1513,7 +1617,10 @@ class Bot:
         self.aoe_pos = aoe_pos
         d = cheb(cp, pos)
         need = getattr(self, "target_need", 1)
-        if need > 1 and not awake:
+        engaged = awake
+        if AWAKE_RECENT and awake and need > 1:
+            engaged = self.in_reach(alive)  # our own poke from range 4 wakes the group without anyone fighting it
+        if need > 1 and not engaged:
             # Wait just outside camp range until enough allies have gathered.
             self.claims()
             present = max(self.ready.get(g.idx, 0), self.allies_near(cp, 5)) + 1
@@ -1532,8 +1639,11 @@ class Bot:
                     roots &= ~(inner | self.world.block | self.world.all_camp_tiles)
                     self.go(roots)
                 return
-        self.wait_turns = 0
+        if not WAIT_FIX:
+            self.wait_turns = 0
         self.claim(g, ready=True)
+        if STUN_CAMPS and awake:
+            self.stun_camp(alive)
         if self.hp < 0.35 * self.max_hp and self.taking_damage() and (g.dps > 0 or self.zones):
             if self.ranged and d <= 4:
                 self.cast_offense(camp, cp, champion=False)
@@ -1573,6 +1683,91 @@ class Bot:
         if cheb(cp, self.pos) <= self.rng:
             self.basic_attack(camp)
             self.use_reset(camp)
+
+    def stun_camp(self, alive):
+        """Cast a ready stun on the strongest awake camp of the group that can hit one of us next round. Cassi's
+        stun (no damage) only when no damaging ability is ready, as it would take the turn's one cast. Returns True
+        if something was cast."""
+        if not self.can_cast:
+            return False
+        slot = None
+        for i in (0, 1):
+            k = self.ab_kind[i]
+            if k == K_CC:
+                info = self.ab_info[i]
+                if self.abilities[i].cooldown() == 0 and (self.can_move or not info.exclusive_with_movement):
+                    slot = i
+            elif k in (K_DAMAGE, K_AOE) and self.abilities[i].cooldown() == 0:
+                info = self.ab_info[i]
+                if (self.ab_kind[1 - i] == K_CC and self.ab_info[1 - i].modifier == 0 and
+                        (self.can_move or not info.exclusive_with_movement)):
+                    return False  # Cassi: the damage cast comes first when it can be made
+        if slot is None:
+            return False
+        info = self.ab_info[slot]
+        pos = self.pos
+        mates = None
+        best = None
+        best_key = None
+        for x in alive:
+            s = W.CAMP_STR[x[2]]
+            if s <= 0 or cheb(x[3], pos) > info.range:
+                continue
+            threat = cheb(x[3], pos) <= 3
+            if not threat:
+                if mates is None:
+                    mates = []
+                    for a in self.allies:
+                        try:
+                            mates.append(a.position())
+                        except Error:
+                            pass
+                for ap in mates:
+                    if cheb(ap, x[3]) <= 3:
+                        threat = True
+                        break
+            if not threat:
+                continue
+            try:
+                b = x[0].buffs()
+                if b.has_stun() and b.get(cambc.BuffTypes.STUN).duration >= 2:
+                    continue  # already stunned for its next attack (duration 1 = that skip has happened)
+            except Error:
+                pass
+            key = (s, x[4])
+            if best_key is None or key > best_key:
+                best_key = key
+                best = x
+        if best is None:
+            return False
+        try:
+            ok = self.abilities[slot].use(best[0])
+        except Error:
+            return False
+        if ok:
+            self.can_cast = False
+            if info.exclusive_with_movement:
+                self.can_move = False
+                if self.ranged:
+                    self.can_attack = False
+        return ok
+
+    def in_reach(self, alive):
+        """True if we or an ally stand within 3 of one of these camps that deals damage (someone is fighting it)."""
+        cells = [x[3] for x in alive if W.CAMP_STR[x[2]] > 0]
+        if not cells:
+            return False
+        pts = [self.pos]
+        for a in self.allies:
+            try:
+                pts.append(a.position())
+            except Error:
+                pass
+        for p in pts:
+            for c in cells:
+                if cheb(p, c) <= 3:
+                    return True
+        return False
 
     def claim_tile(self, camp, cp):
         """After killing a group's last camp, stand on its spawn tile at once so an enemy can't take the capture."""
@@ -1614,23 +1809,36 @@ class Bot:
         """Hit a group too strong to fight with abilities from range 4, outside its camps' range-3 reach."""
         reach = Bitboard()
         for x in alive:
-            reach.draw_chebyshev(x[3], 3)
+            if not POKE_SMART or W.CAMP_STR[x[2]] > 0:
+                reach.draw_chebyshev(x[3], 3)
         pos = self.pos
         if POKE_CLOSE and self.poke_close(g, alive):
             return
         if POKE_AVOID_ENEMY and self.enemy_near_group(alive, 8):
             self.poke_enemy[g.idx] = self.now
             self.target_round = -100  # choose another target next turn
-        best = min(alive, key=lambda x: (cheb(x[3], pos) > 4, x[4]))  # in ability range first, then lowest HP
+        if POKE_SMART:
+            best = min(alive, key=lambda x: (cheb(x[3], pos) > 4, W.CAMP_STR[x[2]] == 0, x[4]))
+        else:
+            best = min(alive, key=lambda x: (cheb(x[3], pos) > 4, x[4]))  # in ability range first, then lowest HP
         camp, cp = best[0], best[3]
         self.act = "poke"
         self.claim(g, ready=True)
-        if not reach.is_set(pos) and cheb(cp, pos) <= 4:
+        safe = not reach.is_set(pos)
+        if safe and cheb(cp, pos) <= 4:
             self.aoe_pos = cp
             if POKE_LIVE_RING and self.aoe_ready():
                 self.aoe_pos = self.best_aoe_tile([x[3] for x in alive], pos) or cp
-            self.cast_offense(camp, cp, champion=False)
-            return
+            if self.cast_offense(camp, cp, champion=False) or not POKE_SMART:
+                return
+            hit = [x for x in alive if cheb(x[3], pos) <= self.rng]
+            if hit and self.can_attack:
+                x = min(hit, key=lambda x: x[4])
+                if self.basic_attack(x[0]):
+                    self.use_reset(x[0])
+                return
+            if not self.ranged or self.ready_cast():
+                return  # hold the poke tile for the next cast
         danger = self.danger()
         ring = None
         if POKE_LIVE_RING:
@@ -1640,11 +1848,29 @@ class Bot:
                 ring.draw_chebyshev(x[3], 4)
             ring &= ~(reach | self.world.block | self.world.all_camp_tiles)
             ring.set(pos, False)
+            if POKE_SMART and self.ranged and not ring.is_empty():
+                # Prefer tiles from which a basic attack reaches a camp too (only non-damaging ones can be in reach).
+                near = Bitboard()
+                for x in alive:
+                    if W.CAMP_STR[x[2]] == 0:
+                        near.draw_chebyshev(x[3], self.rng)
+                both = ring & near
+                if not both.is_empty():
+                    ring = both
+                elif safe and cheb(cp, pos) <= 4:
+                    return  # already on a poke tile and no better one
             if ring.is_empty():
                 ring = None
         if ring is None:
             ring = self.poke_ring(g)
         self.go(ring, avoid=self.keep_away(reach if danger is None else (reach | danger)))
+
+    def ready_cast(self):
+        """True if a damaging ability is off cooldown."""
+        for i in (0, 1):
+            if self.ab_kind[i] in (K_DAMAGE, K_AOE, K_CC) and self.abilities[i].cooldown() == 0:
+                return True
+        return False
 
     def enemy_near_group(self, alive, r):
         """True if a visible enemy champion is within r of one of these live camps."""
