@@ -222,6 +222,23 @@ class World:
             self.fields[key] = f
         return f
 
+    def walk_field(self, g):
+        """Field rooted at the free tiles next to the group's camps (other camps' tiles excluded), as farm() walks
+        to it; static terrain only, cached per group."""
+        key = (g.idx, -2)
+        f = self.fields.get(key)
+        if f is None:
+            roots = Bitboard()
+            for c in g.cells:
+                roots.draw_chebyshev(c, 1)
+            roots &= ~(self.block | self.all_camp_tiles)
+            if roots.is_empty():
+                roots = g.tiles.copy()
+            f = DistanceField()
+            f.compute(self.block, roots, Bitboard())
+            self.fields[key] = f
+        return f
+
     def capture_field(self, g):
         key = (g.idx, -1)
         f = self.fields.get(key)

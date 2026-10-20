@@ -154,6 +154,17 @@ SHOP_HP = 1.01
 SHOP_SAFE = True
 SHOP_NEAR = 0
 SHOP_NEAR_GOLD = 9999
+# Raise the shopping threshold by this much gold per tile of walk from spawn back to where we are (the trip's cost):
+# on ambush the nearest camps are ~40 tiles out, so each 150-gold trip cost ~45 turns (0 = off).
+SHOP_TRIP = 0
+# Long walks to a target follow its cached static field (World.walk_field) when nothing needs avoiding and the next
+# tile is free, instead of computing a fresh field every turn: on ambush (100x100) that field cost ~0.5M of the 2.5M
+# per-turn fuel, and the heaviest turns reached 2.48M.
+FAST_WALK = False
+# Target scoring reads each group's distance from its cached walk field (one missing field is built per turn while at
+# least FAST_FUEL fuel is left) instead of a fresh field from our tile every re-target (~0.56M on ambush).
+FAST_SCORE = False
+FAST_FUEL = 1200000
 # Pack farming: cost the walk for every champion (they all follow the lead). The lead costed it for `need`
 # champions only, so on pilgrimage the whole team of six walked 63 tiles to the enemy side's group as one unit.
 PACK_WALK_ALL = False
@@ -191,6 +202,10 @@ RESET_RETARGET = False
 # rounds, as the rules say, not whenever a camp is below full health: camps never heal, so one poke from a champion
 # waiting for its squad made the group "awake" for good, which ended the wait and kept its reach marked dangerous.
 AWAKE_RECENT = False
+# With AWAKE_RECENT, also hold the squad wait until someone of ours is in the group's reach. Off, the wait ends once a
+# camp is below full health, as before: a waiting caster's poke ends it, and casters then fight alone (in a trace the
+# strict wait tripled the turns spent waiting, 3-4% -> 9-13%; WAIT_LIMIT 40 was tuned with the old behaviour).
+WAIT_STRICT = False
 
 DIRS =(Vec2(1, 0), Vec2(-1, 0), Vec2(0, 1), Vec2(0, -1), Vec2(1, 1), Vec2(1, -1), Vec2(-1, 1), Vec2(-1, -1))
 
@@ -328,6 +343,7 @@ class Bot:
         spawn_altar = af.get(self.world.spawn_center)
         self.spawn_altar = spawn_altar if spawn_altar is not None else W.UNREACHED
         self.target_via = False
+        self.walk_fields_done = False
         if DEBUG:
             prev = None
             parts = []
@@ -644,6 +660,7 @@ class Bot:
         seen = set()
         info = []
         awake = set()
+        damaged = set()
         for c in self.camps:
             h = c._handle
             g = cg.get(h)
@@ -664,13 +681,16 @@ class Bot:
                 ghp[h] = hp
                 g.refresh_hp()
             idx = g.idx
-            if hp < camp_hp[k] and (not AWAKE_RECENT or now - g.hit_round <= 2):
-                awake.add(idx)
+            if hp < camp_hp[k]:
+                damaged.add(idx)
+                if not AWAKE_RECENT or now - g.hit_round <= 2:
+                    awake.add(idx)
             g.status = W.ALIVE
             g.seen = now
             seen.add(idx)
         self.camp_info = info
         self.awake = awake
+        self.damaged = damaged
         vis = None
         if LIVE_DPS and info:
             # Camps of a group in view whose spawn tile is visible but which aren't there are dead.
@@ -1185,8 +1205,9 @@ class Bot:
             if frac < 0.3:
                 self.go(self.world.my_spawn, avoid=self.danger())
                 return True
+        shop_gold = SHOP_GOLD + SHOP_TRIP * sd if SHOP_TRIP and sd is not None else SHOP_GOLD
         shop = (not self.remote_shop and self.gems == 0 and self.build_done < len(self.build) and
-                ((self.gold >= SHOP_GOLD and frac < SHOP_HP) or
+                ((self.gold >= shop_gold and frac < SHOP_HP) or
                  (sd is not None and sd <= SHOP_NEAR and self.gold >= SHOP_NEAR_GOLD)))
         if frac < 0.3 or shop:
             if sd is not None and sd <= 6:
@@ -1370,13 +1391,18 @@ class Bot:
     def score_groups(self):
         world = self.world
         now = self.now
-        field = DistanceField()
-        roots = Bitboard()
-        roots.set(self.pos)
-        field.compute(world.block, roots, Bitboard())
-        self.mark("sg_field")
-        dist = field.export_linear_buffer()
-        self.mark("sg_export")
+        fields = None
+        if FAST_SCORE and self.walk_fields_done:
+            fields = world.fields
+            dist = None
+        else:
+            field = DistanceField()
+            roots = Bitboard()
+            roots.set(self.pos)
+            field.compute(world.block, roots, Bitboard())
+            self.mark("sg_field")
+            dist = field.export_linear_buffer()
+            self.mark("sg_export")
         claims = self.claims()
         pack_k = 0
         if self.now < self.pack_until:
@@ -1419,7 +1445,11 @@ class Bot:
                     g.reset_hp()
                 elif g.alive_at - now > 120:
                     continue
-            d = dist[g.lin]
+            if fields is not None:
+                d = fields[(g.idx, -2)].get(self.pos)
+                d = W.UNREACHED if d is None else d + 1  # to the camp tile itself, as before
+            else:
+                d = dist[g.lin]
             via = False
             if recall_ok:
                 dr = sp[g.lin] + margin
@@ -1575,8 +1605,54 @@ class Bot:
             roots.draw_chebyshev(c, 1)
         roots &= ~(self.world.block | self.world.all_camp_tiles)
         self.act = "standby" if g.status == W.RESPAWN and cheb(g.anchor, self.pos) <= 2 else "walk"
-        if not self.go(roots, avoid=self.keep_away(self.danger(exclude=g))) and cheb(g.anchor, self.pos) <= 2:
+        avoid = self.keep_away(self.danger(exclude=g))
+        if FAST_WALK and (avoid is None or avoid.is_empty()) and self.fast_walk(g):
+            return
+        if not self.go(roots, avoid=avoid) and cheb(g.anchor, self.pos) <= 2:
             g.status = W.ALIVE
+
+    def fast_walk(self, g):
+        """Step (and dash) along the group's cached walk field while it is more than 4 steps away. Returns True if
+        moved; False leaves the turn to go()."""
+        if not self.can_move:
+            return False
+        f = self.world.walk_field(g)
+        here = f.get(self.pos)
+        if here is None or here <= 4 or here >= W.UNREACHED:
+            return False
+        occ = self.occ
+        if self.can_cast and self.dash_slot is not None:
+            ab = self.abilities[self.dash_slot]
+            if ab.cooldown() == 0:
+                d1 = f.next_move_from(self.pos)
+                if d1 is not None:
+                    p1 = self.pos + d1
+                    d2 = f.next_move_from(p1)
+                    if d2 is not None:
+                        p2 = p1 + d2
+                        if not occ.is_set(p1) and not occ.is_set(p2):
+                            try:
+                                if ab.use(p2):
+                                    self.pos = p2
+                                    self.can_cast = False
+                            except Error:
+                                pass
+        step = f.next_move_from(self.pos)
+        if step is None:
+            return False
+        dest = self.pos + step
+        if occ.is_set(dest):
+            return False
+        try:
+            ok = self.me.move_absolute(dest)
+        except Error:
+            return False
+        if ok:
+            self.pos = dest
+            self.can_move = False
+            if self.ranged:
+                self.can_attack = False
+        return ok
 
     def attack_group(self, g, alive):
         """alive: (camp, group, kind, position, hp) tuples of the target group's visible camps."""
@@ -1622,8 +1698,11 @@ class Bot:
         d = cheb(cp, pos)
         need = getattr(self, "target_need", 1)
         engaged = awake
-        if AWAKE_RECENT and awake and need > 1:
-            engaged = self.in_reach(alive)  # our own poke from range 4 wakes the group without anyone fighting it
+        if AWAKE_RECENT:
+            if not WAIT_STRICT:
+                engaged = g.idx in self.damaged
+            elif awake and need > 1:
+                engaged = self.in_reach(alive)  # our own poke from range 4 wakes the group without anyone fighting it
         if need > 1 and not engaged:
             # Wait just outside camp range until enough allies have gathered.
             self.claims()
@@ -2061,3 +2140,10 @@ class Bot:
             self.last_hp = self.me.health()
         except Error:
             pass
+        if FAST_SCORE and not self.walk_fields_done and cambc.fuel_remaining() > FAST_FUEL:
+            fields = self.world.fields
+            for g in self.world.groups:
+                if (g.idx, -2) not in fields:
+                    self.world.walk_field(g)
+                    return
+            self.walk_fields_done = True
