@@ -6,8 +6,8 @@ Usage: python tools/release.py [--src mybot] [--verify] [--check]
 2. Bundles it with `cambc bundle` as submissions/cambridge-bot-YYYY-MM-DD.zip (a different release
    on the same day gets -2, -3, ...; an identical one reuses the existing file) and copies that to
    submissions/cambridge-bot-latest.zip.
-3. Checks the ZIP: exactly the bot's .py source files, identical to bots/<src> apart from DEBUG,
-   DEBUG = False, SEED = 0, and every file compiles.
+3. Checks the ZIP: exactly the bot's source files (.py; or .cpp and .h for C++ bots, which keep DEBUG and SEED in
+   src/params.h), identical to bots/<src> apart from DEBUG, DEBUG off, SEED = 0, and every Python file compiles.
 4. With --verify, plays the release against the starter on packs, lanes and monolith from both sides
    and fails unless it wins all 6 games with no error lines. Don't use it while a batch is running.
 
@@ -43,14 +43,23 @@ def git_state(src: str) -> str:
     return f"commit {rev}"
 
 
+def is_cpp(src: str) -> bool:
+    """C++ bots (bots/cpp*) have src/main.cpp and keep DEBUG and SEED in src/params.h."""
+    return (ROOT / "bots" / src / "src" / "main.cpp").exists()
+
+
 def expected_files(src: str) -> dict[str, str]:
     """ZIP member name -> text the release should contain (DEBUG switched off)."""
     files = {}
-    for p in sorted((ROOT / "bots" / src / "src").glob("*.py")):
-        text = p.read_text(encoding="utf-8").replace("\r\n", "\n")
-        if p.name == "bot.py":
-            text = text.replace("DEBUG = True", "DEBUG = False")
-        files[f"src/{p.name}"] = text
+    cpp = is_cpp(src)
+    for pattern in (("*.cpp", "*.h") if cpp else ("*.py",)):
+        for p in sorted((ROOT / "bots" / src / "src").glob(pattern)):
+            text = p.read_text(encoding="utf-8").replace("\r\n", "\n")
+            if p.name == "bot.py":
+                text = text.replace("DEBUG = True", "DEBUG = False")
+            if p.name == "params.h":
+                text = text.replace("DEBUG = true", "DEBUG = false")
+            files[f"src/{p.name}"] = text
     return files
 
 
@@ -75,10 +84,18 @@ def problems(path: Path, src: str) -> list[str]:
     for name in sorted(set(got) & set(want)):
         if got[name] != want[name]:
             found.append(f"{name} differs from bots/{src}/{name}")
-        try:
-            compile(got[name], name, "exec")
-        except SyntaxError as e:
-            found.append(f"{name} does not compile: {e}")
+        if name.endswith(".py"):
+            try:
+                compile(got[name], name, "exec")
+            except SyntaxError as e:
+                found.append(f"{name} does not compile: {e}")
+    if is_cpp(src):
+        params = got.get("src/params.h", "")
+        if not re.search(r"^inline constexpr bool DEBUG = false;$", params, re.MULTILINE):
+            found.append("src/params.h does not set DEBUG = false")
+        if not re.search(r"^inline constexpr int SEED = 0;$", params, re.MULTILINE):
+            found.append("src/params.h does not set SEED = 0")
+        return found
     bot = got.get("src/bot.py", "")
     if not re.search(r"^DEBUG = False$", bot, re.MULTILINE):
         found.append("src/bot.py does not set DEBUG = False")
@@ -104,9 +121,10 @@ def main() -> None:
             print("  -", issue)
         raise SystemExit(1 if issues else 0)
 
-    src_bot = (ROOT / "bots" / args.src / "src" / "bot.py").read_text(encoding="utf-8")
-    if not re.search(r"^SEED = 0$", src_bot, re.MULTILINE):
-        raise SystemExit(f"bots/{args.src}/src/bot.py must have SEED = 0 for a release")
+    seed_file = "params.h" if is_cpp(args.src) else "bot.py"
+    src_bot = (ROOT / "bots" / args.src / "src" / seed_file).read_text(encoding="utf-8")
+    if not re.search(r"^(inline constexpr int )?SEED = 0;?$", src_bot, re.MULTILINE):
+        raise SystemExit(f"bots/{args.src}/src/{seed_file} must have SEED = 0 for a release")
     subprocess.run([PY, str(ROOT / "tools" / "variant.py"), "release", "--src", args.src], cwd=ROOT, check=True,
                    stdout=subprocess.DEVNULL)
 

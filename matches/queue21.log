@@ -1,0 +1,12 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y21a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y21g
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y21w
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y21g_s1
+vs y21a       wins 38/80  gem margin -2670
+2026-10-25 22:04,y21g[1],38/80,y21a:38/80(-2670),,y21g = BUILD_30 1 + SHOP_GOLD 90 vs y21a; queue 21; cambc 3.0.5, 40 maps,231df60
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y21w_s1
+vs y21a       wins 39/80  gem margin -585
+2026-10-25 22:08,y21w[1],39/80,y21a:39/80(-585),,y21w = BUILD_30 1 + GOLD_WEIGHT 0.8 vs y21a; queue 21; cambc 3.0.5, 40 maps,231df60
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y19p_s2
+vs y19a       wins 46/80  gem margin +8702
+2026-10-25 22:12,y19p[2],46/80,y19a:46/80(+8702),,y19p (FIGHT_PRIO) vs y19a seed 2 confirmation; queue 21; cambc 3.0.5, 40 maps,231df60
