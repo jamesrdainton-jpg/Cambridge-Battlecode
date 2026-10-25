@@ -1,0 +1,73 @@
+SURVEY map 50x50 picks=5 altars=2 bushes=146 holes=1302 spawn=2,2 espawn=45,2
+GROUP GwwGG gold=140 gems=8 respawn=50 at=18,11 id=0
+CAMPH 0 G 18 11 0
+CAMPH 2 w 19 10 0
+CAMPH 4 w 17 10 0
+CAMPH 6 G 18 9 0
+CAMPH 48 G 18 10 0
+GROUP GwwGG gold=140 gems=8 respawn=50 at=31,11 id=1
+CAMPH 1 G 31 11 1
+CAMPH 3 w 30 10 1
+CAMPH 5 w 32 10 1
+CAMPH 7 G 31 9 1
+CAMPH 49 G 31 10 1
+GROUP egegg gold=180 gems=51 respawn=60 at=20,39 id=2
+CAMPH 8 e 20 39 2
+CAMPH 10 g 20 38 2
+CAMPH 12 e 20 37 2
+CAMPH 53 g 20 36 2
+CAMPH 55 g 20 40 2
+GROUP egegg gold=180 gems=51 respawn=60 at=29,39 id=3
+CAMPH 9 e 29 39 3
+CAMPH 11 g 29 38 3
+CAMPH 13 e 29 37 3
+CAMPH 52 g 29 36 3
+CAMPH 54 g 29 40 3
+GROUP wwgggg gold=80 gems=36 respawn=50 at=24,46 id=4
+CAMPH 14 w 24 46 4
+CAMPH 15 w 25 46 4
+CAMPH 16 g 23 46 4
+CAMPH 17 g 26 46 4
+CAMPH 50 g 24 45 4
+CAMPH 51 g 25 45 4
+GROUP wgGw gold=100 gems=15 respawn=50 at=2,36 id=5
+CAMPH 18 w 2 36 5
+CAMPH 20 g 1 36 5
+CAMPH 22 G 2 37 5
+CAMPH 24 w 3 36 5
+GROUP wgGw gold=100 gems=15 respawn=50 at=47,36 id=6
+CAMPH 19 w 47 36 6
+CAMPH 21 g 48 36 6
+CAMPH 23 G 47 37 6
+CAMPH 25 w 46 36 6
+GROUP w gold=40 gems=4 respawn=40 at=21,25 id=7
+CAMPH 26 w 21 25 7
+GROUP w gold=40 gems=4 respawn=40 at=28,25 id=8
+CAMPH 27 w 28 25 8
+GROUP w gold=40 gems=4 respawn=40 at=21,27 id=9
+CAMPH 28 w 21 27 9
+GROUP w gold=40 gems=4 respawn=40 at=28,27 id=10
+CAMPH 29 w 28 27 10
+GROUP w gold=40 gems=4 respawn=40 at=21,29 id=11
+CAMPH 30 w 21 29 11
+GROUP w gold=40 gems=4 respawn=40 at=28,29 id=12
+CAMPH 31 w 28 29 12
+GROUP w gold=40 gems=4 respawn=40 at=21,31 id=13
+CAMPH 32 w 21 31 13
+GROUP w gold=40 gems=4 respawn=40 at=28,31 id=14
+CAMPH 33 w 28 31 14
+GROUP eeeeeeggggGGGG gold=620 gems=118 respawn=60 at=24,18 id=15
+CAMPH 34 e 24 18 15
+CAMPH 35 e 25 18 15
+CAMPH 36 e 24 17 15
+CAMPH 37 e 25 17 15
+CAMPH 38 e 24 16 15
+CAMPH 39 e 25 16 15
+CAMPH 40 g 26 18 15
+CAMPH 41 g 23 18 15
+CAMPH 42 g 26 16 15
+CAMPH 43 g 23 16 15
+CAMPH 44 G 24 15 15
+CAMPH 45 G 25 15 15
+CAMPH 46 G 25 19 15
+CAMPH 47 G 24 19 15

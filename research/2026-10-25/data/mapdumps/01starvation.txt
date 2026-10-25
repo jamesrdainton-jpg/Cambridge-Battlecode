@@ -1,0 +1,55 @@
+SURVEY map 80x80 picks=5 altars=2 bushes=78 holes=58 spawn=1,48 espawn=76,48
+GROUP GGG gold=60 gems=0 respawn=50 at=35,76 id=0
+CAMPH 0 G 35 76 0
+CAMPH 18 G 35 75 0
+CAMPH 20 G 34 76 0
+GROUP GGG gold=60 gems=0 respawn=50 at=44,76 id=1
+CAMPH 1 G 44 76 1
+CAMPH 19 G 44 75 1
+CAMPH 21 G 45 76 1
+GROUP eeeeGGGGgggg gold=440 gems=88 respawn=60 at=39,16 id=2
+CAMPH 2 e 39 16 2
+CAMPH 3 e 40 16 2
+CAMPH 4 e 39 15 2
+CAMPH 5 e 40 15 2
+CAMPH 32 G 41 15 2
+CAMPH 33 G 38 15 2
+CAMPH 34 G 41 16 2
+CAMPH 35 G 38 16 2
+CAMPH 36 g 39 17 2
+CAMPH 37 g 40 17 2
+CAMPH 38 g 38 17 2
+CAMPH 39 g 41 17 2
+GROUP GG gold=40 gems=0 respawn=50 at=15,25 id=3
+CAMPH 6 G 15 25 3
+CAMPH 28 G 15 24 3
+GROUP GG gold=40 gems=0 respawn=50 at=64,25 id=4
+CAMPH 7 G 64 25 4
+CAMPH 29 G 64 24 4
+GROUP gggg gold=0 gems=28 respawn=50 at=39,11 id=5
+CAMPH 8 g 39 11 5
+CAMPH 9 g 40 11 5
+CAMPH 30 g 39 10 5
+CAMPH 31 g 40 10 5
+GROUP w gold=40 gems=4 respawn=40 at=26,15 id=6
+CAMPH 10 w 26 15 6
+GROUP w gold=40 gems=4 respawn=40 at=53,15 id=7
+CAMPH 11 w 53 15 7
+GROUP wGG gold=80 gems=4 respawn=50 at=4,73 id=8
+CAMPH 12 w 4 73 8
+CAMPH 22 G 4 72 8
+CAMPH 24 G 5 73 8
+GROUP wGG gold=80 gems=4 respawn=50 at=75,73 id=9
+CAMPH 13 w 75 73 9
+CAMPH 23 G 75 72 9
+CAMPH 25 G 74 73 9
+GROUP M gold=300 gems=200 respawn=150 at=29,7 id=10
+CAMPH 14 M 29 7 10
+GROUP M gold=300 gems=200 respawn=150 at=50,7 id=11
+CAMPH 15 M 50 7 11
+GROUP GG gold=40 gems=0 respawn=50 at=15,41 id=12
+CAMPH 16 G 15 41 12
+CAMPH 26 G 16 41 12
+GROUP GG gold=40 gems=0 respawn=50 at=64,41 id=13
+CAMPH 17 G 64 41 13
+CAMPH 27 G 63 41 13
