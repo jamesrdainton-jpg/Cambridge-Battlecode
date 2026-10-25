@@ -14,10 +14,10 @@ Running record of everything tried on the bot: setup, discovered game mechanics,
 | | |
 |---|---|
 | **ZIP to upload** | `submissions/cambridge-bot-latest.zip` (committed in git, so it can be downloaded from GitHub; on James's PC: `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip` after pulling) |
-| Same file as | `submissions/cambridge-bot-2026-10-19.zip` (content hash `7c7fa17be827`), built from commit `826b5cc` |
-| Bot | `bots/v12` (= `bots/mybot` with DEBUG off), 23.3 KB: `src/main.py`, `src/bot.py`, `src/draft.py`, `src/world.py` |
-| Verified | 2026-10-19 13:15 UTC: 6/6 wins vs the starter (packs, lanes, monolith) on cambc 2.2.5, no error lines |
-| New since the previous ZIP | Prompt shopping (150 gold at any health, with build and threat guards), the pro draft on 4- and 5-pick maps with early packs, melee capture on the killing blow; boss poking stays off. **45/68, +11,138 vs v10** (experiments 135–142) |
+| Same file as | `submissions/cambridge-bot-2026-10-25.zip` (content hash `e2f2efbe4ce8`), built from commit `485355a` |
+| Bot | `bots/v13` (= `bots/mybot` with DEBUG off), 24.8 KB: `src/main.py`, `src/bot.py`, `src/draft.py`, `src/world.py` |
+| Verified | 2026-10-25: 6/6 wins vs the starter (00packs, 00lanes, 00monolith) on cambc 3.0.5, no error lines |
+| New since the previous ZIP | **For engine 3.0** (the platform switched on 2026-10-20): camp stats read from the engine (fixes the crash on every golem map), no squad waiting, and the 3.0 strength draft on 4- and 5-pick maps (Vendetta, Vesper, Tavi, Marcella, + Ryth). See experiments 143–151 and `research/2026-10-25/REPORT.md` |
 
 To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submit release`, which sends `bots/release`, the same code as the ZIP (needs `cambc login` and the Avast exception).
 
@@ -25,6 +25,7 @@ To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submi
 
 | Date | ZIP | Source | What it added | Verified |
 |---|---|---|---|---|
+| 2026-10-25 | `cambridge-bot-2026-10-25.zip` | `v13` at commit `485355a` | cambc 3.0: camp stats from the engine (golem crash fix), no squad waiting, 3.0 strength draft at 4–5 picks | 2026-10-25: 6/6 wins vs the starter (00packs, 00lanes, 00monolith) on cambc 3.0.5, no error lines |
 | 2026-10-19 13:15 UTC | `cambridge-bot-2026-10-19.zip` | `v12` at commit `826b5cc` | Prompt shopping + pro draft at 4–5 picks with early packs + capture on kill (45/68, +11,138 vs v10) | 6/6 vs starter (cambc 2.2.5) |
 | 2026-10-18 19:48 UTC | `cambridge-bot-2026-10-18-2.zip` | `v10` at commit `36013cc` | v8 map fixes + fight shield + wards + cast-first | 6/6 vs starter (cambc 2.2.5) |
 | 2026-10-18 | `cambridge-bot-2026-10-18.zip` | `mybot` at commit `8cc11b8` (= `v7`) | Early gold weighting (0.4 fading by round 500) | 6/6 vs starter (cambc 2.2.2) |
@@ -343,6 +344,7 @@ Map dumps (ASCII) are in `matches/mapdumps/`.
 | 148 | `mybot`: `WAIT_LIMIT` 0, plus boss-raid flags (off): `BOSS_NEED_FRAC` (squad sizing for groups with a 5,000+ HP camp, i.e. monoliths and golems, at a higher damage tolerance than `NEED_FRAC`) and `BOSS_WAIT` (gather before engaging a boss group). With both off, `mybot` plays as `x13b`. Also found: on **01boss-battle the only altar is sealed** — every tile next to it is wall, hole or the monolith at (24,20), so nobody can tribute until that monolith dies; every local and platform game there ended 0–0 (an altar probe over all 40 maps finds no other such map) | — | Queue 16 screens boss raids and 3.0 drafts vs `x14a` (= this `mybot`) |
 | 149 | Queue 16 (`matches/queue16.sh`, commit `df70cfa`): screening vs `x14a` (= `mybot`, pro draft at 4–5 picks), seed 1, 80 games each, all 40 maps | Boss raids: `x14b` (`BOSS_NEED_FRAC` 1.0, `BOSS_WAIT` 40) **31/80, −5,367**; `x14c` (1.5, 40) **30/80, −10,895**; both lose on nearly every boss map and die 6–10% more. Drafts: `x14d` (strong teams' draft at every size: Vesper, Heart of Ruin, Vendetta; + Cassi & Issac; + Marcella) **53/80, +9,946**; **`x14e`** (4 = Vendetta, Vesper, Tavi, Marcella; 5 = + Ryth) **65/80, +27,518**: 4-pick 15/16, 5-pick 44/52; **`x14f`** (`PRO_DRAFT` off: 4 = Vendetta, Varg, Ryth, Tavi; 5 = + Marcella) **65/80, +21,305**: 4-pick 14/16, 5-pick 45/52. 3-pick maps are mirror matches for `x14e`/`x14f` (6/12, +0) | Boss raids by squad sizing rejected (the team commits before it is strong enough). **The 2.2.5 pro draft is a liability on 3.0** (Stellar, Ren, Cassi & Issac nerfed). Queue 17 confirms `x14e` vs `x14f` |
 | 150 | Queue 17 (`matches/queue17.sh`, commit `72c80e2`; variants from `mybot` with the camp-vision guard): seed-2 confirmation and head to head | `y15e` (4 = Vendetta, Vesper, Tavi, Marcella; 5 = + Ryth) vs `y15a` (pro draft) seed 2: **65/80, +23,990** (seeds 1+2: **130/160, +51,508**); `y15f` (pro draft off) seed 2: **60/80, +19,774** (seeds 1+2: 125/160); **`y15e` vs `y15f`: 103/160, +17,688** (55/80, 48/80); `y15e` unopposed economy **50,720** rounds summed over 40 maps (`x13a`: 63,921) | **Adopted: `BY_SIZE` 4 = Vendetta, Vesper, Tavi, Marcella; 5 = + Ryth; `PRO_DRAFT` off.** No early packs follows (packs only ran with Cassi & Issac or Stellar). **v13 frozen** = `mybot` with DEBUG off |
+| 151 | **v13 final check and release.** `tools/gauntlet.py v13 --vs v12 --seeds 1,2` (`matches/g_v13.log`, commit `485355a`) | **141/160, +78,724** (71/80 +40,772; 70/80 +37,952); unopposed economy **50,783** rounds summed over 40 maps; no map lost overall (worst 2/4: collision, corners, fragment, boss-battle, the-farm), 26 maps 4/4; 0 `bot error` lines in 200 games. Release: `tools/release.py --src v13 --verify` 6/6 vs the starter, content hash `e2f2efbe4ce8`, 24.8 KB | **Released** as `cambridge-bot-2026-10-25.zip` = `cambridge-bot-latest.zip`. Tool fix: `release.py --verify` now finds its three maps under the 3.0 names (`00packs` etc.); it reported MISSING games before |
 
 Tooling fix during 21: `variant.py` used to delete and re-copy the whole bot folder; a locked build cache made one copy silently empty. It now overwrites in place, verifies the source files, and the gauntlet aborts if a copy fails.
 

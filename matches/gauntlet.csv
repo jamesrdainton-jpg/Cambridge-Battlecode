@@ -97,3 +97,4 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-25 19:29,y15e[2],65/80,y15a:65/80(+23990),,y15e vs y15a seed 2 (queue 17 confirmation); cambc 3.0.5, 40 maps,72c80e2
 2026-10-25 19:35,y15f[2],60/80,y15a:60/80(+19774),,y15f vs y15a seed 2 (queue 17 confirmation); cambc 3.0.5, 40 maps,72c80e2
 2026-10-25 19:54,y15e[1,2],103/160,y15f:103/160(+17688),50720,y15e vs y15f head to head (queue 17), with economy; cambc 3.0.5, 40 maps,72c80e2
+2026-10-25 20:14,v13[1,2],141/160,v12:141/160(+78724),50783,v13 final check vs v12 (camp stats fix + WAIT_LIMIT 0 + 3.0 strength draft); cambc 3.0.5, 40 maps,485355a

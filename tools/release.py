@@ -31,7 +31,8 @@ ROOT = Path(__file__).resolve().parent.parent
 PY = sys.executable
 SUB = ROOT / "submissions"
 LATEST = SUB / "cambridge-bot-latest.zip"
-VERIFY_MAPS = "packs,lanes,monolith"
+VERIFY_MAPS = ",".join(  # packs, lanes, monolith under whatever prefix `cambc maps pull` gives them (00packs on 3.0)
+    next((p.stem for p in sorted((ROOT / "maps").glob(f"*{name}.map26a"))), name) for name in ("packs", "lanes", "monolith"))
 
 
 def git_state(src: str) -> str:
