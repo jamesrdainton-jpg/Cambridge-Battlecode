@@ -269,18 +269,22 @@ private:
 		if (roots.is_empty() || roots.is_set(pos)) return false;
 		bitboard walls = world.block | occ;
 		distance_field field;
-		bitboard visited;
+		bitboard visited, dest;
+		dest.set(pos);
 		int here = UNREACHED;
+		// compute_to stops once our tile is reached: every tile nearer the roots is already final, so the step and the
+		// dash below are the same as with a full-map search, for a fraction of the fuel (a full 100x100 search is ~30%
+		// of a C++ turn; the C++ port hit its fuel cap on 14% of big-world turns before this).
 		if (avoid && !avoid->is_empty())
 		{
 			bitboard soft = walls | (*avoid & ~roots);
 			soft.set(pos, false);
-			field.compute(soft, roots, visited);
+			field.compute_to(soft, roots, dest, visited);
 			here = field.get(pos);
 		}
 		if (here >= UNREACHED)
 		{
-			field.compute(walls, roots, visited);
+			field.compute_to(walls, roots, dest, visited);
 			here = field.get(pos);
 		}
 		if (here >= UNREACHED) return false;

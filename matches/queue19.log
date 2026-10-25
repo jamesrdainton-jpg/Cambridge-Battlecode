@@ -1,0 +1,17 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y19a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y19p
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y19h
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y19s
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y19c
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y19p_s1
+vs y19a       wins 41/80  gem margin +3414
+2026-10-25 21:29,y19p[1],41/80,y19a:41/80(+3414),,y19p vs y19a (BUILD_30 1 base); queue 19 fight-flag screening; cambc 3.0.5, 40 maps,d86eb39
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y19h_s1
+vs y19a       wins 38/80  gem margin -582
+2026-10-25 21:36,y19h[1],38/80,y19a:38/80(-582),,y19h vs y19a (BUILD_30 1 base); queue 19 fight-flag screening; cambc 3.0.5, 40 maps,d86eb39
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y19s_s1
+vs y19a       wins 28/80  gem margin -16125
+2026-10-25 21:42,y19s[1],28/80,y19a:28/80(-16125),,y19s vs y19a (BUILD_30 1 base); queue 19 fight-flag screening; cambc 3.0.5, 40 maps,d86eb39
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y19c_s1
+vs y19a       wins 38/80  gem margin +440
+2026-10-25 21:49,y19c[1],38/80,y19a:38/80(+440),,y19c vs y19a (BUILD_30 1 base); queue 19 fight-flag screening; cambc 3.0.5, 40 maps,d86eb39
