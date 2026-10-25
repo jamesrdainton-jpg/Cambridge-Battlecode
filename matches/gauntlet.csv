@@ -89,3 +89,8 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-25 17:47,x13a[1,2],82/160,v12:82/160(+674),63921,x13a = mybot@74afa8d (3.0 camp stats fix) DEBUG off; cambc 3.0.5, 40 maps,74afa8d
 2026-10-25 17:59,x13b[1,2],102/160,v12:102/160(+30718),,x13b = x13a + WAIT_LIMIT 0 (never wait for a squad); cambc 3.0.5, 40 maps,d1d7958
 2026-10-25 18:12,x13c[1,2],79/160,v12:79/160(+2491),,x13c = x13a + WAIT_LIMIT 10; cambc 3.0.5, 40 maps,d1d7958
+2026-10-25 18:19,x14b[1],31/80,x14a:31/80(-5367),,x14b vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+2026-10-25 18:25,x14c[1],30/80,x14a:30/80(-10895),,x14c vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+2026-10-25 18:29,x14d[1],53/80,x14a:53/80(+9946),,x14d vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+2026-10-25 18:33,x14e[1],65/80,x14a:65/80(+27518),,x14e vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+2026-10-25 18:37,x14f[1],65/80,x14a:65/80(+21305),,x14f vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa

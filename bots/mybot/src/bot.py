@@ -620,7 +620,12 @@ class Bot:
             g = cg.get(h)
             if g is None:
                 continue
-            hp = c.health()
+            try:
+                hp = c.health()
+            except Error:
+                # cambc 3.0: vision.camps() can list a camp whose health then raises "not in vision" (seen through our
+                # ward or a revealed bush tile); it aborted the whole turn on yellow-brick-road. Skip it this turn.
+                continue
             k = c._type
             info.append((c, g, k, g.cell_of[h], hp))
             if DEBUG and now % 7 == 0:
