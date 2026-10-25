@@ -98,3 +98,5 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-25 19:35,y15f[2],60/80,y15a:60/80(+19774),,y15f vs y15a seed 2 (queue 17 confirmation); cambc 3.0.5, 40 maps,72c80e2
 2026-10-25 19:54,y15e[1,2],103/160,y15f:103/160(+17688),50720,y15e vs y15f head to head (queue 17), with economy; cambc 3.0.5, 40 maps,72c80e2
 2026-10-25 20:14,v13[1,2],141/160,v12:141/160(+78724),50783,v13 final check vs v12 (camp stats fix + WAIT_LIMIT 0 + 3.0 strength draft); cambc 3.0.5, 40 maps,485355a
+2026-10-25 21:02,x16a[1,2],99/160,v13:99/160(+21031),48839,x16a = v13 + BUILD_30 1 (Treasure, Jungle, Bruiser stacks); cambc 3.0.5, 40 maps,54d8d5b
+2026-10-25 21:22,x16b[1,2],80/160,v13:80/160(-3287),52119,x16b = v13 + BUILD_30 2 (Treasure, then Bruiser only); cambc 3.0.5, 40 maps,d56088b

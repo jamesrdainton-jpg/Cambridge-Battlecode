@@ -1,0 +1,16 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16a_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16a_s2
+    x16a_s1 vs v13_s1: 49/80 (+8060)
+    x16a_s2 vs v13_s2: 50/80 (+12971)
+vs v13        wins 99/160  gem margin +21031
+economy (rounds to 1000 vs idle, summed over 40 maps): 48839
+2026-10-25 21:02,x16a[1,2],99/160,v13:99/160(+21031),48839,x16a = v13 + BUILD_30 1 (Treasure, Jungle, Bruiser stacks); cambc 3.0.5, 40 maps,54d8d5b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16b_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16b_s2
+    x16b_s1 vs v13_s1: 46/80 (+719)
+    x16b_s2 vs v13_s2: 34/80 (-4006)
+vs v13        wins 80/160  gem margin -3287
+economy (rounds to 1000 vs idle, summed over 40 maps): 52119
+2026-10-25 21:22,x16b[1,2],80/160,v13:80/160(-3287),52119,x16b = v13 + BUILD_30 2 (Treasure, then Bruiser only); cambc 3.0.5, 40 maps,d56088b
