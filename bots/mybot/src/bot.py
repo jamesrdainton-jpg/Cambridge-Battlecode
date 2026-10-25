@@ -46,8 +46,17 @@ MIN_SQUAD = 1
 RETARGET_EVERY = 8
 # A camp group needs enough champions that its damage over the fight stays under this share of their health.
 NEED_FRAC = 0.55
-# Turns a champion waits outside camp range for the rest of a squad before attacking anyway.
-WAIT_LIMIT = 40
+# Turns a champion waits outside camp range for the rest of a squad before attacking anyway. 0 since cambc 3.0:
+# with camp state read correctly the wait took 11-12% of all turns; never waiting won 102/160 vs v12 against the
+# fix alone's 82/160, and WAIT_LIMIT 10 did worse than 0 (queue 15, DEVLOG 146-147).
+WAIT_LIMIT = 0
+# Boss raids (cambc 3.0): a monolith pays 200 gems, 50 wolves' worth, and a golem 36 gems and 160 gold, while ordinary
+# camps now pay 3-6x less. Groups with a 5,000+ HP camp size their squad with this damage tolerance instead of
+# NEED_FRAC, so the team raids them as soon as its items allow (0 = NEED_FRAC, i.e. v12 behaviour).
+BOSS_NEED_FRAC = 0.0
+# Turns to wait for the squad before engaging a boss group (WAIT_LIMIT applies to the rest): arriving one at a time
+# at a 200-damage monolith only feeds it (0 = WAIT_LIMIT's behaviour).
+BOSS_WAIT = 0
 # Target scoring: weight of a camp's gold relative to its gems (fades to 15% of this by GOLD_TAPER; 0.4 by 500 adopted in v7),
 # and the value multiplier for camps closer to the enemy spawn than ours.
 GOLD_WEIGHT = 0.4
@@ -1299,6 +1308,7 @@ class Bot:
         n_allies = self.n_allies
         gold_w = GOLD_WEIGHT * max(0.15, 1.0 - now / GOLD_TAPER)
         need_k = 1.0 / (NEED_FRAC * self.max_hp * dps)
+        boss_k = 1.0 / (BOSS_NEED_FRAC * self.max_hp * dps) if BOSS_NEED_FRAC else need_k
         if JUNGLE_AWARE and self.jungle:
             need_k *= 0.7  # our camp damage taken is 30% lower
         # Extra damage per neighbouring camp from splash attacks and area abilities.
@@ -1354,7 +1364,7 @@ class Bot:
                 hp_left = g.hp_now if status == W.ALIVE else g.hp_max
                 need = 1
                 if g.dps:
-                    need = int((g.dps * hp_left * need_k) ** 0.5 + 0.999)
+                    need = int((g.dps * hp_left * (boss_k if g.boss else need_k)) ** 0.5 + 0.999)
                     if need > n_allies:
                         if poke_dps <= 0.0:
                             continue
@@ -1518,7 +1528,7 @@ class Bot:
             # Wait just outside camp range until enough allies have gathered.
             self.claims()
             present = max(self.ready.get(g.idx, 0), self.allies_near(cp, 5)) + 1
-            if present < need and self.wait_turns < WAIT_LIMIT:
+            if present < need and self.wait_turns < (BOSS_WAIT if g.boss else WAIT_LIMIT):
                 self.wait_turns += 1
                 self.act = "wait"
                 self.claim(g, ready=d <= 6)

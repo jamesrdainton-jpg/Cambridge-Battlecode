@@ -1,0 +1,14 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13c
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13b_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13b_s2
+    x13b_s1 vs v12_s1: 50/80 (+13448)
+    x13b_s2 vs v12_s2: 52/80 (+17270)
+vs v12        wins 102/160  gem margin +30718
+2026-10-25 17:59,x13b[1,2],102/160,v12:102/160(+30718),,x13b = x13a + WAIT_LIMIT 0 (never wait for a squad); cambc 3.0.5, 40 maps,d1d7958
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13c_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13c_s2
+    x13c_s1 vs v12_s1: 41/80 (+1826)
+    x13c_s2 vs v12_s2: 38/80 (+665)
+vs v12        wins 79/160  gem margin +2491
+2026-10-25 18:12,x13c[1,2],79/160,v12:79/160(+2491),,x13c = x13a + WAIT_LIMIT 10; cambc 3.0.5, 40 maps,d1d7958

@@ -87,3 +87,5 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-18 20:45,v11[3],31/34,meta:31/34(+11290),,v11 vs meta seed 3 (vs v10 vs meta seed 3 in session C),2fb618f
 2026-10-19 13:07,v12[1,2],45/68,v10:45/68(+11138),10504,v12 final: v10 + shop 150/any HP + pro draft 4-5 + pro packs 150 + claim on kill; poke off,826b5cc
 2026-10-25 17:47,x13a[1,2],82/160,v12:82/160(+674),63921,x13a = mybot@74afa8d (3.0 camp stats fix) DEBUG off; cambc 3.0.5, 40 maps,74afa8d
+2026-10-25 17:59,x13b[1,2],102/160,v12:102/160(+30718),,x13b = x13a + WAIT_LIMIT 0 (never wait for a squad); cambc 3.0.5, 40 maps,d1d7958
+2026-10-25 18:12,x13c[1,2],79/160,v12:79/160(+2491),,x13c = x13a + WAIT_LIMIT 10; cambc 3.0.5, 40 maps,d1d7958

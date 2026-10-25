@@ -42,7 +42,7 @@ def learn_camp(c):
 class Group:
     __slots__ = ("idx", "handle", "gold", "gems", "respawn", "kinds", "handles", "cells", "tiles",
                  "anchor", "ax", "ay", "hp_max", "dps", "status", "alive_at", "seen", "hp", "near_altar", "obj",
-                 "enemy_side", "hp_now", "lin", "cell_of", "nbrs", "cluster", "rng")
+                 "enemy_side", "hp_now", "lin", "cell_of", "nbrs", "cluster", "rng", "boss")
 
     def __init__(self, idx, obj):
         # Reads the SDK objects' attributes directly: method calls cost ~1k fuel each and this runs
@@ -62,11 +62,14 @@ class Group:
         hp_max = 0
         dps = 0
         rng = 0
+        boss = False
         for c in obj._camps:
             k = learn_camp(c)
             p = c._spawn_position
             if CAMP_STR[k] > 0 and CAMP_RNG[k] > rng:
                 rng = CAMP_RNG[k]
+            if CAMP_HP[k] >= 5000:
+                boss = True  # monolith or golem
             kinds.append(k)
             handles.append(c._handle)
             cells.append(p)
@@ -107,6 +110,8 @@ class Group:
         self.dps = dps
         # Reach of the group's damaging camps (0 when none deal damage).
         self.rng = rng
+        # Holds a monolith or golem (a camp with 5,000+ HP): sized with BOSS_NEED_FRAC and BOSS_WAIT.
+        self.boss = boss
         self.status = ALIVE
         self.alive_at = 0
         self.seen = -1
