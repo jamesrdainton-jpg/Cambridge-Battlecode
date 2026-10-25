@@ -22,6 +22,11 @@ SHARD = {  # (shard, emblem) per family/stat
     ("POWER", "H"): (IT.POWER_SHARD_OF_HEALTH, IT.POWER_EMBLEM_OF_HEALTH),
     ("JUNGLE", "H"): (IT.JUNGLE_SHARD_OF_HEALTH, IT.JUNGLE_EMBLEM_OF_HEALTH),
     ("DURABILITY", "H"): (IT.DURABILITY_SHARD_OF_HEALTH, IT.DURABILITY_EMBLEM_OF_HEALTH),
+    ("TREASURE", "S"): (IT.TREASURE_SHARD_OF_STRENGTH, IT.TREASURE_EMBLEM_OF_STRENGTH),
+    ("TREASURE", "F"): (IT.TREASURE_SHARD_OF_FOCUS, IT.TREASURE_EMBLEM_OF_FOCUS),
+    ("BRUISER", "S"): (IT.BRUISER_SHARD_OF_STRENGTH, IT.BRUISER_EMBLEM_OF_STRENGTH),
+    ("BRUISER", "F"): (IT.BRUISER_SHARD_OF_FOCUS, IT.BRUISER_EMBLEM_OF_FOCUS),
+    ("BRUISER", "H"): (IT.BRUISER_SHARD_OF_HEALTH, IT.BRUISER_EMBLEM_OF_HEALTH),
 }
 # Each stage: (family, stat, shards owned when the stage is complete).
 BUILD_STR = [("MONSTER", "S", 5), ("POWER", "S", 5), ("JUNGLE", "H", 5), ("POWER", "S", 10),
@@ -30,6 +35,21 @@ BUILD_FOCUS = [("MONSTER", "F", 5), ("POWER", "F", 5), ("JUNGLE", "H", 5), ("POW
                ("DURABILITY", "H", 5), ("POWER", "F", 30), ("POWER", "H", 30), ("POWER", "F", 60)]
 BUILD_TANK = [("JUNGLE", "H", 5), ("MONSTER", "S", 5), ("POWER", "S", 5), ("POWER", "S", 10),
               ("DURABILITY", "H", 5), ("POWER", "S", 30), ("POWER", "H", 30), ("POWER", "S", 60)]
+# cambc 3.0 builds as the top 5 teams buy them (their 25 games vs v13, 2026-10-25): a Treasure emblem first (+20% gold
+# for this champion all game; Vesper +53%), Jungle and Durability for early camps and fights, then stacked Bruiser emblems
+# (5 shards of the chosen stat + 1 of each other = 7 shards' worth per 150 gold; Power gives 6). BUILD_30: 0 = off,
+# 1 = that order, 2 = lean: Treasure, then Bruiser only.
+BUILD_30 = 0
+BUILD30_STR = [("TREASURE", "S", 5), ("JUNGLE", "H", 5), ("BRUISER", "S", 5), ("DURABILITY", "H", 5),
+               ("BRUISER", "S", 10), ("BRUISER", "H", 5), ("BRUISER", "S", 20), ("BRUISER", "H", 10),
+               ("BRUISER", "S", 30), ("BRUISER", "H", 20), ("BRUISER", "S", 60)]
+BUILD30_FOCUS = [("TREASURE", "F", 5), ("JUNGLE", "H", 5), ("BRUISER", "F", 5), ("DURABILITY", "H", 5),
+                 ("BRUISER", "F", 10), ("BRUISER", "H", 5), ("BRUISER", "F", 20), ("BRUISER", "H", 10),
+                 ("BRUISER", "F", 30), ("BRUISER", "H", 20), ("BRUISER", "F", 60)]
+BUILD30_LEAN_STR = [("TREASURE", "S", 5), ("BRUISER", "S", 5), ("BRUISER", "H", 5), ("BRUISER", "S", 10),
+                    ("BRUISER", "H", 10), ("BRUISER", "S", 20), ("BRUISER", "H", 20), ("BRUISER", "S", 60)]
+BUILD30_LEAN_FOCUS = [("TREASURE", "F", 5), ("BRUISER", "F", 5), ("BRUISER", "H", 5), ("BRUISER", "F", 10),
+                      ("BRUISER", "H", 10), ("BRUISER", "F", 20), ("BRUISER", "H", 20), ("BRUISER", "F", 60)]
 FOCUS_CHAMPS = (CT.STELLAR, CT.PRISM, CT.CASSI)
 TANK_CHAMPS = (CT.RYTH, CT.VARG, CT.MARCELLA)
 # Tanks (Ryth, Varg, Marcella) buy the Jungle health emblem (30% less camp damage) first.
@@ -228,6 +248,12 @@ class Bot:
             self.build = BUILD_TANK
         if POWER_FIRST:
             self.build = [("POWER", stat, n) if fam == "MONSTER" else (fam, stat, n) for fam, stat, n in self.build]
+        if BUILD_30:
+            focus = self.kind in FOCUS_CHAMPS
+            if BUILD_30 == 1:
+                self.build = BUILD30_FOCUS if focus else BUILD30_STR
+            else:
+                self.build = BUILD30_LEAN_FOCUS if focus else BUILD30_LEAN_STR
         self.ward_at = None
         self.splash = me.passive() == cambc.PassiveType.SPLASH_ATTACK
         self.aoe_mod = 0.0
