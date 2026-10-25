@@ -97,6 +97,20 @@ LOW_HP_REACH = 2
 # after it skipped every walking-exclusive ability (Tavi's 2.2x stun): our Tavi cast at camps 0.09 times per
 # basic attack, pros' ranged champions 0.18-0.25 (experiment 116).
 CAST_FIRST = True
+# cambc 3.0 fights. The top 5 teams' 25 games vs v13: they won 218 of 412 engagements to our 23; 55% of our deaths were
+# 1-on-1, 68% had an ally within 3 tiles, 38% never hit back and 42% died walking away. Independent fight flags:
+#  - STAND_REACH: no futile retreats: with an enemy within this many tiles (dashes reach 3, stuns 4), stepping away only
+#    gives free hits, so fight back (a melee champion closes on a ranged attacker); 0 = off. All of FIGHT30 together
+#    (stand 3 + commit 3 + help + priority) lost badly to v13 in a smoke test (fragment: 37-42 deaths vs 5-11).
+#  - FIGHT_COMMIT: after hitting an enemy champion, keep fighting this many rounds unless below 25% health; 0 = off.
+#  - HELP_CALLS: a champion with an enemy within 4 writes its tile to shared bytes 6-7 (a toggle bit marks it live);
+#    healthy allies within HELP_RANGE come and fight, and allies next to the call stand with it.
+#  - FIGHT_PRIO: champions that fought act first next round (set_priority), as all top 5 teams do.
+STAND_REACH = 0
+FIGHT_COMMIT = 0
+HELP_CALLS = False
+FIGHT_PRIO = False
+HELP_RANGE = 8
 # Cast a self-shield (Varg) during fights when an enemy champion can hit us next turn or we are losing health.
 # support() only ran while farming, so Varg shielded 0.10 times per basic attack vs strong teams' 0.18.
 FIGHT_SHIELD = True
@@ -312,6 +326,11 @@ class Bot:
         self.max_fuel_act = ""
         self.ready = {}
         self.target_need = 1
+        self.commit_until = -1
+        self.help_last = None
+        self.help_call = None
+        self.my_call = None
+        self.prio = 0
         self.world.prof.append(("bot fields", cambc.fuel_remaining()))
         # Altar distances for every group, so target choice can weigh the tribute trip.
         af = self.world.altar_field()
@@ -560,6 +579,8 @@ class Bot:
         self.mark("gathered")
         self.update_knowledge()
         self.mark("knowledge")
+        if HELP_CALLS:
+            self.help_call = self.read_help()
 
         if DEBUG and self.hp < 0.3 * self.max_hp:
             g = self.target
@@ -575,6 +596,13 @@ class Bot:
                      f"fuel={cambc.fuel_remaining()}")
         if self.enemies and self.fight():
             self.act = "fight"
+            if FIGHT_PRIO:
+                self.set_prio(10)
+            return
+        if FIGHT_PRIO:
+            self.set_prio(0)
+        if HELP_CALLS and self.answer_help():
+            self.act = "help"
             return
         if self.maybe_recall():
             self.act = "go_recall"
@@ -756,6 +784,8 @@ class Bot:
         self.near_n = len(near)
         if not near:
             return False
+        if HELP_CALLS and min(x[5] for x in near) <= 4:
+            self.call_help()
         world = self.world
         if self.zones and self.taking_damage() and self.hp < 0.5 * self.max_hp:
             closest_enemy = min(x[5] for x in near)
@@ -818,6 +848,8 @@ class Bot:
         retreat_at = FIGHT_RETREAT + extra
         engage_at = FIGHT_ENGAGE + extra
         if ratio < retreat_at or (frac < LOW_HP_RETREAT and closest <= LOW_HP_REACH):
+            if (STAND_REACH or FIGHT_COMMIT or HELP_CALLS) and self.fight30_stand(near, frac):
+                return True
             in_range = [x for x in near if x[5] <= self.rng]
             if in_range and not self.ranged and self.can_attack:
                 self.basic_attack(min(in_range, key=lambda x: x[2])[0])
@@ -837,7 +869,7 @@ class Bot:
         e, ep, d = best[0], best[1], best[5]
         if GEM_HUNT and best[6] >= 40:
             engage_at = max(retreat_at + 0.1, engage_at - GEM_HUNT)
-        engage = ratio >= engage_at
+        engage = ratio >= engage_at or (FIGHT_COMMIT and self.now < self.commit_until)
         if d <= self.rng:
             self.hit(e, ep, champion=True)
             return True
@@ -905,6 +937,8 @@ class Bot:
 
     def hit(self, unit, upos, champion):
         """Basic attack, attack reset and offensive cast on a unit in range (ranged champions cast first if CAST_FIRST)."""
+        if FIGHT_COMMIT and champion:
+            self.commit_until = self.now + FIGHT_COMMIT
         if CC_FIRST and champion:
             self.cast_offense(unit, upos, champion=True, kinds=(K_AOE, K_CC))
         if CAST_FIRST and self.ranged:
@@ -915,6 +949,80 @@ class Bot:
             self.basic_attack(unit)
             self.use_reset(unit)
             self.cast_offense(unit, upos, champion=champion)
+
+    def fight30_stand(self, near, frac):
+        """STAND_REACH / FIGHT_COMMIT / HELP_CALLS: fight back instead of retreating when an enemy is close enough that stepping away can't avoid its
+        hits, when committed to a fight, or when an ally next to us called for help. Returns True if it acted."""
+        dmin = min(x[5] for x in near)
+        committed = FIGHT_COMMIT and self.now < self.commit_until and frac >= 0.25
+        trapped = STAND_REACH and dmin <= STAND_REACH
+        call = self.help_call
+        helping = HELP_CALLS and call is not None and call != self.my_call and cheb(call, self.pos) <= 3 and frac >= 0.5
+        if not (committed or trapped or helping):
+            return False
+        if DEBUG:
+            self.why = f"stand committed={committed} trapped={trapped} helping={helping}"
+        in_range = [x for x in near if x[5] <= self.rng]
+        if in_range:
+            x = min(in_range, key=lambda x: x[2])
+            self.hit(x[0], x[1], champion=True)
+            return True
+        tgt = min(near, key=lambda x: (x[5], x[2]))
+        if not self.ranged or tgt[5] <= self.rng + 1:
+            roots = Bitboard()
+            roots.draw_chebyshev(tgt[1], self.rng)
+            self.go(roots, allow_dash=not self.ranged)
+            if cheb(tgt[1], self.pos) <= self.rng:
+                if self.basic_attack(tgt[0]):
+                    self.use_reset(tgt[0])
+            return True
+        return False
+
+    def call_help(self):
+        """HELP_CALLS: publish this tile in shared bytes 6-7 (x + 1; y with bit 7 toggled every round = live)."""
+        try:
+            mem = cambc.shared_memory
+            mem[6] = self.pos.x + 1
+            mem[7] = (self.pos.y & 127) | ((self.now & 1) << 7)
+            self.my_call = Vec2(self.pos.x, self.pos.y)
+        except Exception:  # noqa: BLE001
+            pass
+
+    def read_help(self):
+        """HELP_CALLS: the latest live help call (a tile), or None. A call is live while its writer keeps toggling it."""
+        try:
+            mem = cambc.shared_memory
+            x = mem[6]
+            v = mem[7]
+        except Exception:  # noqa: BLE001
+            return None
+        last = self.help_last
+        self.help_last = v
+        if x == 0 or v == last:
+            return None
+        return Vec2(x - 1, v & 127)
+
+    def answer_help(self):
+        """HELP_CALLS: walk towards a live help call within HELP_RANGE when healthy and not carrying many gems."""
+        c = self.help_call
+        if c is None or c == self.my_call or self.gems >= 40 or self.hp < 0.5 * self.max_hp:
+            return False
+        d = cheb(c, self.pos)
+        if d <= 1 or d > HELP_RANGE:
+            return False
+        roots = Bitboard()
+        roots.draw_chebyshev(c, 1)
+        roots &= ~self.world.block
+        return self.go(roots, allow_dash=True, avoid=self.danger())
+
+    def set_prio(self, p):
+        """FIGHT_PRIO: act first next round while fighting (higher priority goes first within the team)."""
+        if p != self.prio:
+            try:
+                self.me.set_priority(p)
+                self.prio = p
+            except Error:
+                pass
 
     def shield_up(self, closest):
         """Cast a ready self-shield when an enemy champion can hit us next turn or something is hurting us."""
