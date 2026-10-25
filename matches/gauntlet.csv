@@ -105,3 +105,7 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-25 21:42,y19s[1],28/80,y19a:28/80(-16125),,y19s vs y19a (BUILD_30 1 base); queue 19 fight-flag screening; cambc 3.0.5, 40 maps,d86eb39
 2026-10-25 21:49,y19c[1],38/80,y19a:38/80(+440),,y19c vs y19a (BUILD_30 1 base); queue 19 fight-flag screening; cambc 3.0.5, 40 maps,d86eb39
 2026-10-25 21:57,cpp13[1,2],72/160,v13:72/160(-6561),51592,cpp13 (C++ port of v13) vs v13 parity; cambc 3.0.5, 40 maps,43e2942
+2026-10-25 22:04,y21g[1],38/80,y21a:38/80(-2670),,y21g = BUILD_30 1 + SHOP_GOLD 90 vs y21a; queue 21; cambc 3.0.5, 40 maps,231df60
+2026-10-25 22:08,y21w[1],39/80,y21a:39/80(-585),,y21w = BUILD_30 1 + GOLD_WEIGHT 0.8 vs y21a; queue 21; cambc 3.0.5, 40 maps,231df60
+2026-10-25 22:12,y19p[2],46/80,y19a:46/80(+8702),,y19p (FIGHT_PRIO) vs y19a seed 2 confirmation; queue 21; cambc 3.0.5, 40 maps,231df60
+2026-10-25 22:13,cpp13[1,2],0/160,v13:0/160(+0),0,cpp13 (C++ port, go() with compute_to) vs v13 parity; cambc 3.0.5, 40 maps,231df60

@@ -269,8 +269,8 @@ private:
 		if (roots.is_empty() || roots.is_set(pos)) return false;
 		bitboard walls = world.block | occ;
 		distance_field field;
-		bitboard visited, dest;
-		dest.set(pos);
+		bitboard visited, stop_at;
+		stop_at.set(pos);
 		int here = UNREACHED;
 		// compute_to stops once our tile is reached: every tile nearer the roots is already final, so the step and the
 		// dash below are the same as with a full-map search, for a fraction of the fuel (a full 100x100 search is ~30%
@@ -279,12 +279,12 @@ private:
 		{
 			bitboard soft = walls | (*avoid & ~roots);
 			soft.set(pos, false);
-			field.compute_to(soft, roots, dest, visited);
+			field.compute_to(soft, roots, stop_at, visited);
 			here = field.get(pos);
 		}
 		if (here >= UNREACHED)
 		{
-			field.compute_to(walls, roots, dest, visited);
+			field.compute_to(walls, roots, stop_at, visited);
 			here = field.get(pos);
 		}
 		if (here >= UNREACHED) return false;
@@ -587,6 +587,8 @@ private:
 			vec2 ep;
 			try
 			{
+				// Out-of-vision enemies throw on position(); C++ exceptions cost ~4k fuel each in wasm, so ask first.
+				if (!e.is_visible()) continue;
 				ep = e.position();
 			}
 			catch (const cambc::error&)
@@ -632,6 +634,7 @@ private:
 		{
 			try
 			{
+				if (!a.is_visible()) continue;
 				vec2 ap = a.position();
 				if (cheb(ap, pos) > ALLY_RANGE) continue;
 				double ahp = a.health();
@@ -1032,7 +1035,7 @@ private:
 				{
 					try
 					{
-						if (cheb(al.position(), pos) > 4) continue;
+						if (!al.is_visible() || cheb(al.position(), pos) > 4) continue;
 						double missing = al.max_health() - al.health();
 						if (missing > 150 && (!best || missing > best_missing))
 						{
@@ -1264,7 +1267,7 @@ private:
 		bitboard roots, visited;
 		roots.set(pos);
 		field.compute(world.block, roots, visited);
-		auto dist = field.export_linear_buffer();
+		// Per-group get() calls (~80 fuel each) instead of exporting the whole field (10,000 values on 100x100).
 		auto cl = claims();
 		double dps = dps_now;
 		double gold_w = GOLD_WEIGHT * std::max(0.15, 1.0 - static_cast<double>(now) / GOLD_TAPER);
@@ -1288,7 +1291,7 @@ private:
 				else if (g.alive_at - now > 120)
 					continue;
 			}
-			int d = dist[static_cast<std::size_t>(g.lin)];
+			int d = field.get(g.anchor);
 			bool via = false;
 			if (recall_ok)
 			{
@@ -1401,7 +1404,7 @@ private:
 			{
 				try
 				{
-					if (grp.tiles.is_set(a.position()))
+					if (a.is_visible() && grp.tiles.is_set(a.position()))
 					{
 						target = choose_target(g);
 						claim(target);
@@ -1573,7 +1576,7 @@ private:
 		{
 			try
 			{
-				if (cheb(a.position(), p) <= r) ++n;
+				if (a.is_visible() && cheb(a.position(), p) <= r) ++n;
 			}
 			catch (const cambc::error&)
 			{

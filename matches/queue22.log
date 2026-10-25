@@ -1,0 +1,7 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\cpp13_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\cpp13_s2
+    cpp13_s1 vs v13_s1: 0/80 (+0)
+    cpp13_s2 vs v13_s2: 0/80 (+0)
+vs v13        wins 0/160  gem margin +0
+economy (rounds to 1000 vs idle, summed over 40 maps): 0
+2026-10-25 22:13,cpp13[1,2],0/160,v13:0/160(+0),0,cpp13 (C++ port, go() with compute_to) vs v13 parity; cambc 3.0.5, 40 maps,231df60
