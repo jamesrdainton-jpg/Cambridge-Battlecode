@@ -636,12 +636,13 @@ class Bot:
         zones = {}
         if awake:
             camp_str = W.CAMP_STR
+            camp_rng = W.CAMP_RNG
             for c, g, k, p, hp in info:
                 if g.idx in awake and camp_str[k] > 0:
                     z = zones.get(g.idx)
                     if z is None:
                         z = zones[g.idx] = Bitboard()
-                    z.draw_chebyshev(p, 3)
+                    z.draw_chebyshev(p, camp_rng[k])  # 3 for wolves; elks and golems 4, monoliths 5 (cambc 3.0)
         self.zones = zones
         # Groups in view whose camps are not: cleared (reward waiting) or respawning.
         vis = None
@@ -1521,14 +1522,18 @@ class Bot:
                 self.wait_turns += 1
                 self.act = "wait"
                 self.claim(g, ready=d <= 6)
-                self.cast_offense(camp, cp, champion=False)
-                if d <= 3:
-                    self.step_away(cp, 4)
-                elif d > 4:
+                reach = g.rng if g.rng > 0 else 3
+                if d > reach:
+                    # Poke only from outside the camps' reach (abilities reach 4: wolves yes; elks, golems and
+                    # monoliths reach 4-5 since cambc 3.0, so a lone caster would wake them and take the hits).
+                    self.cast_offense(camp, cp, champion=False)
+                if d <= reach:
+                    self.step_away(cp, reach + 1)
+                elif d > reach + 1:
                     roots = Bitboard()
-                    roots.draw_chebyshev(cp, 4)
+                    roots.draw_chebyshev(cp, reach + 1)
                     inner = Bitboard()
-                    inner.draw_chebyshev(cp, 3)
+                    inner.draw_chebyshev(cp, reach)
                     roots &= ~(inner | self.world.block | self.world.all_camp_tiles)
                     self.go(roots)
                 return

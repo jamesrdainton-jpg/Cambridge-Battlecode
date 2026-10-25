@@ -37,7 +37,8 @@ from pathlib import Path
 
 from common import ROOT
 
-PICKS = ["Ryth", "Vesper", "Vendetta", "Cassi&Issac", "Stellar", "Prism", "Marcella", "Willow", "Ren", "Varg", "Tavi"]
+PICKS = ["Ryth", "Vesper", "Vendetta", "Cassi&Issac", "Stellar", "Prism", "Marcella", "Willow", "Ren", "Varg", "Tavi",
+         "HeartOfRuin"]  # Heart of Ruin: new in cambc 3.0
 FAMILIES = ["Monster", "Power", "Durability", "Treasure", "Jungle", "Home", "Bruiser"]
 ITEMS = [f"{fam} {stat} {kind}" for fam in FAMILIES for stat in ("S", "F", "H") for kind in ("shard", "emblem")]
 PAYLOAD = {0: 4, 1: 8, 2: 9, 3: 17, 4: 0, 5: 8, 6: 8, 7: 0, 8: 8, 9: 9, 10: 8, 11: 4}

@@ -13,15 +13,36 @@ ALIVE = 0      # camps believed alive
 REWARD = 1     # all camps dead, reward waiting for a capture
 RESPAWN = 2    # captured; respawns at alive_at
 
-WOLF, ELK, GEM, GOLD, MONOLITH = 0, 1, 2, 3, 4
-CAMP_HP = (1350, 2400, 500, 500, 20000)
-CAMP_STR = (20, 60, 0, 0, 200)
+WOLF, ELK, GEM, GOLD, MONOLITH, GOLEM = 0, 1, 2, 3, 4, 5
+# Camp health, strength and attack range per camp kind, read from the engine's camp designs the first time a kind is
+# seen. cambc 3.0 changed them (gem and gold clusters 500 -> 120 HP, elk range 4, monolith range 5) and added the golem
+# (kind 5: 5,000 HP, 120 strength, range 4); v12's fixed 5-entry tuples raised IndexError on every map with a golem,
+# so the whole team stood still all game.
+CAMP_HP = {}
+CAMP_STR = {}
+CAMP_RNG = {}
+
+
+def learn_camp(c):
+    """Return the camp's kind, recording its design stats on first sight (one engine call per kind)."""
+    k = c._type
+    if k not in CAMP_HP:
+        try:
+            s = c.base_stats()
+            CAMP_HP[k] = s.base_health
+            CAMP_STR[k] = s.base_strength
+            CAMP_RNG[k] = s.base_attack_range
+        except Exception:  # noqa: BLE001 - unknown kind: assume a boss, never crash
+            CAMP_HP[k] = 5000.0
+            CAMP_STR[k] = 120.0
+            CAMP_RNG[k] = 4
+    return k
 
 
 class Group:
     __slots__ = ("idx", "handle", "gold", "gems", "respawn", "kinds", "handles", "cells", "tiles",
                  "anchor", "ax", "ay", "hp_max", "dps", "status", "alive_at", "seen", "hp", "near_altar", "obj",
-                 "enemy_side", "hp_now", "lin", "cell_of", "nbrs", "cluster")
+                 "enemy_side", "hp_now", "lin", "cell_of", "nbrs", "cluster", "rng")
 
     def __init__(self, idx, obj):
         # Reads the SDK objects' attributes directly: method calls cost ~1k fuel each and this runs
@@ -40,9 +61,12 @@ class Group:
         tiles = Bitboard()
         hp_max = 0
         dps = 0
+        rng = 0
         for c in obj._camps:
-            k = c._type
+            k = learn_camp(c)
             p = c._spawn_position
+            if CAMP_STR[k] > 0 and CAMP_RNG[k] > rng:
+                rng = CAMP_RNG[k]
             kinds.append(k)
             handles.append(c._handle)
             cells.append(p)
@@ -81,6 +105,8 @@ class Group:
         self.hp_max = hp_max
         self.hp_now = hp_max
         self.dps = dps
+        # Reach of the group's damaging camps (0 when none deal damage).
+        self.rng = rng
         self.status = ALIVE
         self.alive_at = 0
         self.seen = -1
