@@ -94,3 +94,6 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-25 18:29,x14d[1],53/80,x14a:53/80(+9946),,x14d vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
 2026-10-25 18:33,x14e[1],65/80,x14a:65/80(+27518),,x14e vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
 2026-10-25 18:37,x14f[1],65/80,x14a:65/80(+21305),,x14f vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+2026-10-25 19:29,y15e[2],65/80,y15a:65/80(+23990),,y15e vs y15a seed 2 (queue 17 confirmation); cambc 3.0.5, 40 maps,72c80e2
+2026-10-25 19:35,y15f[2],60/80,y15a:60/80(+19774),,y15f vs y15a seed 2 (queue 17 confirmation); cambc 3.0.5, 40 maps,72c80e2
+2026-10-25 19:54,y15e[1,2],103/160,y15f:103/160(+17688),50720,y15e vs y15f head to head (queue 17), with economy; cambc 3.0.5, 40 maps,72c80e2
