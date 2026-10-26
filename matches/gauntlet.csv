@@ -118,3 +118,5 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-26 12:54,c26g[1,2,3,4],17/24,c26b:17/24(-451),,c26g (LOCKED_GOLD, C++) vs c26b, altar-locked maps only; queue 26; cambc 4.0.0 maps=01boss-battle,02guardians,02the-pack,9f156ee
 2026-10-26 13:03,z26g[2],85/140,v13:85/140(+10065),,z26g = BUILD_30 4 + FIGHT_PRIO + LOCKED_GOLD vs v13 seed 2; queue 26; cambc 4.0.0, 70 maps,88ebd09
 2026-10-26 13:12,c26g[1,2],138/280,z26g:138/280(-4221),,c26g vs z26g: same flags, C++ vs Python; queue 26; cambc 4.0.0, 70 maps,88ebd09
+2026-10-26 20:49,c28i[1,2],66/280,c28b:66/280(-72085),,c28i (Intercontinental/Mite draft) vs c28b (v14 draft); queue 28; cambc 4.0.0, 70 maps, C++,f9540df
+2026-10-26 20:51,c28t[1,2],106/280,c28b:106/280(-21493),,c28t (Trzy Kwaterki draft) vs c28b (v14 draft); queue 28; cambc 4.0.0, 70 maps, C++,f9540df

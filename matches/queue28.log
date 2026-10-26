@@ -1,0 +1,15 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c28b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c28i
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c28t
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c28i_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c28i_s2
+    c28i_s1 vs c28b_s1: 35/140 (-37394)
+    c28i_s2 vs c28b_s2: 31/140 (-34691)
+vs c28b       wins 66/280  gem margin -72085
+2026-10-26 20:49,c28i[1,2],66/280,c28b:66/280(-72085),,c28i (Intercontinental/Mite draft) vs c28b (v14 draft); queue 28; cambc 4.0.0, 70 maps, C++,f9540df
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c28t_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c28t_s2
+    c28t_s1 vs c28b_s1: 54/140 (-10481)
+    c28t_s2 vs c28b_s2: 52/140 (-11012)
+vs c28b       wins 106/280  gem margin -21493
+2026-10-26 20:51,c28t[1,2],106/280,c28b:106/280(-21493),,c28t (Trzy Kwaterki draft) vs c28b (v14 draft); queue 28; cambc 4.0.0, 70 maps, C++,f9540df
