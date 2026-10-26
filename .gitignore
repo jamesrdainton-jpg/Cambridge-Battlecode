@@ -43,3 +43,5 @@ bots/*/target/
 submissions/
 !bots/cpp14/
 !bots/cpp15/
+!bots/cpp16/
+!bots/cpp17/

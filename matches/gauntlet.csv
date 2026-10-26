@@ -151,3 +151,6 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-26 22:06,c34q[1],56/140,c29b:56/140(-12829),,c34q (looser ball) vs c29b (v14); queue 34; cambc 4.0.0, 70 maps, C++,bef84a7
 2026-10-26 22:07,c35s[1],34/140,c29b:34/140(-30800),,c35s (survivor candidate) vs c29b (v14); queue 35; cambc 4.0.0, 70 maps, C++,c697351
 2026-10-26 22:09,c35p[1],26/140,c29b:26/140(-37903),,c35p (survivor candidate) vs c29b (v14); queue 35; cambc 4.0.0, 70 maps, C++,c697351
+2026-10-26 22:10,c36r[1],58/140,c29b:58/140(-9388),,c36r (moderate caution) vs c29b (v14); queue 36; cambc 4.0.0, 70 maps, C++,58c6bcd
+2026-10-26 22:12,c36re[1],50/140,c29b:50/140(-22734),,c36re (moderate caution) vs c29b (v14); queue 36; cambc 4.0.0, 70 maps, C++,58c6bcd
+2026-10-26 22:13,c36rm[1],39/140,c29b:39/140(-20356),,c36rm (moderate caution) vs c29b (v14); queue 36; cambc 4.0.0, 70 maps, C++,58c6bcd
