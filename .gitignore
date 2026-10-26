@@ -41,3 +41,4 @@ bots/*/target/
 
 # Packaged bot uploads
 submissions/
+!bots/cpp14/

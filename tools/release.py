@@ -1,6 +1,6 @@
 """Package the best bot as an upload ZIP and print where it is.
 
-Usage: python tools/release.py [--src mybot] [--verify] [--check]
+Usage: python tools/release.py [--src cpp13] [--verify] [--check]   (cpp13 = the C++ main bot since 2026-10-26)
 
 1. Copies bots/<src> into bots/release with DEBUG off (tools/variant.py); refuses unless SEED = 0.
 2. Bundles it with `cambc bundle` as submissions/cambridge-bot-YYYY-MM-DD.zip (a different release
@@ -33,6 +33,22 @@ SUB = ROOT / "submissions"
 LATEST = SUB / "cambridge-bot-latest.zip"
 VERIFY_MAPS = ",".join(  # packs, lanes, monolith under whatever prefix `cambc maps pull` gives them (00packs on 3.0)
     next((p.stem for p in sorted((ROOT / "maps").glob(f"*{name}.map26a"))), name) for name in ("packs", "lanes", "monolith"))
+
+
+def release_errors() -> int:
+    """Error lines printed by the release itself in the verification games (the starter's own prints don't count:
+    it reports its rejected moves as "bot error")."""
+    n = 0
+    for bundle in (ROOT / "matches" / "arena" / "release-vs-starter").glob("*.repl26a"):
+        side = "a" if bundle.stem.endswith("-1") else "b"  # tools/arena.py: game 1 puts the first bot (release) on team A
+        try:
+            with zipfile.ZipFile(bundle) as z:
+                text = z.read(f"team-{side}.stdout").decode(errors="replace")
+        except (KeyError, zipfile.BadZipFile):
+            n += 1  # a missing log counts as a failure
+            continue
+        n += sum(1 for line in text.splitlines() if "error" in line.lower() or "traceback" in line.lower())
+    return n
 
 
 def git_state(src: str) -> str:
@@ -106,7 +122,7 @@ def problems(path: Path, src: str) -> list[str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--src", default="mybot", help="bot folder to release (default: mybot)")
+    parser.add_argument("--src", default="cpp13", help="bot folder to release (default: cpp13, the C++ main bot)")
     parser.add_argument("--verify", action="store_true", help="also play 6 games vs the starter")
     parser.add_argument("--check", action="store_true", help="only check that the latest ZIP is current")
     args = parser.parse_args()
@@ -163,7 +179,7 @@ def main() -> None:
                               "--logs"], cwd=ROOT, check=False, capture_output=True, text=True).stdout
         print(out.rstrip())
         m = re.search(r"^release\s+wins\s+(\d+)/(\d+)", out, re.MULTILINE)
-        errors = sum(int(n) for n in re.findall(r"errlines=(\d+)", out))
+        errors = release_errors()
         if not m or m.group(1) != m.group(2) or m.group(2) == "0" or errors:
             raise SystemExit(f"verification FAILED (wins {m.group(0) if m else 'n/a'}, error lines {errors}); "
                              f"the ZIP was still written to {dated}")
