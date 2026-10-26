@@ -199,8 +199,32 @@ public:
 	void turn()
 	{
 		act = "?";
+		if (RECALL_TRICK && trick_recall)
+		{
+			// Started at the end of last turn only to be standing in a recall (as Mite and Trzy Kwaterki do every turn).
+			trick_recall = false;
+			try
+			{
+				if (me.state().contains(cambc::champion_state::recalling)) me.cancel_recall();  // damage may have ended it
+			}
+			catch (const std::exception&)
+			{
+			}
+		}
 		_turn();
 		if (WARDS && act != "dead" && act != "recall" && act != "submit" && act != "tp" && act != "?") ward_bush();
+		if (RECALL_TRICK && act != "dead" && act != "recall" && act != "submit" && act != "tp" && act != "go_recall" &&
+			act != "recall_travel")
+		{
+			try
+			{
+				me.recall();
+				trick_recall = true;
+			}
+			catch (const cambc::error&)
+			{
+			}
+		}
 	}
 
 	void end()
@@ -235,6 +259,7 @@ private:
 	int stun_dash{ -1 };  // META_PLAY: slot of a dash that damages and stuns around its landing tile (Heart of Ruin)
 	bool cc_camp_ok{};    // META_PLAY: a pure stun may target the camp being attacked (it hits back)
 	int partner_slot{ -1 };  // META_PAIR: Cassi's partner Issac (shared-memory slot); she takes his target
+	bool trick_recall{};     // RECALL_TRICK: a recall we started at the end of last turn, to cancel now
 	bool fragile{};          // META_CASSI: Cassi (600 HP) waits for a tank at camps and leaves fights at half health
 	int target{ -1 };
 	int target_round{ -100 };

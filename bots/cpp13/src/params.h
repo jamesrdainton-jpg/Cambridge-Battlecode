@@ -43,6 +43,9 @@ inline constexpr int BALL_RADIUS = 4;
 // BALL_SIZE: squads of this many consecutive slots (2 = pairs; 99 = the whole team); BALL_UNTIL: only before this round.
 inline constexpr int BALL_SIZE = 99;
 inline constexpr int BALL_UNTIL = 2000;
+// RECALL_TRICK: start a recall at the end of every turn and cancel it at the start of the next (Mite 90% and Trzy
+// Kwaterki 76% of their turns end in a recall; Intercontinental Fish doesn't). Effect unknown: tested by results.
+inline constexpr bool RECALL_TRICK = false;
 inline constexpr double ENEMY_SIDE = 0.85;
 
 // Fights.
