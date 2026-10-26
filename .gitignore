@@ -32,6 +32,7 @@ bots/*
 !bots/v14/
 !bots/cpp13/
 !bots/cpp14/
+!bots/cpp15/
 !bots/meta/
 !bots/starter/
 !bots/idle/

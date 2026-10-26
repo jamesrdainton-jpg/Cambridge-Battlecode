@@ -163,7 +163,9 @@ def main() -> None:
                               "--logs"], cwd=ROOT, check=False, capture_output=True, text=True).stdout
         print(out.rstrip())
         m = re.search(r"^release\s+wins\s+(\d+)/(\d+)", out, re.MULTILINE)
-        errors = sum(int(n) for n in re.findall(r"errlines=(\d+)", out))
+        # Only the release's own error lines count (the cambc 4.0 starter logs errors of its own).
+        errors = sum(int(ea if a == "release" else eb)
+                     for a, ea, eb in re.findall(r"A=(\S+).*errA=(\d+) errB=(\d+)", out))
         if not m or m.group(1) != m.group(2) or m.group(2) == "0" or errors:
             raise SystemExit(f"verification FAILED (wins {m.group(0) if m else 'n/a'}, error lines {errors}); "
                              f"the ZIP was still written to {dated}")

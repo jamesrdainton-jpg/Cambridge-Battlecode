@@ -19,7 +19,7 @@ inline constexpr double GOLD_WEIGHT = 0.4;
 inline constexpr int GOLD_TAPER = 500;
 // Gold first in the opening (VS-TOP5-v14.md 2.3: the top teams open on wolves and gold clusters): until EARLY_UNTIL,
 // gold is weighted EARLY_GOLD instead of GOLD_WEIGHT. 0 = off.
-inline constexpr double EARLY_GOLD = 0.0;
+inline constexpr double EARLY_GOLD = 1.5;
 inline constexpr int EARLY_UNTIL = 150;
 // Maps where no altar can be reached without killing a camp first (play_draft() works it out and passes it through
 // draft memory): target gold only and never walk to an altar; the round limit decides on lifetime gold (as bot.py).
@@ -46,18 +46,18 @@ inline constexpr int HELP_RANGE = 8;
 inline constexpr double FIGHT_RESPECT = 1.0;
 // Heart of Ruin's dash as an attack: landed on camp clusters while farming, onto enemies to open a fight we want or to
 // finish a champion, its damage counted in profiles; no travel dash within 6 tiles of the destination.
-inline constexpr bool HOR_DASH = false;
+inline constexpr bool HOR_DASH = true;
 // Step out of an enemy's reach instead of holding still when the ratio is between FIGHT_RETREAT and FIGHT_ENGAGE and
 // nothing of ours can hit back (fight() used to return without acting).
 inline constexpr bool HOLD_FIX = false;
 // Print one "F ..." line per fight decision (bot.h tele()); printing only, no change to play.
-inline constexpr bool TELEMETRY = false;
+inline constexpr bool TELEMETRY = true;
 
 // Draft (draft.h): 0 = v13/v14 (3: Vendetta, Ryth, Tavi; 4: Vendetta, Vesper, Tavi, Marcella; 5: + Ryth);
 // 1 = top-team consensus (3: Vendetta, Heart of Ruin, Vesper; 4: + Marcella; 5: + Ryth);
 // 2 = Marcella core (3: Marcella, Vendetta, Heart of Ruin; 4: + Vesper; 5: + Ryth).
 // 3 = 1 on 3-pick maps, 0 on 4- and 5-pick maps; 4 = 2 on 3-pick maps, 0 on 4- and 5-pick maps.
-inline constexpr int DRAFT_SET = 0;
+inline constexpr int DRAFT_SET = 4;
 
 // Camps, captures, vision.
 inline constexpr bool CLAIM_ON_KILL = true;

@@ -1,0 +1,7 @@
+created /home/user/Cambridge-Battlecode/bots/z15_s1
+created /home/user/Cambridge-Battlecode/bots/z15_s2
+    z15_s1 vs cpp14_s1: 79/140 (+4523)
+    z15_s2 vs cpp14_s2: 77/140 (+7282)
+vs cpp14      wins 156/280  gem margin +11805
+2026-10-26 14:34,z15[1,2],156/280,cpp14:156/280(+11805),,z15 = HOR_DASH + DRAFT_SET 4 + EARLY_GOLD 1.5 + TELEMETRY vs cpp14 (release candidate); queue 30; cambc 4.0.0, 70 maps,79081b1
+QUEUE30 DONE

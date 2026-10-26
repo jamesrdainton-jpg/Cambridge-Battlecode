@@ -113,8 +113,10 @@ def main() -> None:
             gem_txt = f"gems~{sb[2]}-{sb[1]}@{sb[0]}"
             gems[a] += sb[2]
             gems[b] += sb[1]
-        errs = sum(1 for line in (out_a + out_b).splitlines() if "error" in line.lower())
-        print(f"{mp:10} A={a:<9} B={b:<9} {status:<22} round={rnd:>4} {gem_txt:<22} errlines={errs}")
+        err_a = sum(1 for line in out_a.splitlines() if "error" in line.lower())
+        err_b = sum(1 for line in out_b.splitlines() if "error" in line.lower())
+        print(f"{mp:10} A={a:<9} B={b:<9} {status:<22} round={rnd:>4} {gem_txt:<22} errlines={err_a + err_b} "
+              f"errA={err_a} errB={err_b}")
         if args.logs:
             for side, text in (("a", out_a), ("b", out_b)):
                 shown = 0

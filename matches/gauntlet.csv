@@ -127,3 +127,4 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-26 14:23,zho[1,2],137/280,cpp14:137/280(-1835),,zho = HOLD_FIX vs cpp14; queue 29; cambc 4.0.0, 70 maps,c61c2c1
 2026-10-26 14:25,zg[2],75/140,cpp14:75/140(+6478),,zg = EARLY_GOLD 1.5 to r150 vs cpp14, seed 2; queue 29; cambc 4.0.0, 70 maps,c61c2c1
 2026-10-26 14:29,zc[1,2],144/280,cpp14:144/280(+7262),,zc = HOR_DASH + DRAFT_SET 4 + EARLY_GOLD 1.5 + HOLD_FIX + TELEMETRY vs cpp14; queue 29; cambc 4.0.0, 70 maps,c61c2c1
+2026-10-26 14:34,z15[1,2],156/280,cpp14:156/280(+11805),,z15 = HOR_DASH + DRAFT_SET 4 + EARLY_GOLD 1.5 + TELEMETRY vs cpp14 (release candidate); queue 30; cambc 4.0.0, 70 maps,79081b1
