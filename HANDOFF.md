@@ -20,8 +20,8 @@ State as of **2026-10-26 evening** (C++ only, cpp15; DEVLOG rows 164–169). Bef
   4. **`TELEMETRY`**: one `F` line per fight decision in our stdout (no change to play). **Platform match downloads
      keep it**, so `research/2026-10-26/tools/fightcal.py` can measure which fight ratios we die at against real teams.
 - **Local results** (C++ vs C++, 70 maps, both sides): **cpp15 vs cpp14 156/280, +11,805** (79/140, 77/140); its parts:
-  `HOR_DASH` + `DRAFT_SET` 4 149/280 +9,309, `EARLY_GOLD` 148/280 +6,696. Queue 31 plays cpp15 against the uploaded
-  Python v14 (result in DEVLOG 169 when finished).
+  `HOR_DASH` + `DRAFT_SET` 4 149/280 +9,309, `EARLY_GOLD` 148/280 +6,696. **cpp15 vs the uploaded Python v14: 82/140,
+  +5,193** (seed 1; 3-pick maps 16/24).
 - **Why we still lose to the top 5** ([research/2026-10-26/VS-TOP5-v14.md](research/2026-10-26/VS-TOP5-v14.md); v14
   went 0/25): our champions are dead ~22% of the game (theirs ~2%), we win 14 of 197 decided engagements, and by
   round 300 they have spent 1,408 gold to our 447. **The draft is not the main cause**: the same champions die ~10× as
