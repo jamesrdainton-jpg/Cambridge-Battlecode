@@ -29,6 +29,8 @@ inline constexpr int META_DRAFT = 0;
 // META_BUILD: Heart of Ruin buys the focus build (Bruiser F/H, as the top teams); META_PAIR: Cassi takes Issac's target.
 inline constexpr bool META_BUILD = false;
 inline constexpr bool META_PAIR = false;
+// META_STUN_COMMIT (needs META_PLAY): champions within 4 of a stunned enemy engage it whatever the fight ratio.
+inline constexpr bool META_STUN_COMMIT = false;
 inline constexpr double ENEMY_SIDE = 0.85;
 
 // Fights.

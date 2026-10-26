@@ -730,6 +730,7 @@ private:
 			}
 		}
 		bool engage = ratio >= engage_at || (FIGHT_COMMIT != 0 && now < commit_until);
+		if (META_STUN_COMMIT && best->stunned && best->d <= 4 && frac >= LOW_HP_RETREAT) engage = true;  // pile onto a stunned enemy
 		if (META_PLAY && stun_dash >= 0 && (engage || best->hp <= 2 * burst_dmg))
 		{
 			std::vector<vec2> tg;
