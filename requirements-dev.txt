@@ -1,6 +1,6 @@
 # Local dev tooling only. Bots run on an embedded Python 3.13 with just the
 # standard library, so nothing here can be imported from bots/*/src.
-cambc==3.0.5        # official CLI: run matches, view replays, submit
+cambc==4.0.0        # official CLI: run matches, view replays, submit
 pyright[nodejs]     # type-check bots against sdk/python stubs
 ruff                # lint + format
 pytest              # unit tests for pure helper logic
