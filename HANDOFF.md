@@ -1,8 +1,48 @@
 # Handover — Cambridge Battlecode 2026 bot
 
-State as of **2026-10-26** (patch 4.0, v14; DEVLOG rows 158–162). Before that, **2026-10-25** (engine 3.0 diagnosis, v13; DEVLOG rows 143 onwards; report: [research/2026-10-25/REPORT.md](research/2026-10-25/REPORT.md)). Before that: v12 from the 2026-10-19 research report (rows 135–142), the 2026-10-18 sprint (rows 120–134) and the 2026-10-16 platform-data session (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md).
+State as of **2026-10-26 evening** (C++ only, cpp15; DEVLOG rows 164–169). Before that, **2026-10-26** (patch 4.0, v14; DEVLOG rows 158–163). Before that, **2026-10-25** (engine 3.0 diagnosis, v13; DEVLOG rows 143 onwards; report: [research/2026-10-25/REPORT.md](research/2026-10-25/REPORT.md)). Before that: v12 from the 2026-10-19 research report (rows 135–142), the 2026-10-18 sprint (rows 120–134) and the 2026-10-16 platform-data session (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md).
 
 **Team rule:** more than one person works on this repo, each on their own computer, so every result must be reproducible on a different computer from a git commit. Commit code before testing it, record the commit and the exact command, keep queue scripts and `matches\gauntlet.csv` in git, and use the pinned cambc with the committed maps. Details are in the "Team rule" section near the top of DEVLOG.md.
+
+## 2026-10-26 (evening): C++ from now on; cpp15 released; why the top teams draft differently
+
+- **We are C++ only now (the user's decision).** Work in `bots/cpp13` (the working copy; tunables in `src/params.h`);
+  frozen versions are `bots/cpp14` (= v14 in C++, the test baseline) and **`bots/cpp15` (the upload)**. The Python bots
+  stay for reference.
+- **Upload: `submissions/cambridge-bot-latest.zip` = `cambridge-bot-2026-10-26-2.zip` = cpp15**, content hash
+  `7baf9ebb2055`, 19.8 KB, built from commit `93c5759`, verified 6/6 vs the starter with none of our own error lines.
+  **cpp15 = cpp14 + `HOR_DASH` + `DRAFT_SET` 4 + `EARLY_GOLD` 1.5 + `TELEMETRY`** (DEVLOG 166–169):
+  1. **`HOR_DASH`**: Heart of Ruin's dash is an attack (1.5× focus and a stun on everything within 1 tile of the
+     landing): aimed at the target group's camps while farming, at enemies to open a fight we want or finish one.
+  2. **`DRAFT_SET` 4**: on 3-pick maps Marcella, Vendetta, Heart of Ruin (was Vendetta, Ryth, Tavi); 4–5 picks unchanged.
+  3. **`EARLY_GOLD` 1.5**: gold weighted 1.5 (was 0.4) until round 150, so the opening takes wolves and gold clusters as
+     the top teams do (first shard r64 instead of r75 locally).
+  4. **`TELEMETRY`**: one `F` line per fight decision in our stdout (no change to play). **Platform match downloads
+     keep it**, so `research/2026-10-26/tools/fightcal.py` can measure which fight ratios we die at against real teams.
+- **Local results** (C++ vs C++, 70 maps, both sides): **cpp15 vs cpp14 156/280, +11,805** (79/140, 77/140); its parts:
+  `HOR_DASH` + `DRAFT_SET` 4 149/280 +9,309, `EARLY_GOLD` 148/280 +6,696. Queue 31 plays cpp15 against the uploaded
+  Python v14 (result in DEVLOG 169 when finished).
+- **Why we still lose to the top 5** ([research/2026-10-26/VS-TOP5-v14.md](research/2026-10-26/VS-TOP5-v14.md); v14
+  went 0/25): our champions are dead ~22% of the game (theirs ~2%), we win 14 of 197 decided engagements, and by
+  round 300 they have spent 1,408 gold to our 447. **The draft is not the main cause**: the same champions die ~10× as
+  often in our hands. Their picks (Heart of Ruin 84%, Vendetta 80%, Vesper 76%, Marcella 75%, Tavi 10%) follow from
+  gold and fights: gold champions, mobility (three dashers), a stun-immune tank, and Heart of Ruin's dash, which our
+  code used only for walking. Our draft came from self-play, which can only reward what our code knows how to use.
+- **Tested and not adopted:** the top-5 consensus draft on every map (62/140 with `HOR_DASH`, 36/140 without),
+  Marcella core on every map (67/140), `FIGHT_RESPECT` 1.5 (58/140 — expected to lose against our own bot, which
+  over-rates itself the same way; only platform data can judge it), `HOLD_FIX` (137/280, noise).
+- **Next, in order:**
+  1. **Upload cpp15 and scrimmage the top 5** (5 groups, as for v14). Compare with VS-TOP5-v14.md: deaths per 100
+     rounds (1.61), gold spent by r300 (447), engagements won (14/197), 3-pick map results.
+  2. **Run `fightcal.py` on those downloads.** Locally (vs ourselves) the ratio barely predicts deaths: 14% die within
+     10 rounds below ratio 0.5, and a flat 6–10% at every higher ratio, 9.8% at 1.3–2.0. Against the top 5 it will be
+     worse; use the curve to set `FIGHT_RESPECT` / `FIGHT_RETREAT` / `FIGHT_ENGAGE` from data instead of self-play.
+  3. Model what the ratio ignores: enemy stuns and shields, dash reach (Vesper, Vendetta, Heart of Ruin), Marcella's
+     stun immunity (our Tavi and Ryth stuns do nothing to her).
+  4. If cpp15 does better on 3-pick maps on the platform, try `DRAFT_SET` 2 (Marcella core everywhere) as a scrimmage
+     A/B: `cambc submissions activate N` switches versions.
+- **Cloud machines:** cambc can't download its C++ toolchain through the session proxy (TLS); fetch wasi-sdk 33, cmake
+  3.31.8 and ninja 1.12.1 with curl into `~/.cache/cambc/` (DEVLOG 165). `tools/gauntlet.py --jobs 6` on 4 cores.
 
 ## 2026-10-26 (afternoon): patch 4.0; v14 released
 
