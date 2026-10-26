@@ -233,6 +233,10 @@ private:
 	std::optional<vec2> help_call, my_call;
 	int prio{};
 	std::optional<vec2> aoe_pos;
+	// TELEMETRY: the last fight decision (tag, ratio, enemies in view, closest reach gap), printed by tele().
+	char ftag{}, ftag_last{};
+	double fratio{};
+	int fnear{}, fclose{}, tele_round{ -100 };
 	int choice_round{ -1 };
 	std::vector<Scored> choice;
 	std::vector<CampInfo> camp_info;
@@ -429,6 +433,7 @@ private:
 		if (HELP_CALLS) help_call = read_help();
 		if (!enemies.empty() && fight())
 		{
+			if (TELEMETRY) tele();
 			act = "fight";
 			if (FIGHT_PRIO) set_prio(10);
 			return;
@@ -625,6 +630,7 @@ private:
 			}
 		}
 		if (near.empty()) return false;
+		ftag = 0;
 		int dmin = 999;
 		for (const auto& x : near) dmin = std::min(dmin, x.d);
 		if (HELP_CALLS && dmin <= 4) call_help();
@@ -635,7 +641,7 @@ private:
 			{
 				bitboard zone;
 				for (const auto& x : near) zone.draw_chebyshev(x.p, static_cast<float>(x.rng + 1));
-				if (escape(&zone)) return true;
+				if (escape(&zone)) return tag('Z');
 			}
 		}
 		double our_hp = hp, our_dps = dps_now;
@@ -669,6 +675,9 @@ private:
 		if (cheb(pos, world.enemy_spawn_center) <= 7) ratio *= 0.6;
 		int closest = 999;
 		for (const auto& x : near) closest = std::min(closest, x.d - x.rng);
+		fratio = ratio;
+		fnear = static_cast<int>(near.size());
+		fclose = closest;
 		double frac = hp / max_hp;
 		double burst_dmg = burst();
 		for (auto& x : near)
@@ -676,7 +685,7 @@ private:
 			if (x.d <= rng && x.hp <= burst_dmg)
 			{
 				hit_champion(x.e, x.p);
-				return true;
+				return tag('K');
 			}
 		}
 		if (dash_ready())
@@ -688,7 +697,7 @@ private:
 				if (l && dash_to(*l))
 				{
 					if (cheb(x.p, pos) <= rng) hit_champion(x.e, x.p);
-					return true;
+					return tag('D');
 				}
 			}
 		}
@@ -697,7 +706,7 @@ private:
 		double retreat_at = FIGHT_RETREAT + extra, engage_at = FIGHT_ENGAGE + extra;
 		if (ratio < retreat_at || (frac < LOW_HP_RETREAT && closest <= LOW_HP_REACH))
 		{
-			if ((STAND_REACH != 0 || FIGHT_COMMIT != 0 || HELP_CALLS) && fight30_stand(near, frac)) return true;
+			if ((STAND_REACH != 0 || FIGHT_COMMIT != 0 || HELP_CALLS) && fight30_stand(near, frac)) return tag('F');
 			if (!ranged && can_attack)
 			{
 				const Near* weakest = nullptr;
@@ -706,7 +715,7 @@ private:
 				if (weakest) basic_attack_champion(weakest->e);
 			}
 			retreat(near);
-			return true;
+			return tag('R');
 		}
 		const Near* best = &near[0];
 		double best_v = -1.0;
@@ -725,7 +734,7 @@ private:
 		if (best->d <= rng)
 		{
 			hit_champion(best->e, best->p);
-			return true;
+			return tag('H');
 		}
 		const Near* weakest = nullptr;
 		for (const auto& x : near)
@@ -734,7 +743,7 @@ private:
 		{
 			if (basic_attack_champion(weakest->e)) use_reset_champion(weakest->e);
 		}
-		if (cast_offense_champion(best->e, best->p) && !engage) return true;
+		if (cast_offense_champion(best->e, best->p) && !engage) return tag('C');
 		if (engage && best->d <= 5 && cheb(best->p, world.enemy_spawn_center) > 3)
 		{
 			if (dash_ready() && best->d <= ab[dash_slot].range + ab[dash_slot].radius)
@@ -746,7 +755,7 @@ private:
 				{
 					basic_attack_champion(best->e);
 					use_reset_champion(best->e);
-					return true;
+					return tag('X');
 				}
 			}
 			bitboard roots;
@@ -757,9 +766,19 @@ private:
 				basic_attack_champion(best->e);
 				use_reset_champion(best->e);
 			}
-			return true;
+			return tag('E');
 		}
-		if (!engage && closest <= 2) return true;
+		if (!engage && closest <= 2)
+		{
+			// HOLD_FIX: holding still inside an enemy's reach with nothing of ours in range just takes free hits (a melee
+			// champion facing a ranged one between the retreat and engage ratios); step out of their reach instead.
+			if (HOLD_FIX && closest <= 0 && !weakest)
+			{
+				retreat(near);
+				return tag('O');
+			}
+			return tag('S');
+		}
 		return false;
 	}
 
@@ -834,6 +853,25 @@ private:
 		roots &= ~world.block;
 		auto dz = danger(-1);
 		return go(roots, true, dz ? &*dz : nullptr);
+	}
+
+	bool tag(char c)
+	{
+		ftag = c;
+		return true;
+	}
+
+	// One line per fight decision, throttled (a new tag, or 4 rounds since the last line):
+	// "F round slot kind tag ratio*100 hp% enemies allies-in-range reach-gap gems". Platform stdout is kept in the
+	// match download, so scrimmages against the top teams show which ratios we die at.
+	void tele()
+	{
+		if (!ftag || (ftag == ftag_last && now - tele_round < 4)) return;
+		ftag_last = ftag;
+		tele_round = now;
+		int al = allies_near(pos, ALLY_RANGE);
+		std::cout << "F " << now << ' ' << slot << ' ' << static_cast<int>(kind) << ' ' << ftag << ' ' << static_cast<int>(fratio * 100) << ' '
+				  << static_cast<int>(100 * hp / max_hp) << ' ' << fnear << ' ' << al << ' ' << fclose << ' ' << gems << '\n';
 	}
 
 	void set_prio(int p)

@@ -47,6 +47,11 @@ inline constexpr double FIGHT_RESPECT = 1.0;
 // Heart of Ruin's dash as an attack: landed on camp clusters while farming, onto enemies to open a fight we want or to
 // finish a champion, its damage counted in profiles; no travel dash within 6 tiles of the destination.
 inline constexpr bool HOR_DASH = false;
+// Step out of an enemy's reach instead of holding still when the ratio is between FIGHT_RETREAT and FIGHT_ENGAGE and
+// nothing of ours can hit back (fight() used to return without acting).
+inline constexpr bool HOLD_FIX = false;
+// Print one "F ..." line per fight decision (bot.h tele()); printing only, no change to play.
+inline constexpr bool TELEMETRY = false;
 
 // Draft (draft.h): 0 = v13/v14 (3: Vendetta, Ryth, Tavi; 4: Vendetta, Vesper, Tavi, Marcella; 5: + Ryth);
 // 1 = top-team consensus (3: Vendetta, Heart of Ruin, Vesper; 4: + Marcella; 5: + Ryth);
