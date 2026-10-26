@@ -1,0 +1,23 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c32a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c32b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c32v
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c32m
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c32t
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c32a_s1
+vs c29b       wins 79/140  gem margin +4341
+2026-10-26 21:25,c32a[1],79/140,c29b:79/140(+4341),,c32a (meta play round 4) vs c29b (v14); queue 32; cambc 4.0.0, 70 maps, C++,71610bc+dirty
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c32b_s1
+vs c29b       wins 79/140  gem margin +3501
+2026-10-26 21:27,c32b[1],79/140,c29b:79/140(+3501),,c32b (meta play round 4) vs c29b (v14); queue 32; cambc 4.0.0, 70 maps, C++,d22488a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c32v_s1
+vs c29b       wins 70/140  gem margin +2401
+2026-10-26 21:28,c32v[1],70/140,c29b:70/140(+2401),,c32v (meta play round 4) vs c29b (v14); queue 32; cambc 4.0.0, 70 maps, C++,d22488a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c32m_s1
+vs c29b       wins 46/140  gem margin -22677
+2026-10-26 21:29,c32m[1],46/140,c29b:46/140(-22677),,c32m (meta play round 4) vs c29b (v14); queue 32; cambc 4.0.0, 70 maps, C++,d22488a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c32t_s1
+vs c29b       wins 59/140  gem margin -3464
+2026-10-26 21:31,c32t[1],59/140,c29b:59/140(-3464),,c32t (meta play round 4) vs c29b (v14); queue 32; cambc 4.0.0, 70 maps, C++,d22488a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c31b_s2
+vs c29b       wins 75/140  gem margin -310
+2026-10-26 21:32,c31b[2],75/140,c29b:75/140(-310),,c31b vs c29b (v14) seed 2 confirmation; queue 32; cambc 4.0.0, 70 maps, C++,d22488a
