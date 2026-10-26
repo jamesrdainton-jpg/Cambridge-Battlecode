@@ -1,0 +1,16 @@
+created /home/user/Cambridge-Battlecode/bots/zh1_s1
+vs cpp14      wins 62/140  gem margin -8330
+2026-10-26 14:07,zh1[1],62/140,cpp14:62/140(-8330),,zh1 = HOR_DASH + DRAFT_SET 1 vs cpp14; queue 28; cambc 4.0.0, 70 maps,c2eaa3d
+created /home/user/Cambridge-Battlecode/bots/zd1_s1
+vs cpp14      wins 36/140  gem margin -29111
+2026-10-26 14:09,zd1[1],36/140,cpp14:36/140(-29111),,zd1 = DRAFT_SET 1 vs cpp14; queue 28; cambc 4.0.0, 70 maps,c2eaa3d+dirty
+created /home/user/Cambridge-Battlecode/bots/zh2_s1
+vs cpp14      wins 67/140  gem margin -481
+2026-10-26 14:11,zh2[1],67/140,cpp14:67/140(-481),,zh2 = HOR_DASH + DRAFT_SET 2 vs cpp14; queue 28; cambc 4.0.0, 70 maps,4ae9e37
+created /home/user/Cambridge-Battlecode/bots/zg_s1
+vs cpp14      wins 73/140  gem margin +218
+2026-10-26 14:13,zg[1],73/140,cpp14:73/140(+218),,zg = EARLY_GOLD 1.5 to r150 vs cpp14; queue 28; cambc 4.0.0, 70 maps,4ae9e37
+created /home/user/Cambridge-Battlecode/bots/zr_s1
+vs cpp14      wins 58/140  gem margin -9254
+2026-10-26 14:14,zr[1],58/140,cpp14:58/140(-9254),,zr = FIGHT_RESPECT 1.5 vs cpp14; queue 28; cambc 4.0.0, 70 maps,4ae9e37
+QUEUE28 DONE

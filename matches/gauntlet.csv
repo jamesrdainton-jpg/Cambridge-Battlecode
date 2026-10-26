@@ -118,3 +118,8 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-26 12:54,c26g[1,2,3,4],17/24,c26b:17/24(-451),,c26g (LOCKED_GOLD, C++) vs c26b, altar-locked maps only; queue 26; cambc 4.0.0 maps=01boss-battle,02guardians,02the-pack,9f156ee
 2026-10-26 13:03,z26g[2],85/140,v13:85/140(+10065),,z26g = BUILD_30 4 + FIGHT_PRIO + LOCKED_GOLD vs v13 seed 2; queue 26; cambc 4.0.0, 70 maps,88ebd09
 2026-10-26 13:12,c26g[1,2],138/280,z26g:138/280(-4221),,c26g vs z26g: same flags, C++ vs Python; queue 26; cambc 4.0.0, 70 maps,88ebd09
+2026-10-26 14:07,zh1[1],62/140,cpp14:62/140(-8330),,zh1 = HOR_DASH + DRAFT_SET 1 vs cpp14; queue 28; cambc 4.0.0, 70 maps,c2eaa3d
+2026-10-26 14:09,zd1[1],36/140,cpp14:36/140(-29111),,zd1 = DRAFT_SET 1 vs cpp14; queue 28; cambc 4.0.0, 70 maps,c2eaa3d+dirty
+2026-10-26 14:11,zh2[1],67/140,cpp14:67/140(-481),,zh2 = HOR_DASH + DRAFT_SET 2 vs cpp14; queue 28; cambc 4.0.0, 70 maps,4ae9e37
+2026-10-26 14:13,zg[1],73/140,cpp14:73/140(+218),,zg = EARLY_GOLD 1.5 to r150 vs cpp14; queue 28; cambc 4.0.0, 70 maps,4ae9e37
+2026-10-26 14:14,zr[1],58/140,cpp14:58/140(-9254),,zr = FIGHT_RESPECT 1.5 vs cpp14; queue 28; cambc 4.0.0, 70 maps,4ae9e37

@@ -56,7 +56,7 @@ inline constexpr bool TELEMETRY = false;
 // Draft (draft.h): 0 = v13/v14 (3: Vendetta, Ryth, Tavi; 4: Vendetta, Vesper, Tavi, Marcella; 5: + Ryth);
 // 1 = top-team consensus (3: Vendetta, Heart of Ruin, Vesper; 4: + Marcella; 5: + Ryth);
 // 2 = Marcella core (3: Marcella, Vendetta, Heart of Ruin; 4: + Vesper; 5: + Ryth).
-// 3 = 1 on 3-pick maps, 0 on 4- and 5-pick maps.
+// 3 = 1 on 3-pick maps, 0 on 4- and 5-pick maps; 4 = 2 on 3-pick maps, 0 on 4- and 5-pick maps.
 inline constexpr int DRAFT_SET = 0;
 
 // Camps, captures, vision.
