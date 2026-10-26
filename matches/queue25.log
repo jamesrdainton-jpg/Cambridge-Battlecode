@@ -1,0 +1,20 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z25a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z25c
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z25m
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z25p
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c25a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z25a_s1
+vs v13        wins 86/140  gem margin +12395
+2026-10-26 12:02,z25a[1],86/140,v13:86/140(+12395),,z25a = BUILD_30 1 + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,1007f7b+dirty
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z25c_s1
+vs v13        wins 87/140  gem margin +14524
+2026-10-26 12:16,z25c[1],87/140,v13:87/140(+14524),,z25c = BUILD_30 3 (Capture first) + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,1007f7b+dirty
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z25m_s1
+vs v13        wins 97/140  gem margin +19696
+2026-10-26 12:29,z25m[1],97/140,v13:97/140(+19696),,z25m = BUILD_30 4 (Monster first) + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,00f020c
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z25p_s1
+vs v13        wins 87/140  gem margin +13192
+2026-10-26 12:41,z25p[1],87/140,v13:87/140(+13192),,z25p = BUILD_30 5 (Prospector first) + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,00f020c
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c25a_s1
+vs v13        wins 82/140  gem margin +9599
+2026-10-26 12:46,c25a[1],82/140,v13:82/140(+9599),,c25a = C++ + BUILD_30 1 + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,9bb95f8
