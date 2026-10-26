@@ -109,3 +109,10 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-25 22:08,y21w[1],39/80,y21a:39/80(-585),,y21w = BUILD_30 1 + GOLD_WEIGHT 0.8 vs y21a; queue 21; cambc 3.0.5, 40 maps,231df60
 2026-10-25 22:12,y19p[2],46/80,y19a:46/80(+8702),,y19p (FIGHT_PRIO) vs y19a seed 2 confirmation; queue 21; cambc 3.0.5, 40 maps,231df60
 2026-10-25 22:13,cpp13[1,2],0/160,v13:0/160(+0),0,cpp13 (C++ port, go() with compute_to) vs v13 parity; cambc 3.0.5, 40 maps,231df60
+2026-10-26 12:02,z25a[1],86/140,v13:86/140(+12395),,z25a = BUILD_30 1 + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,1007f7b+dirty
+2026-10-26 12:16,z25c[1],87/140,v13:87/140(+14524),,z25c = BUILD_30 3 (Capture first) + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,1007f7b+dirty
+2026-10-26 12:29,z25m[1],97/140,v13:97/140(+19696),,z25m = BUILD_30 4 (Monster first) + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,00f020c
+2026-10-26 12:41,z25p[1],87/140,v13:87/140(+13192),,z25p = BUILD_30 5 (Prospector first) + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,00f020c
+2026-10-26 12:46,c25a[1],82/140,v13:82/140(+9599),,c25a = C++ + BUILD_30 1 + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,9bb95f8
+2026-10-26 12:52,z26g[1,2,3,4],19/24,z26b:19/24(-243),,z26g (LOCKED_GOLD) vs z26b, altar-locked maps only; queue 26; cambc 4.0.0 maps=01boss-battle,02guardians,02the-pack,9f156ee
+2026-10-26 12:54,c26g[1,2,3,4],17/24,c26b:17/24(-451),,c26g (LOCKED_GOLD, C++) vs c26b, altar-locked maps only; queue 26; cambc 4.0.0 maps=01boss-battle,02guardians,02the-pack,9f156ee

@@ -19,7 +19,7 @@ inline constexpr double GOLD_WEIGHT = 0.4;
 inline constexpr int GOLD_TAPER = 500;
 // Maps where no altar can be reached without killing a camp first (play_draft() works it out and passes it through
 // draft memory): target gold only and never walk to an altar; the round limit decides on lifetime gold (as bot.py).
-inline constexpr bool LOCKED_GOLD = false;
+inline constexpr bool LOCKED_GOLD = true;
 inline constexpr double ENEMY_SIDE = 0.85;
 
 // Fights.
@@ -35,7 +35,7 @@ inline constexpr bool IGNORE_SPAWN_CAMPERS = true;
 inline constexpr int STAND_REACH = 0;
 inline constexpr int FIGHT_COMMIT = 0;
 inline constexpr bool HELP_CALLS = false;
-inline constexpr bool FIGHT_PRIO = false;
+inline constexpr bool FIGHT_PRIO = true;
 inline constexpr int HELP_RANGE = 8;
 
 // Camps, captures, vision.
@@ -54,5 +54,5 @@ inline constexpr double SHOP_HP = 1.01;
 inline constexpr bool SHOP_SAFE = true;
 // Item builds: 0 = v13's (Monster, Power, Jungle, Durability), 1 = Treasure, Jungle, Bruiser stacks (the top teams'),
 // 2 = Treasure, then Bruiser only; 3/4/5 = 1 opening with Capture, Monster or Prospector instead of Treasure (cambc 4.0).
-inline constexpr int BUILD_30 = 0;
+inline constexpr int BUILD_30 = 4;
 } // namespace bot

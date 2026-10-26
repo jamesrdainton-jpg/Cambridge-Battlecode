@@ -44,7 +44,7 @@ BUILD_TANK = [("JUNGLE", "H", 5), ("MONSTER", "S", 5), ("POWER", "S", 5), ("POWE
 # for this champion all game; Vesper +53%), Jungle and Durability for early camps and fights, then stacked Bruiser emblems
 # (5 shards of the chosen stat + 1 of each other = 7 shards' worth per 150 gold; Power gives 6). BUILD_30: 0 = off,
 # 1 = that order, 2 = lean: Treasure, then Bruiser only.
-BUILD_30 = 0
+BUILD_30 = 4
 BUILD30_STR = [("TREASURE", "S", 5), ("JUNGLE", "H", 5), ("BRUISER", "S", 5), ("DURABILITY", "H", 5),
                ("BRUISER", "S", 10), ("BRUISER", "H", 5), ("BRUISER", "S", 20), ("BRUISER", "H", 10),
                ("BRUISER", "S", 30), ("BRUISER", "H", 20), ("BRUISER", "S", 60)]
@@ -117,7 +117,7 @@ CAST_FIRST = True
 STAND_REACH = 0
 FIGHT_COMMIT = 0
 HELP_CALLS = False
-FIGHT_PRIO = False
+FIGHT_PRIO = True
 HELP_RANGE = 8
 # Cast a self-shield (Varg) during fights when an enemy champion can hit us next turn or we are losing health.
 # support() only ran while farming, so Varg shielded 0.10 times per basic attack vs strong teams' 0.18.
@@ -178,7 +178,7 @@ GOLD_TAPER = 500
 # Maps where no altar can be reached without killing a camp first (draft.py works it out and passes it through draft
 # memory: 01boss-battle, 02guardians, 02the-pack): nobody tributes until a boss falls and the round limit decides on
 # lifetime gold earned, so target gold only and never walk to an altar.
-LOCKED_GOLD = False
+LOCKED_GOLD = True
 # Platform telemetry with DEBUG off: "T DIED" per death and "T ACTS" activity counts every 250 rounds.
 # Printing only, so decisions are unchanged.
 TELEMETRY = False

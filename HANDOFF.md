@@ -1,8 +1,16 @@
 # Handover — Cambridge Battlecode 2026 bot
 
-State as of **2026-10-25** (engine 3.0 diagnosis, v13; DEVLOG rows 143 onwards; report: [research/2026-10-25/REPORT.md](research/2026-10-25/REPORT.md)). Before that: v12 from the 2026-10-19 research report (rows 135–142), the 2026-10-18 sprint (rows 120–134) and the 2026-10-16 platform-data session (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md).
+State as of **2026-10-26** (patch 4.0, v14; DEVLOG rows 158–162). Before that, **2026-10-25** (engine 3.0 diagnosis, v13; DEVLOG rows 143 onwards; report: [research/2026-10-25/REPORT.md](research/2026-10-25/REPORT.md)). Before that: v12 from the 2026-10-19 research report (rows 135–142), the 2026-10-18 sprint (rows 120–134) and the 2026-10-16 platform-data session (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md).
 
 **Team rule:** more than one person works on this repo, each on their own computer, so every result must be reproducible on a different computer from a git commit. Commit code before testing it, record the commit and the exact command, keep queue scripts and `matches\gauntlet.csv` in git, and use the pinned cambc with the committed maps. Details are in the "Team rule" section near the top of DEVLOG.md.
+
+## 2026-10-26 (afternoon): patch 4.0; v14 released
+
+- **Platform moved to engine 2.0.0 / cambc CLI 4.0.0** (patch notes and engine-measured stats: [research/2026-10-26/PATCH-NOTES-4.0.md](research/2026-10-26/PATCH-NOTES-4.0.md)); the repo is on cambc 4.0.0 with the **70-map pool**. Treasure was halved (+10% gold); seven new emblem families.
+- **v14** (`bots/v14`, ZIP `submissions/cambridge-bot-2026-10-26.zip`, hash `ff8acacbefc7`; **upload it**): Monster-first build (`BUILD_30` 4; queue 25: Monster 97/140 vs v13, Treasure 86, Capture 87, Prospector 87), turn priority while fighting, **00vault fix** (both bots used to stall at the walled 343-gem vault: they refused to stand on dead camp tiles), and **gold mode** on 01boss-battle, 02guardians and 02the-pack, where no altar can be reached without killing a monolith or a 48-wolf ring and the round limit decides on lifetime gold (19/24 vs without). DEVLOG 160–162.
+- **C++** (`bots/cpp13`, same defaults as v14): fuel-capped turns now 0.02%; queue 25: 82/140 vs v13 against 86/140 for the same flags in Python (noise level). **Unfinished:** the C++ vs Python head-to-head (`c26g` vs `z26g`, queue 26) and the seed-2 check; if C++ is at least equal, release it with `tools/release.py --src cpp13 --verify` (freeze as a new folder first). Queue 27 (`matches/queue27.sh`, draft after the Vesper nerf) is ready to run.
+- **Replay parsers** read the header version (u16 major/minor at offsets 8/10; 4.0 = (2,0)). Terrain probe: `research/2026-10-26/tools/terrain_probe.py`.
+- **Next:** upload v14, scrimmage the top 5 and compare with VS-TOP5.md; contest big captures (on 00vault our champions clear the vault and the enemy captures it); fights.
 
 ## 2026-10-26: why we lose to the top teams; v14 in progress; C++ port
 
