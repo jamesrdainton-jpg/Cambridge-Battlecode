@@ -177,6 +177,7 @@ public:
 		remote_shop = kind == cambc::champion_type::tavi;
 		for (int i = 0; i < 2; ++i)
 			if (ab[i].kind == K_DASH && ab[i].radius > 0 && ab[i].duration > 0) stun_dash = i;
+		fragile = META_CASSI && kind == cambc::champion_type::cassi;
 		if (META_PAIR && kind == cambc::champion_type::cassi)
 		{
 			for (const auto& c : cambc::champions(team::ally))
@@ -233,6 +234,7 @@ private:
 	int stun_dash{ -1 };  // META_PLAY: slot of a dash that damages and stuns around its landing tile (Heart of Ruin)
 	bool cc_camp_ok{};    // META_PLAY: a pure stun may target the camp being attacked (it hits back)
 	int partner_slot{ -1 };  // META_PAIR: Cassi's partner Issac (shared-memory slot); she takes his target
+	bool fragile{};          // META_CASSI: Cassi (600 HP) waits for a tank at camps and leaves fights at half health
 	int target{ -1 };
 	int target_round{ -100 };
 	std::optional<double> last_hp;
@@ -702,7 +704,7 @@ private:
 		if (FIGHT_SHIELD) shield_up(closest);
 		double extra = gems >= 20 ? FIGHT_GEM_EXTRA : 0.0;
 		double retreat_at = FIGHT_RETREAT + extra, engage_at = FIGHT_ENGAGE + extra;
-		if (ratio < retreat_at || (frac < LOW_HP_RETREAT && closest <= LOW_HP_REACH))
+		if (ratio < retreat_at || (frac < (fragile ? 0.5 : LOW_HP_RETREAT) && closest <= LOW_HP_REACH))
 		{
 			if ((STAND_REACH != 0 || FIGHT_COMMIT != 0 || HELP_CALLS) && fight30_stand(near, frac)) return true;
 			if (!ranged && can_attack)
@@ -1540,11 +1542,12 @@ private:
 		aoe_pos = aoe;
 		int d = cheb(cp, pos);
 		int need = target_need;
+		if (fragile && g.dps > 0) need = std::max(need, 2);  // META_CASSI: let a sturdier ally take the camp hits
 		if (need > 1 && !is_awake)
 		{
 			claims();
 			int present = std::max(ready[g.idx], allies_near(cp, 5)) + 1;
-			if (present < need && wait_turns < (g.boss ? BOSS_WAIT : WAIT_LIMIT))
+			if (present < need && wait_turns < (fragile ? 20 : g.boss ? BOSS_WAIT : WAIT_LIMIT))
 			{
 				++wait_turns;
 				act = "wait";
@@ -1579,7 +1582,7 @@ private:
 				}
 			if (dash_stun(tg, strong ? 1 : 2, cp)) d = cheb(cp, pos);
 		}
-		if (hp < 0.35 * max_hp && taking_damage() && (g.dps > 0 || !zones.empty()))
+		if (hp < (fragile ? 0.6 : 0.35) * max_hp && taking_damage() && (g.dps > 0 || !zones.empty()))
 		{
 			if (ranged && d <= 4) cast_offense(camp, cp, false);
 			if (!escape(nullptr)) step_away(cp, 4);

@@ -31,6 +31,8 @@ inline constexpr bool META_BUILD = false;
 inline constexpr bool META_PAIR = false;
 // META_STUN_COMMIT (needs META_PLAY): champions within 4 of a stunned enemy engage it whatever the fight ratio.
 inline constexpr bool META_STUN_COMMIT = false;
+// META_CASSI: Cassi waits (up to 20 turns) outside camp reach until an ally is at the camp, and retreats at 50-60% health.
+inline constexpr bool META_CASSI = false;
 inline constexpr double ENEMY_SIDE = 0.85;
 
 // Fights.
