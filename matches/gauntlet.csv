@@ -125,3 +125,8 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-26 21:06,c29h[1],67/140,c29b:67/140(-814),,c29h (meta play) vs c29b (v14); queue 29; cambc 4.0.0, 70 maps, C++,ff35962
 2026-10-26 21:08,c29s[1],68/140,c29b:68/140(+1713),,c29s (meta play) vs c29b (v14); queue 29; cambc 4.0.0, 70 maps, C++,ff35962
 2026-10-26 21:09,c29a[1],46/140,c29b:46/140(-19365),,c29a (meta play) vs c29b (v14); queue 29; cambc 4.0.0, 70 maps, C++,ff35962
+2026-10-26 21:11,c30h[1],66/140,c29b:66/140(-4937),,c30h (meta play round 2) vs c29b (v14); queue 30; cambc 4.0.0, 70 maps, C++,ebcb0fa+dirty
+2026-10-26 21:12,c30hb[1],73/140,c29b:73/140(+3718),,c30hb (meta play round 2) vs c29b (v14); queue 30; cambc 4.0.0, 70 maps, C++,06906bf
+2026-10-26 21:13,c30t[1],57/140,c29b:57/140(-10021),,c30t (meta play round 2) vs c29b (v14); queue 30; cambc 4.0.0, 70 maps, C++,06906bf
+2026-10-26 21:15,c30tb[1],61/140,c29b:61/140(-13290),,c30tb (meta play round 2) vs c29b (v14); queue 30; cambc 4.0.0, 70 maps, C++,06906bf
+2026-10-26 21:16,c30m[1],52/140,c29b:52/140(-14251),,c30m (meta play round 2) vs c29b (v14); queue 30; cambc 4.0.0, 70 maps, C++,06906bf
