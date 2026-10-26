@@ -118,11 +118,12 @@ turns by signed priority; unexplained jumps fall to 0.14–0.36% (ours: 0.00%).
 | `BUILD_30` 1: Treasure, Jungle H, Bruiser, Durability H, then Bruiser stacks | vs v13 **99/160, +21,031**; economy 48,839 (v13 50,783) | **Adopt** |
 | `BUILD_30` 2: Treasure, then Bruiser only | vs v13 80/160, −3,287 | No |
 | All fight changes together (stand 3, commit 3, help, priority) | smoke test vs v13 3/8; fragment 37–42 deaths vs 5–11 | No |
-| `FIGHT_PRIO` (act first while fighting) | vs the build base 41/80, +3,414 | Neutral-positive; PRIO_SEED2 |
+| `FIGHT_PRIO` (act first while fighting) | vs the build base 41/80, +3,414; seed 2 **46/80, +8,702** (both seeds **87/160, +12,116**) | **Adopt** |
 | `HELP_CALLS` (shared-memory call; allies within 8 come) | 38/80, −582 | Neutral |
 | `STAND_REACH` 2 (fight back when an enemy is within 2) | **28/80, −16,125** | No |
 | `FIGHT_COMMIT` 3 | 38/80, +440 | Neutral |
-| ECONOMY_ROWS | | |
+| `SHOP_GOLD` 90 (shop with 3 shards' worth, not 5) | vs the build base 38/80, −2,670 | No: extra trips cost more than earlier items gain |
+| `GOLD_WEIGHT` 0.8 (gold counts double in early target choice) | 39/80, −585 | Neutral |
 
 Caveat: local opponents are our own bots. A change that only matters against strong teams (for example turn priority)
 can't show up fully here; only scrimmages against the top teams can confirm it, and those play whatever is uploaded.
@@ -137,7 +138,12 @@ can't show up fully here; only scrimmages against the top teams can confirm it, 
    out-spent us as a reason to retreat earlier (needs enemy item estimates: their stats are visible, so compare
    `max_health()` and `strength()` with base values).
 3. **Then fights**: focus fire and turn priority on top of an even item count. Standing to fight while out-itemed loses.
-4. **C++:** the port (`bots/cpp13`) is done; see CPP_LINE.
+4. **C++:** the port (`bots/cpp13`, v13's logic) is done and compiles with the cambc toolchain. First parity test vs
+   the Python v13: 72/160, −6,561, because it ran out of fuel on 1.2% of turns (14% on big-world). Two C++-specific costs
+   caused it: every out-of-vision `position()` call throws, and **a C++ exception costs ~4k fuel in wasm** (`fight()` spent
+   ~21k of the 100k turn with no enemy in sight), and exporting whole distance fields. With `is_visible()` checks, per-group
+   distance lookups and `compute_to`, capped turns on big-world fell from 15% to 0.8%. Parity is re-tested in queue 22 and
+   the v14 candidate in both languages in queue 23 (DEVLOG 155–157).
 
 ## Appendix: commands
 
