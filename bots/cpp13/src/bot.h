@@ -96,7 +96,8 @@ inline std::vector<Stage> build_for(cambc::champion_type kind)
 {
 	using I = cambc::item_type;
 	bool focus = kind == cambc::champion_type::stellar || kind == cambc::champion_type::prism || kind == cambc::champion_type::cassi ||
-				 (META_BUILD && kind == cambc::champion_type::heart_of_ruin);
+				 (META_BUILD && kind == cambc::champion_type::heart_of_ruin) ||
+				 (TAVI_FOCUS && kind == cambc::champion_type::tavi);
 	const Stage MS{ I::monster_shard_of_strength, I::monster_emblem_of_strength, 0 }, MF{ I::monster_shard_of_focus, I::monster_emblem_of_focus, 0 };
 	const Stage PS{ I::power_shard_of_strength, I::power_emblem_of_strength, 0 }, PF{ I::power_shard_of_focus, I::power_emblem_of_focus, 0 };
 	const Stage PH{ I::power_shard_of_health, I::power_emblem_of_health, 0 }, JH{ I::jungle_shard_of_health, I::jungle_emblem_of_health, 0 };
