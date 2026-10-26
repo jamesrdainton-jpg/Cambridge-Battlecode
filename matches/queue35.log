@@ -1,0 +1,8 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c35s
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c35p
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c35s_s1
+vs c29b       wins 34/140  gem margin -30800
+2026-10-26 22:07,c35s[1],34/140,c29b:34/140(-30800),,c35s (survivor candidate) vs c29b (v14); queue 35; cambc 4.0.0, 70 maps, C++,c697351
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c35p_s1
+vs c29b       wins 26/140  gem margin -37903
+2026-10-26 22:09,c35p[1],26/140,c29b:26/140(-37903),,c35p (survivor candidate) vs c29b (v14); queue 35; cambc 4.0.0, 70 maps, C++,c697351
