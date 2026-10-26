@@ -7,6 +7,8 @@
 #include <map>
 #include <vector>
 
+#include "params.h"
+
 namespace bot
 {
 // Map facts for the champion bots, worked out on the first draft turn and sent through draft memory (as draft.py).
@@ -52,10 +54,26 @@ inline void play_draft()
 		{ 4, { D::vendetta, D::vesper_vale, D::tavi, D::marcella } },
 		{ 5, { D::vendetta, D::vesper_vale, D::tavi, D::marcella, D::ryth } },
 	};
+	static const std::map<std::uint32_t, std::vector<D>> META1{
+		{ 3, { D::heart_of_ruin, D::vesper_vale, D::vendetta } },
+		{ 4, { D::heart_of_ruin, D::vesper_vale, D::vendetta, D::cassi_and_issac } },
+		{ 5, { D::heart_of_ruin, D::vesper_vale, D::vendetta, D::cassi_and_issac, D::marcella } },
+	};
+	static const std::map<std::uint32_t, std::vector<D>> META2{
+		{ 3, { D::heart_of_ruin, D::vesper_vale, D::vendetta } },
+		{ 4, { D::heart_of_ruin, D::vesper_vale, D::vendetta, D::tavi } },
+		{ 5, { D::heart_of_ruin, D::vesper_vale, D::vendetta, D::tavi, D::cassi_and_issac } },
+	};
+	static const std::map<std::uint32_t, std::vector<D>> META3{
+		{ 3, { D::vendetta, D::ryth, D::tavi } },
+		{ 4, { D::vendetta, D::vesper_vale, D::tavi, D::heart_of_ruin } },
+		{ 5, { D::vendetta, D::vesper_vale, D::tavi, D::marcella, D::heart_of_ruin } },
+	};
+	const auto& table = META_DRAFT == 1 ? META1 : META_DRAFT == 2 ? META2 : META_DRAFT == 3 ? META3 : BY_SIZE;
 	const auto chosen = cambc::draft::current_draft(cambc::team::ally);
 	std::vector<D> order;
-	auto it = BY_SIZE.find(cambc::draft::team_size());
-	if (it != BY_SIZE.end()) order = it->second;
+	auto it = table.find(cambc::draft::team_size());
+	if (it != table.end()) order = it->second;
 	order.insert(order.end(), PRIORITY.begin(), PRIORITY.end());
 	for (auto pick : order)
 	{

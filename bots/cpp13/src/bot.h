@@ -32,7 +32,8 @@ enum AbKind : int { K_NONE = 0, K_RESET = 1, K_DAMAGE = 2, K_AOE = 3, K_CC = 4, 
 struct AbInfo
 {
 	int kind{ K_NONE };
-	double modifier{ 0 }, range{ 0 };
+	double modifier{ 0 }, range{ 0 }, radius{ 0 };
+	int duration{ 0 };  // stun turns (Heart of Ruin's dash)
 	bool exclusive{ false };
 };
 
@@ -50,7 +51,7 @@ inline AbInfo read_ability(const cambc::ability& ab)
 			else if constexpr (std::is_same_v<T, cambc::ability_aoe_damage>) { r.kind = K_AOE; r.modifier = v.modifier; r.range = v.range; }
 			else if constexpr (std::is_same_v<T, cambc::ability_cc>) { r.kind = K_CC; r.modifier = v.modifier; r.range = v.range; }
 			else if constexpr (std::is_same_v<T, cambc::ability_heal>) { r.kind = K_HEAL; r.modifier = v.modifier; r.range = v.range; }
-			else if constexpr (std::is_same_v<T, cambc::ability_dash>) { r.kind = K_DASH; r.modifier = v.modifier; r.range = v.range; }
+			else if constexpr (std::is_same_v<T, cambc::ability_dash>) { r.kind = K_DASH; r.modifier = v.modifier; r.range = v.range; r.radius = v.radius; r.duration = v.duration; }
 			else if constexpr (std::is_same_v<T, cambc::ability_shield>) { r.kind = K_SHIELD; r.modifier = v.modifier; r.range = v.range; }
 		},
 		*inf);
@@ -130,6 +131,7 @@ struct Near
 	double dps;
 	int d;
 	int gems;
+	bool stunned{};
 };
 
 // A visible camp of a known group: (camp, group index, kind, spawn cell, health, index in the group).
@@ -172,6 +174,8 @@ public:
 		for (int i = 0; i < 2; ++i)
 			if (ab[i].kind == K_AOE) aoe_mod += ab[i].modifier / 8.0;
 		remote_shop = kind == cambc::champion_type::tavi;
+		for (int i = 0; i < 2; ++i)
+			if (ab[i].kind == K_DASH && ab[i].radius > 0 && ab[i].duration > 0) stun_dash = i;
 		locked = LOCKED_GOLD && cambc::draft_memory.size() > 0 && (static_cast<unsigned>(cambc::draft_memory[0]) & 1u) != 0;
 		const auto& af = world.altar_field();
 		for (auto& g : world.groups) g.near_altar = af.get(g.anchor);
@@ -215,6 +219,8 @@ private:
 	double aoe_mod{};
 	bool remote_shop{};
 	bool locked{};  // no altar reachable without killing a camp (draft memory; LOCKED_GOLD)
+	int stun_dash{ -1 };  // META_PLAY: slot of a dash that damages and stuns around its landing tile (Heart of Ruin)
+	bool cc_camp_ok{};    // META_PLAY: a pure stun may target the camp being attacked (it hits back)
 	int target{ -1 };
 	int target_round{ -100 };
 	std::optional<double> last_hp;
@@ -297,7 +303,7 @@ private:
 			here = field.get(pos);
 		}
 		if (here >= UNREACHED) return false;
-		if (allow_dash && here >= 3 && can_cast && dash_slot >= 0)
+		if (allow_dash && here >= 3 && can_cast && dash_slot >= 0 && !(META_PLAY && dash_slot == stun_dash && now - enemy_seen < 10))
 		{
 			const auto& dab = abilities[static_cast<std::size_t>(dash_slot)];
 			if (dab.cooldown() == 0)
@@ -379,6 +385,7 @@ private:
 	void _turn()
 	{
 		now = static_cast<int>(cambc::round_number());
+		cc_camp_ok = false;
 		if (slot == 0 && now % 25 == 0)
 			std::cout << "STAT " << now << " " << cambc::global_submitted_gems(team::ally) << " " << cambc::global_submitted_gems(team::enemy) << std::endl;
 		auto st = me.state();
@@ -616,7 +623,9 @@ private:
 				const auto& prof = profile(kit->second);
 				double dps = e.strength() * prof.str_mul + e.focus() * prof.foc_mul;
 				int eg = static_cast<int>(e.gem_count());
-				near.push_back(Near{ e, ep, ehp, prof.rng, dps, d, eg });
+				bool stunned = META_PLAY && e.restrictions().contains(cambc::buff_restrictions::attack);
+				if (stunned) dps *= 0.3;  // loses its next turn
+				near.push_back(Near{ e, ep, ehp, prof.rng, dps, d, eg, stunned });
 			}
 			catch (const cambc::error&)
 			{
@@ -700,6 +709,7 @@ private:
 		{
 			double v = (100.0 + 2.0 * x.gems) / (x.hp + 50.0);
 			if (x.d <= rng) v *= 2.0;
+			if (x.stunned) v *= 1.5;
 			v /= 1.0 + 0.1 * x.d;
 			if (v > best_v)
 			{
@@ -708,6 +718,20 @@ private:
 			}
 		}
 		bool engage = ratio >= engage_at || (FIGHT_COMMIT != 0 && now < commit_until);
+		if (META_PLAY && stun_dash >= 0 && (engage || best->hp <= 2 * burst_dmg))
+		{
+			std::vector<vec2> tg;
+			for (const auto& x : near)
+				if (x.d <= 3) tg.push_back(x.p);
+			if (dash_stun(tg, 1, best->p))
+			{
+				const Near* hitme = cheb(best->p, pos) <= rng ? best : nullptr;
+				for (const auto& x : near)
+					if (!hitme && cheb(x.p, pos) <= rng) hitme = &x;
+				if (hitme) hit_champion(hitme->e, hitme->p);
+				return true;
+			}
+		}
 		if (best->d <= rng)
 		{
 			hit_champion(best->e, best->p);
@@ -963,7 +987,7 @@ private:
 			const AbInfo& info = ab[i];
 			if (d > info.range) continue;
 			if (info.exclusive && !can_move) continue;
-			if (k == K_CC && info.modifier == 0 && !is_champion) continue;
+			if (k == K_CC && info.modifier == 0 && !is_champion && !cc_camp_ok) continue;
 			const auto& a = abilities[static_cast<std::size_t>(i)];
 			if (a.cooldown() != 0) continue;
 			bool ok = false;
@@ -1018,7 +1042,7 @@ private:
 		{
 			int k = ab[i].kind;
 			const auto& a = abilities[static_cast<std::size_t>(i)];
-			if (k == K_SHIELD && hp < 0.85 * max_hp && taking_damage())
+			if (k == K_SHIELD && hp < (META_PLAY ? 1.0 : 0.85) * max_hp && taking_damage())
 			{
 				if (a.cooldown() == 0)
 				{
@@ -1511,6 +1535,19 @@ private:
 		}
 		wait_turns = 0;
 		claim(g.idx, true);
+		cc_camp_ok = META_PLAY && stat(best->k).str > 0;
+		if (META_PLAY && stun_dash >= 0 && d <= 3)
+		{
+			std::vector<vec2> tg;
+			bool strong = false;
+			for (const auto& x : alive)
+				if (stat(x.k).str > 0)
+				{
+					tg.push_back(x.p);
+					if (stat(x.k).str >= 60) strong = true;
+				}
+			if (dash_stun(tg, strong ? 1 : 2, cp)) d = cheb(cp, pos);
+		}
 		if (hp < 0.35 * max_hp && taking_damage() && (g.dps > 0 || !zones.empty()))
 		{
 			if (ranged && d <= 4) cast_offense(camp, cp, false);
@@ -1563,6 +1600,62 @@ private:
 			basic_attack_unit(camp);
 			use_reset(camp);
 		}
+	}
+
+	// META_PLAY: Heart of Ruin's dash damages and stuns everything within 1 of where she lands. Land where it hits the
+	// most of `targets` (at least min_hits; ties go nearer `prefer`). Returns true if she dashed.
+	bool dash_stun(const std::vector<vec2>& targets, int min_hits, vec2 prefer)
+	{
+		if (!META_PLAY || stun_dash < 0 || !can_cast || targets.empty()) return false;
+		const auto& a = abilities[static_cast<std::size_t>(stun_dash)];
+		if (a.cooldown() != 0) return false;
+		int reach = static_cast<int>(ab[stun_dash].range);
+		std::optional<vec2> best;
+		int best_n = 0, best_d = 99;
+		for (int dx = -reach; dx <= reach; ++dx)
+			for (int dy = -reach; dy <= reach; ++dy)
+			{
+				if (dx == 0 && dy == 0) continue;
+				vec2 t{ pos.x + dx, pos.y + dy };
+				if (t.x < 0 || t.y < 0 || t.x >= world.w || t.y >= world.h) continue;
+				if (world.block.is_set(t) || occ.is_set(t)) continue;
+				if (std::max(std::abs(dx), std::abs(dy)) == 2)
+				{
+					bool path = false;  // a middle tile next to both ends that isn't a wall (holes can be crossed)
+					for (int mx = -1; mx <= 1 && !path; ++mx)
+						for (int my = -1; my <= 1 && !path; ++my)
+						{
+							vec2 m{ pos.x + mx, pos.y + my };
+							if (m.x < 0 || m.y < 0 || m.x >= world.w || m.y >= world.h) continue;  // off-map reads raise engine error 5
+							if ((mx != 0 || my != 0) && cheb(m, t) == 1 && !world.walls.is_set(m) && !occ.is_set(m)) path = true;
+						}
+					if (!path) continue;
+				}
+				int n = 0;
+				for (auto q : targets)
+					if (cheb(q, t) <= 1) ++n;
+				int dd = cheb(prefer, t);
+				if (n > best_n || (n == best_n && n > 0 && dd < best_d))
+				{
+					best_n = n;
+					best_d = dd;
+					best = t;
+				}
+			}
+		if (!best || best_n < min_hits) return false;
+		try
+		{
+			if (a.use(*best))
+			{
+				pos = *best;
+				can_cast = false;
+				return true;
+			}
+		}
+		catch (const cambc::error&)
+		{
+		}
+		return false;
 	}
 
 	void claim_tile(const cambc::camp& camp, vec2 cp)

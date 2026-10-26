@@ -20,6 +20,12 @@ inline constexpr int GOLD_TAPER = 500;
 // Maps where no altar can be reached without killing a camp first (play_draft() works it out and passes it through
 // draft memory): target gold only and never walk to an altar; the round limit decides on lifetime gold (as bot.py).
 inline constexpr bool LOCKED_GOLD = true;
+// Meta champions (2026-10-26, the user's request): play Heart of Ruin's stun-dash in fights and on camps, value stunned
+// enemies, let pure stuns (Cassi) hit camps, shield whenever hurt. META_DRAFT (draft.h): 0 = v14's; 1 = the top teams'
+// core (Heart of Ruin, Vesper, Vendetta; + Cassi & Issac; + Marcella); 2 = core + Tavi (stun buffed in 4.0) at 4, + Cassi &
+// Issac at 5; 3 = v14's with Heart of Ruin for Marcella at 4 and for Ryth at 5.
+inline constexpr bool META_PLAY = false;
+inline constexpr int META_DRAFT = 0;
 inline constexpr double ENEMY_SIDE = 0.85;
 
 // Fights.
