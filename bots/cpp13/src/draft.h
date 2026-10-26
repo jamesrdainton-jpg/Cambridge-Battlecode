@@ -66,7 +66,9 @@ inline void play_draft()
 		{ 4, { D::marcella, D::vendetta, D::heart_of_ruin, D::vesper_vale } },
 		{ 5, { D::marcella, D::vendetta, D::heart_of_ruin, D::vesper_vale, D::ryth } },
 	};
-	const auto& table = DRAFT_SET == 1 ? CONSENSUS : DRAFT_SET == 2 ? MARCELLA : BY_SIZE;
+	// DRAFT_SET 3: the consensus on 3-pick maps only (queue 28: 13/24 there, 49/116 on 4-5 picks vs v14's draft).
+	bool three = cambc::draft::team_size() == 3;
+	const auto& table = (DRAFT_SET == 1 || (DRAFT_SET == 3 && three)) ? CONSENSUS : DRAFT_SET == 2 ? MARCELLA : BY_SIZE;
 	const auto chosen = cambc::draft::current_draft(cambc::team::ally);
 	std::vector<D> order;
 	auto it = table.find(cambc::draft::team_size());
