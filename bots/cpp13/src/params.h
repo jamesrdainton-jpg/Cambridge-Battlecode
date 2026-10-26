@@ -35,6 +35,11 @@ inline constexpr bool META_STUN_COMMIT = false;
 inline constexpr bool META_CASSI = false;
 // TAVI_FOCUS: Tavi buys the focus build (her stun deals 1.6x focus since 4.0).
 inline constexpr bool TAVI_FOCUS = false;
+// DEATHBALL (radical, 2026-10-26): the whole team farms and fights as one group behind a leader (lowest alive slot):
+// followers take the leader's target and regroup when more than BALL_RADIUS tiles away. Against the top 3 we died
+// 6x as often as they did, mostly picked off alone, and they fight with ~1.6 champions.
+inline constexpr bool DEATHBALL = false;
+inline constexpr int BALL_RADIUS = 4;
 inline constexpr double ENEMY_SIDE = 0.85;
 
 // Fights.

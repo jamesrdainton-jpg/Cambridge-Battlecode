@@ -1336,6 +1336,7 @@ private:
 		field.compute(world.block, roots, visited);
 		// Per-group get() calls (~80 fuel each) instead of exporting the whole field (10,000 values on 100x100).
 		auto cl = claims();
+		if (DEATHBALL) cl.clear();  // followers claim the leader's target; don't count them as other squads
 		double dps = dps_now;
 		double gold_w = GOLD_WEIGHT * std::max(0.15, 1.0 - static_cast<double>(now) / GOLD_TAPER);
 		double need_k = 1.0 / (NEED_FRAC * max_hp * dps);
@@ -1416,8 +1417,68 @@ private:
 		return out;
 	}
 
+	// DEATHBALL: the leader is the lowest slot whose champion is alive and in view (ourselves included).
+	int ball_leader(std::optional<vec2>& lpos)
+	{
+		for (int s = 0; s < n_allies; ++s)
+		{
+			if (s == slot)
+			{
+				lpos = pos;
+				return s;
+			}
+			std::uint32_t h = ally_handles[static_cast<std::size_t>(s)];
+			for (auto& a : allies)
+			{
+				if (static_cast<std::uint32_t>(static_cast<cambc::handle_champion_t>(a)) != h) continue;
+				try
+				{
+					if (a.is_visible())
+					{
+						lpos = a.position();
+						return s;
+					}
+				}
+				catch (const cambc::error&)
+				{
+				}
+			}
+		}
+		lpos = pos;
+		return slot;
+	}
+
+	// DEATHBALL: followers take the leader's target and regroup when more than BALL_RADIUS away. Returns true if moved.
+	bool follow_ball()
+	{
+		std::optional<vec2> lp;
+		int lead = ball_leader(lp);
+		if (lead == slot || !lp) return false;
+		int v = 255;
+		try
+		{
+			v = static_cast<std::uint8_t>(cambc::shared_memory[static_cast<std::size_t>(lead)]);
+		}
+		catch (...)
+		{
+		}
+		int lg = v == 255 ? -1 : (v & 127);
+		if (lg >= 0 && lg < static_cast<int>(world.groups.size()) && G(lg).status != RESPAWN)
+		{
+			target = lg;
+			target_round = now;
+		}
+		if (cheb(*lp, pos) <= BALL_RADIUS) return false;
+		bitboard roots;
+		roots.draw_chebyshev(*lp, 2);
+		roots &= ~world.block;
+		act = "ball";
+		return go(roots, true);
+	}
+
 	void farm()
 	{
+		if (DEATHBALL && follow_ball()) return;
 		int g = target;
 		if (g >= 0 && G(g).status == RESPAWN && now >= G(g).alive_at)
 		{
