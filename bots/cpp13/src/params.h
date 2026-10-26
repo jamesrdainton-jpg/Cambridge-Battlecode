@@ -17,6 +17,9 @@ inline constexpr double BOSS_NEED_FRAC = 0.0;
 inline constexpr int BOSS_WAIT = 0;
 inline constexpr double GOLD_WEIGHT = 0.4;
 inline constexpr int GOLD_TAPER = 500;
+// Maps where no altar can be reached without killing a camp first (play_draft() works it out and passes it through
+// draft memory): target gold only and never walk to an altar; the round limit decides on lifetime gold (as bot.py).
+inline constexpr bool LOCKED_GOLD = false;
 inline constexpr double ENEMY_SIDE = 0.85;
 
 // Fights.

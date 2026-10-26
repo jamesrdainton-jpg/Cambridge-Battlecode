@@ -175,6 +175,10 @@ WARDS = True
 POWER_FIRST = False
 # Gold's weight in target scoring fades linearly to 15% of GOLD_WEIGHT at this round.
 GOLD_TAPER = 500
+# Maps where no altar can be reached without killing a camp first (draft.py works it out and passes it through draft
+# memory: 01boss-battle, 02guardians, 02the-pack): nobody tributes until a boss falls and the round limit decides on
+# lifetime gold earned, so target gold only and never walk to an altar.
+LOCKED_GOLD = False
 # Platform telemetry with DEBUG off: "T DIED" per death and "T ACTS" activity counts every 250 rounds.
 # Printing only, so decisions are unchanged.
 TELEMETRY = False
@@ -242,9 +246,19 @@ def cheb(a, b):
     return dx if dx > dy else dy
 
 
+def altars_locked():
+    """Draft memory byte 0, bit 0 (set by draft.analyse): no altar is reachable without killing a camp first."""
+    try:
+        mem = cambc.draft_memory
+        return len(mem) > 0 and bool(mem[0] & 1)
+    except Exception:  # noqa: BLE001 - no draft memory: assume open altars
+        return False
+
+
 class Bot:
     def __init__(self):
         self.world = W.World()
+        self.locked = LOCKED_GOLD and altars_locked()
         self.world.prof.append(("world done", cambc.fuel_remaining()))
         me = cambc.me()
         self.me = me
@@ -363,7 +377,7 @@ class Bot:
                 if prev is not None:
                     parts.append(f"{name}={prev - f}")
                 prev = f
-            print("INITPROF " + " ".join(parts) + f" groups={len(self.world.groups)}")
+            print("INITPROF " + " ".join(parts) + f" groups={len(self.world.groups)} locked={altars_locked()}")
 
     # ------------------------------------------------------------------ helpers
     def log(self, *args):
@@ -1282,6 +1296,8 @@ class Bot:
         return False
 
     def want_tribute(self):
+        if self.locked:
+            return False
         gems = self.gems
         if gems + cambc.global_submitted_gems(Team.ALLY) >= 1000:
             return True
@@ -1474,6 +1490,7 @@ class Bot:
         sp = self.spawn_dist
         margin = RECALL_TURNS + 3
         avoid = self.avoid_pts if now < self.avoid_until else ()
+        locked = self.locked
         for g in world.groups:
             if avoid:
                 near_enemy = False
@@ -1528,17 +1545,17 @@ class Bot:
                 if POKE_AVOID_ENEMY and now - self.poke_enemy.get(g.idx, -1000) < POKE_AVOID_ENEMY:
                     continue
                 # Team champion-rounds, as below: every poker walks there; the kill costs hp / one poker's damage.
-                cost = (others + 1) * (d + wait) + hp_left / poke_dps + 5 + 0.5 * g.near_altar + g.gems / 10
+                cost = (others + 1) * (d + wait) + hp_left / poke_dps + (5 if locked else 5 + 0.5 * g.near_altar + g.gems / 10)
             else:
                 k = others + 1
                 if k < need:
                     k = need
                 gdps = dps + cluster_dps * g.cluster if cluster_dps else dps
                 # Team champion-rounds spent: everyone involved walks and fights, one captures and tributes.
-                cost = k * (d + wait) + hp_left / gdps + 5 + 0.5 * g.near_altar + g.gems / 10
+                cost = k * (d + wait) + hp_left / gdps + (5 if locked else 5 + 0.5 * g.near_altar + g.gems / 10)
                 if others + 1 < need:
                     cost += 4 * (need - others - 1)  # waiting for help to arrive
-            value = g.gems + gold_w * g.gold
+            value = g.gold if locked else g.gems + gold_w * g.gold
             if need and others >= need:
                 value *= 0.5  # surplus helper
             elif need > 1 and slots and min(slots) < my_slot:
@@ -1584,7 +1601,7 @@ class Bot:
         if g is None:
             self.act = "idle"
             self.idle_turns += 1
-            if self.gems > 0:
+            if self.gems > 0 and not self.locked:
                 self.tribute()
             else:
                 self.go(self.world.altar_approach)

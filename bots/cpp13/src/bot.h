@@ -172,6 +172,7 @@ public:
 		for (int i = 0; i < 2; ++i)
 			if (ab[i].kind == K_AOE) aoe_mod += ab[i].modifier / 8.0;
 		remote_shop = kind == cambc::champion_type::tavi;
+		locked = LOCKED_GOLD && cambc::draft_memory.size() > 0 && (static_cast<unsigned>(cambc::draft_memory[0]) & 1u) != 0;
 		const auto& af = world.altar_field();
 		for (auto& g : world.groups) g.near_altar = af.get(g.anchor);
 		spawn_dist = world.spawn_field().export_linear_buffer();
@@ -213,6 +214,7 @@ private:
 	bool splash{};
 	double aoe_mod{};
 	bool remote_shop{};
+	bool locked{};  // no altar reachable without killing a camp (draft memory; LOCKED_GOLD)
 	int target{ -1 };
 	int target_round{ -100 };
 	std::optional<double> last_hp;
@@ -1141,6 +1143,7 @@ private:
 
 	bool want_tribute()
 	{
+		if (locked) return false;
 		if (gems + static_cast<int>(cambc::global_submitted_gems(team::ally)) >= 1000) return true;
 		if (now >= 1940) return true;
 		if (target >= 0 && G(target).status == REWARD && G(target).tiles.is_set(pos)) return false;
@@ -1335,9 +1338,9 @@ private:
 			}
 			int kk = std::max(others + 1, need);
 			double gdps = cluster_dps > 0 ? dps + cluster_dps * g.cluster : dps;
-			double cost = kk * (d + wait) + hp_left / gdps + 5 + 0.5 * g.near_altar + g.gems / 10.0;
+			double cost = kk * (d + wait) + hp_left / gdps + (locked ? 5.0 : 5 + 0.5 * g.near_altar + g.gems / 10.0);
 			if (others + 1 < need) cost += 4 * (need - others - 1);
-			double value = g.gems + gold_w * g.gold;
+			double value = locked ? g.gold : g.gems + gold_w * g.gold;
 			if (need && others >= need)
 				value *= 0.5;
 			else if (need > 1 && sit != cl.end() && !sit->second.empty() && *std::min_element(sit->second.begin(), sit->second.end()) < slot)
@@ -1380,7 +1383,7 @@ private:
 		{
 			act = "idle";
 			++idle_turns;
-			if (gems > 0)
+			if (gems > 0 && !locked)
 				tribute();
 			else
 				go(world.altar_approach);
