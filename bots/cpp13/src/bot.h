@@ -32,7 +32,7 @@ enum AbKind : int { K_NONE = 0, K_RESET = 1, K_DAMAGE = 2, K_AOE = 3, K_CC = 4, 
 struct AbInfo
 {
 	int kind{ K_NONE };
-	double modifier{ 0 }, range{ 0 };
+	double modifier{ 0 }, range{ 0 }, radius{ 0 };
 	bool exclusive{ false };
 };
 
@@ -50,7 +50,7 @@ inline AbInfo read_ability(const cambc::ability& ab)
 			else if constexpr (std::is_same_v<T, cambc::ability_aoe_damage>) { r.kind = K_AOE; r.modifier = v.modifier; r.range = v.range; }
 			else if constexpr (std::is_same_v<T, cambc::ability_cc>) { r.kind = K_CC; r.modifier = v.modifier; r.range = v.range; }
 			else if constexpr (std::is_same_v<T, cambc::ability_heal>) { r.kind = K_HEAL; r.modifier = v.modifier; r.range = v.range; }
-			else if constexpr (std::is_same_v<T, cambc::ability_dash>) { r.kind = K_DASH; r.modifier = v.modifier; r.range = v.range; }
+			else if constexpr (std::is_same_v<T, cambc::ability_dash>) { r.kind = K_DASH; r.modifier = v.modifier; r.range = v.range; r.radius = v.radius; }
 			else if constexpr (std::is_same_v<T, cambc::ability_shield>) { r.kind = K_SHIELD; r.modifier = v.modifier; r.range = v.range; }
 		},
 		*inf);
@@ -78,6 +78,7 @@ inline const Profile& profile(cambc::champion_type kind)
 			AbInfo i = read_ability(ab);
 			if (i.kind == K_RESET) p.str_mul += 0.125;
 			else if (i.kind == K_DAMAGE || i.kind == K_AOE || i.kind == K_CC) p.foc_mul += i.modifier / 8.0;
+			else if (HOR_DASH && i.kind == K_DASH) p.foc_mul += i.modifier / 8.0;  // Heart of Ruin's landing damage
 		}
 		p.rng = d.base_stats().base_attack_range;
 		cache[k] = p;
@@ -297,7 +298,7 @@ private:
 			here = field.get(pos);
 		}
 		if (here >= UNREACHED) return false;
-		if (allow_dash && here >= 3 && can_cast && dash_slot >= 0)
+		if (allow_dash && here >= 3 && (here > 6 || !damaging_dash()) && can_cast && dash_slot >= 0)
 		{
 			const auto& dab = abilities[static_cast<std::size_t>(dash_slot)];
 			if (dab.cooldown() == 0)
@@ -662,7 +663,7 @@ private:
 			their_hp += w * x.hp;
 			their_dps += w * x.dps;
 		}
-		double ratio = (our_hp * our_dps) / std::max(1.0, their_hp * their_dps);
+		double ratio = (our_hp * our_dps) / std::max(1.0, their_hp * their_dps * FIGHT_RESPECT);
 		int home = world.spawn_field().get(pos);
 		if (home <= 6) ratio *= 1.4;
 		if (cheb(pos, world.enemy_spawn_center) <= 7) ratio *= 0.6;
@@ -676,6 +677,19 @@ private:
 			{
 				hit_champion(x.e, x.p);
 				return true;
+			}
+		}
+		if (dash_ready())
+		{
+			for (auto& x : near)
+			{
+				if (x.d > ab[dash_slot].range + ab[dash_slot].radius || x.hp > dash_damage() + (can_attack ? strength_now : 0.0)) continue;
+				auto l = dash_landing({ x.p }, x.p, 1);
+				if (l && dash_to(*l))
+				{
+					if (cheb(x.p, pos) <= rng) hit_champion(x.e, x.p);
+					return true;
+				}
 			}
 		}
 		if (FIGHT_SHIELD) shield_up(closest);
@@ -723,6 +737,18 @@ private:
 		if (cast_offense_champion(best->e, best->p) && !engage) return true;
 		if (engage && best->d <= 5 && cheb(best->p, world.enemy_spawn_center) > 3)
 		{
+			if (dash_ready() && best->d <= ab[dash_slot].range + ab[dash_slot].radius)
+			{
+				std::vector<vec2> tiles;
+				for (const auto& x : near) tiles.push_back(x.p);
+				auto l = dash_landing(tiles, best->p, 1);
+				if (l && dash_to(*l) && cheb(best->p, pos) <= rng)
+				{
+					basic_attack_champion(best->e);
+					use_reset_champion(best->e);
+					return true;
+				}
+			}
 			bitboard roots;
 			roots.draw_chebyshev(best->p, static_cast<float>(rng));
 			go(roots, true);
@@ -840,6 +866,77 @@ private:
 				return;
 			}
 		}
+	}
+
+	// Heart of Ruin (HOR_DASH): its dash lands for focus x modifier damage and a stun on everything within its radius,
+	// every 8 turns. The top teams cast it nearly every cooldown, mostly onto camp clusters (VS-TOP5-v14.md 2.4).
+	bool damaging_dash() const { return HOR_DASH && dash_slot >= 0 && ab[dash_slot].modifier > 0; }
+
+	bool dash_ready()
+	{
+		if (!damaging_dash() || !can_cast || (ab[dash_slot].exclusive && !can_move)) return false;
+		return abilities[static_cast<std::size_t>(dash_slot)].cooldown() == 0;
+	}
+
+	double dash_damage() const { return damaging_dash() ? focus_now * ab[dash_slot].modifier : 0.0; }
+
+	// Free landing tile within dash range with the most targets inside the landing radius (at least min_hits), ties to
+	// the tile nearest `prefer`. A 2-tile dash needs a free tile in between.
+	std::optional<vec2> dash_landing(const std::vector<vec2>& targets, vec2 prefer, int min_hits)
+	{
+		const AbInfo& info = ab[dash_slot];
+		int r = static_cast<int>(info.range), rad = static_cast<int>(info.radius);
+		bitboard bad = world.block | occ | world.all_camp_tiles;
+		std::optional<vec2> best;
+		int best_n = min_hits - 1, best_d = 999;
+		for (int dx = -r; dx <= r; ++dx)
+		{
+			for (int dy = -r; dy <= r; ++dy)
+			{
+				vec2 l{ pos.x + dx, pos.y + dy };
+				if ((dx == 0 && dy == 0) || l.x < 0 || l.y < 0 || l.x >= world.w || l.y >= world.h || bad.is_set(l)) continue;
+				if (cheb(l, pos) >= 2)
+				{
+					bool step = false;
+					for (int sx = -1; sx <= 1 && !step; ++sx)
+						for (int sy = -1; sy <= 1 && !step; ++sy)
+						{
+							vec2 s{ pos.x + sx, pos.y + sy };
+							step = (sx || sy) && cheb(s, l) <= 1 && s.x >= 0 && s.y >= 0 && s.x < world.w && s.y < world.h &&
+								   !(world.block | occ).is_set(s);
+						}
+					if (!step) continue;
+				}
+				int n = 0;
+				for (const auto& t : targets) n += cheb(t, l) <= rad;
+				int d = cheb(l, prefer);
+				if (n > best_n || (n == best_n && best && d < best_d))
+				{
+					best_n = n;
+					best_d = d;
+					best = l;
+				}
+			}
+		}
+		return best;
+	}
+
+	bool dash_to(vec2 l)
+	{
+		try
+		{
+			if (abilities[static_cast<std::size_t>(dash_slot)].use(l))
+			{
+				pos = l;
+				can_cast = false;
+				if (ab[dash_slot].exclusive) can_move = false;
+				return true;
+			}
+		}
+		catch (const cambc::error&)
+		{
+		}
+		return false;
 	}
 
 	double burst()
@@ -1279,7 +1376,7 @@ private:
 		// Per-group get() calls (~80 fuel each) instead of exporting the whole field (10,000 values on 100x100).
 		auto cl = claims();
 		double dps = dps_now;
-		double gold_w = GOLD_WEIGHT * std::max(0.15, 1.0 - static_cast<double>(now) / GOLD_TAPER);
+		double gold_w = EARLY_GOLD > 0 && now < EARLY_UNTIL ? EARLY_GOLD : GOLD_WEIGHT * std::max(0.15, 1.0 - static_cast<double>(now) / GOLD_TAPER);
 		double need_k = 1.0 / (NEED_FRAC * max_hp * dps);
 		double boss_k = BOSS_NEED_FRAC > 0 ? 1.0 / (BOSS_NEED_FRAC * max_hp * dps) : need_k;
 		double cluster_dps = 0.7 * (splash ? strength_now : 0.0) + 0.7 * focus_now * aoe_mod;
@@ -1516,6 +1613,13 @@ private:
 			if (ranged && d <= 4) cast_offense(camp, cp, false);
 			if (!escape(nullptr)) step_away(cp, 4);
 			return;
+		}
+		if (dash_ready() && d <= 4)
+		{
+			std::vector<vec2> tiles;
+			for (const auto& x : alive) tiles.push_back(x.p);
+			auto l = dash_landing(tiles, cp, 1);
+			if (l && dash_to(*l)) d = cheb(cp, pos);
 		}
 		if (d <= rng)
 		{

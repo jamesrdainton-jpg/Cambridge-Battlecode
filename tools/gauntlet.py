@@ -22,6 +22,7 @@ PY = sys.executable
 
 
 MAPS = ""
+JOBS = 0
 
 
 def seed_file(bot: str) -> str:
@@ -31,6 +32,8 @@ def seed_file(bot: str) -> str:
 
 def run_arena(bot: str, opp: str, one_side: bool = False) -> tuple[int, int, int, int]:
     cmd = [PY, str(ROOT / "tools" / "arena.py"), bot, opp]
+    if JOBS:
+        cmd += ["--jobs", str(JOBS)]
     if one_side:
         cmd.append("--one-side")
     if MAPS:
@@ -58,9 +61,11 @@ def main() -> None:
     parser.add_argument("--no-econ", action="store_true")
     parser.add_argument("--seeds", default="", help="comma list of SEED values; plays a seeded copy per seed")
     parser.add_argument("--maps", default="", help="comma list of maps (default: all)")
+    parser.add_argument("--jobs", type=int, default=0, help="parallel games (default: arena.py's)")
     args = parser.parse_args()
-    global MAPS
+    global MAPS, JOBS
     MAPS = args.maps
+    JOBS = args.jobs
     bots = [args.bot]
     if args.seeds:
         bots = []

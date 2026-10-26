@@ -7,6 +7,8 @@
 #include <map>
 #include <vector>
 
+#include "params.h"
+
 namespace bot
 {
 // Map facts for the champion bots, worked out on the first draft turn and sent through draft memory (as draft.py).
@@ -45,17 +47,30 @@ inline void play_draft()
 	}
 	using D = cambc::champion_draft;
 	static const std::vector<D> PRIORITY{ D::vendetta, D::varg, D::ryth, D::marcella, D::tavi, D::stellar, D::vesper_vale,
-										  D::cassi_and_issac, D::willow, D::ren, D::prism };
+										  D::cassi_and_issac, D::willow, D::ren, D::prism, D::heart_of_ruin };
 	// cambc 3.0 strength draft on 4- and 5-pick maps (v13): 130/160 vs the 2.2.5 pro draft.
 	static const std::map<std::uint32_t, std::vector<D>> BY_SIZE{
 		{ 3, { D::vendetta, D::ryth, D::tavi } },
 		{ 4, { D::vendetta, D::vesper_vale, D::tavi, D::marcella } },
 		{ 5, { D::vendetta, D::vesper_vale, D::tavi, D::marcella, D::ryth } },
 	};
+	// DRAFT_SET 1: the top 5's consensus (Heart of Ruin 84%, Vendetta 80%, Vesper 76%, Marcella 75%; VS-TOP5-v14.md 3).
+	static const std::map<std::uint32_t, std::vector<D>> CONSENSUS{
+		{ 3, { D::vendetta, D::heart_of_ruin, D::vesper_vale } },
+		{ 4, { D::vendetta, D::heart_of_ruin, D::vesper_vale, D::marcella } },
+		{ 5, { D::vendetta, D::heart_of_ruin, D::vesper_vale, D::marcella, D::ryth } },
+	};
+	// DRAFT_SET 2: Marcella core (stun-immune tank and tribute gold; Claudus Maximus and willow best girl play her 100%).
+	static const std::map<std::uint32_t, std::vector<D>> MARCELLA{
+		{ 3, { D::marcella, D::vendetta, D::heart_of_ruin } },
+		{ 4, { D::marcella, D::vendetta, D::heart_of_ruin, D::vesper_vale } },
+		{ 5, { D::marcella, D::vendetta, D::heart_of_ruin, D::vesper_vale, D::ryth } },
+	};
+	const auto& table = DRAFT_SET == 1 ? CONSENSUS : DRAFT_SET == 2 ? MARCELLA : BY_SIZE;
 	const auto chosen = cambc::draft::current_draft(cambc::team::ally);
 	std::vector<D> order;
-	auto it = BY_SIZE.find(cambc::draft::team_size());
-	if (it != BY_SIZE.end()) order = it->second;
+	auto it = table.find(cambc::draft::team_size());
+	if (it != table.end()) order = it->second;
 	order.insert(order.end(), PRIORITY.begin(), PRIORITY.end());
 	for (auto pick : order)
 	{
