@@ -686,7 +686,7 @@ private:
 			their_hp += w * x.hp;
 			their_dps += w * x.dps;
 		}
-		double ratio = (our_hp * our_dps) / std::max(1.0, their_hp * their_dps);
+		double ratio = (our_hp * our_dps) / std::max(1.0, their_hp * their_dps * ENEMY_DPS_MUL);
 		int home = world.spawn_field().get(pos);
 		if (home <= 6) ratio *= 1.4;
 		if (cheb(pos, world.enemy_spawn_center) <= 7) ratio *= 0.6;

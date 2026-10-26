@@ -48,6 +48,9 @@ inline constexpr double ENEMY_SIDE = 0.85;
 // Fights.
 inline constexpr double FIGHT_RETREAT = 0.9;
 inline constexpr double FIGHT_ENGAGE = 1.3;
+// Enemy damage multiplier in the fight ratio: the top teams' stuns, resets, shields and passives aren't in our estimate
+// (platform games vs the top 3: 52% of our deaths came while fighting, 48% against a single enemy).
+inline constexpr double ENEMY_DPS_MUL = 1.0;
 inline constexpr double FIGHT_GEM_EXTRA = 0.25;
 inline constexpr int ALLY_RANGE = 7;
 inline constexpr double LOW_HP_RETREAT = 0.25;
