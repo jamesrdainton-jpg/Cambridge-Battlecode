@@ -1,0 +1,16 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c33a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c33b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c33c
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c33d
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c33a_s1
+vs c29b       wins 50/140  gem margin -19938
+2026-10-26 21:55,c33a[1],50/140,c29b:50/140(-19938),,c33a (deathball) vs c29b (v14); queue 33; cambc 4.0.0, 70 maps, C++,40247fd
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c33b_s1
+vs c29b       wins 50/140  gem margin -17464
+2026-10-26 21:56,c33b[1],50/140,c29b:50/140(-17464),,c33b (deathball) vs c29b (v14); queue 33; cambc 4.0.0, 70 maps, C++,40247fd
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c33c_s1
+vs c29b       wins 49/140  gem margin -18551
+2026-10-26 21:58,c33c[1],49/140,c29b:49/140(-18551),,c33c (deathball) vs c29b (v14); queue 33; cambc 4.0.0, 70 maps, C++,40247fd
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c33d_s1
+vs c29b       wins 47/140  gem margin -20936
+2026-10-26 21:59,c33d[1],47/140,c29b:47/140(-20936),,c33d (deathball) vs c29b (v14); queue 33; cambc 4.0.0, 70 maps, C++,40247fd

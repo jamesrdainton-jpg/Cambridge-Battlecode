@@ -1336,7 +1336,7 @@ private:
 		field.compute(world.block, roots, visited);
 		// Per-group get() calls (~80 fuel each) instead of exporting the whole field (10,000 values on 100x100).
 		auto cl = claims();
-		if (DEATHBALL) cl.clear();  // followers claim the leader's target; don't count them as other squads
+		if (DEATHBALL && BALL_SIZE >= n_allies && now < BALL_UNTIL) cl.clear();  // followers claim the leader's target
 		double dps = dps_now;
 		double gold_w = GOLD_WEIGHT * std::max(0.15, 1.0 - static_cast<double>(now) / GOLD_TAPER);
 		double need_k = 1.0 / (NEED_FRAC * max_hp * dps);
@@ -1420,7 +1420,9 @@ private:
 	// DEATHBALL: the leader is the lowest slot whose champion is alive and in view (ourselves included).
 	int ball_leader(std::optional<vec2>& lpos)
 	{
-		for (int s = 0; s < n_allies; ++s)
+		int first = BALL_SIZE >= n_allies ? 0 : slot / BALL_SIZE * BALL_SIZE;  // squads of BALL_SIZE consecutive slots
+		int last = std::min(n_allies, first + BALL_SIZE);
+		for (int s = first; s < last; ++s)
 		{
 			if (s == slot)
 			{
@@ -1478,7 +1480,7 @@ private:
 
 	void farm()
 	{
-		if (DEATHBALL && follow_ball()) return;
+		if (DEATHBALL && now < BALL_UNTIL && follow_ball()) return;
 		int g = target;
 		if (g >= 0 && G(g).status == RESPAWN && now >= G(g).alive_at)
 		{

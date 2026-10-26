@@ -141,3 +141,7 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-26 21:29,c32m[1],46/140,c29b:46/140(-22677),,c32m (meta play round 4) vs c29b (v14); queue 32; cambc 4.0.0, 70 maps, C++,d22488a
 2026-10-26 21:31,c32t[1],59/140,c29b:59/140(-3464),,c32t (meta play round 4) vs c29b (v14); queue 32; cambc 4.0.0, 70 maps, C++,d22488a
 2026-10-26 21:32,c31b[2],75/140,c29b:75/140(-310),,c31b vs c29b (v14) seed 2 confirmation; queue 32; cambc 4.0.0, 70 maps, C++,d22488a
+2026-10-26 21:55,c33a[1],50/140,c29b:50/140(-19938),,c33a (deathball) vs c29b (v14); queue 33; cambc 4.0.0, 70 maps, C++,40247fd
+2026-10-26 21:56,c33b[1],50/140,c29b:50/140(-17464),,c33b (deathball) vs c29b (v14); queue 33; cambc 4.0.0, 70 maps, C++,40247fd
+2026-10-26 21:58,c33c[1],49/140,c29b:49/140(-18551),,c33c (deathball) vs c29b (v14); queue 33; cambc 4.0.0, 70 maps, C++,40247fd
+2026-10-26 21:59,c33d[1],47/140,c29b:47/140(-20936),,c33d (deathball) vs c29b (v14); queue 33; cambc 4.0.0, 70 maps, C++,40247fd

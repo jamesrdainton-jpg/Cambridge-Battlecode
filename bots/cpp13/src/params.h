@@ -40,6 +40,9 @@ inline constexpr bool TAVI_FOCUS = false;
 // 6x as often as they did, mostly picked off alone, and they fight with ~1.6 champions.
 inline constexpr bool DEATHBALL = false;
 inline constexpr int BALL_RADIUS = 4;
+// BALL_SIZE: squads of this many consecutive slots (2 = pairs; 99 = the whole team); BALL_UNTIL: only before this round.
+inline constexpr int BALL_SIZE = 99;
+inline constexpr int BALL_UNTIL = 2000;
 inline constexpr double ENEMY_SIDE = 0.85;
 
 // Fights.
