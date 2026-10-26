@@ -26,6 +26,9 @@ inline constexpr bool LOCKED_GOLD = true;
 // Issac at 5; 3 = v14's with Heart of Ruin for Marcella at 4 and for Ryth at 5.
 inline constexpr bool META_PLAY = false;
 inline constexpr int META_DRAFT = 0;
+// META_BUILD: Heart of Ruin buys the focus build (Bruiser F/H, as the top teams); META_PAIR: Cassi takes Issac's target.
+inline constexpr bool META_BUILD = false;
+inline constexpr bool META_PAIR = false;
 inline constexpr double ENEMY_SIDE = 0.85;
 
 // Fights.

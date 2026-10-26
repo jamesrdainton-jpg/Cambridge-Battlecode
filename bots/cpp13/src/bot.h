@@ -95,7 +95,8 @@ struct Stage
 inline std::vector<Stage> build_for(cambc::champion_type kind)
 {
 	using I = cambc::item_type;
-	bool focus = kind == cambc::champion_type::stellar || kind == cambc::champion_type::prism || kind == cambc::champion_type::cassi;
+	bool focus = kind == cambc::champion_type::stellar || kind == cambc::champion_type::prism || kind == cambc::champion_type::cassi ||
+				 (META_BUILD && kind == cambc::champion_type::heart_of_ruin);
 	const Stage MS{ I::monster_shard_of_strength, I::monster_emblem_of_strength, 0 }, MF{ I::monster_shard_of_focus, I::monster_emblem_of_focus, 0 };
 	const Stage PS{ I::power_shard_of_strength, I::power_emblem_of_strength, 0 }, PF{ I::power_shard_of_focus, I::power_emblem_of_focus, 0 };
 	const Stage PH{ I::power_shard_of_health, I::power_emblem_of_health, 0 }, JH{ I::jungle_shard_of_health, I::jungle_emblem_of_health, 0 };
@@ -176,6 +177,16 @@ public:
 		remote_shop = kind == cambc::champion_type::tavi;
 		for (int i = 0; i < 2; ++i)
 			if (ab[i].kind == K_DASH && ab[i].radius > 0 && ab[i].duration > 0) stun_dash = i;
+		if (META_PAIR && kind == cambc::champion_type::cassi)
+		{
+			for (const auto& c : cambc::champions(team::ally))
+			{
+				if (c.champion_name() != cambc::champion_type::issac) continue;
+				auto h = static_cast<std::uint32_t>(static_cast<cambc::handle_champion_t>(c));
+				auto at = std::find(ally_handles.begin(), ally_handles.end(), h);
+				if (at != ally_handles.end()) partner_slot = static_cast<int>(at - ally_handles.begin());
+			}
+		}
 		locked = LOCKED_GOLD && cambc::draft_memory.size() > 0 && (static_cast<unsigned>(cambc::draft_memory[0]) & 1u) != 0;
 		const auto& af = world.altar_field();
 		for (auto& g : world.groups) g.near_altar = af.get(g.anchor);
@@ -221,6 +232,7 @@ private:
 	bool locked{};  // no altar reachable without killing a camp (draft memory; LOCKED_GOLD)
 	int stun_dash{ -1 };  // META_PLAY: slot of a dash that damages and stuns around its landing tile (Heart of Ruin)
 	bool cc_camp_ok{};    // META_PLAY: a pure stun may target the camp being attacked (it hits back)
+	int partner_slot{ -1 };  // META_PAIR: Cassi's partner Issac (shared-memory slot); she takes his target
 	int target{ -1 };
 	int target_round{ -100 };
 	std::optional<double> last_hp;
@@ -1270,6 +1282,24 @@ private:
 
 	int choose_target(int exclude = -1)
 	{
+		if (partner_slot >= 0)
+		{
+			int v = 255;
+			try
+			{
+				v = static_cast<std::uint8_t>(cambc::shared_memory[static_cast<std::size_t>(partner_slot)]);
+			}
+			catch (...)
+			{
+			}
+			int g = v == 255 ? -1 : (v & 127);
+			if (g >= 0 && g < static_cast<int>(world.groups.size()) && g != exclude && G(g).status != RESPAWN)
+			{
+				target_need = 1;
+				target_via = false;
+				return g;
+			}
+		}
 		if (choice_round != now)
 		{
 			choice = score_groups();
