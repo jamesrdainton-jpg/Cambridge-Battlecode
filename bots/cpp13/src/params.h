@@ -50,6 +50,6 @@ inline constexpr int SHOP_GOLD = 150;
 inline constexpr double SHOP_HP = 1.01;
 inline constexpr bool SHOP_SAFE = true;
 // Item builds: 0 = v13's (Monster, Power, Jungle, Durability), 1 = Treasure, Jungle, Bruiser stacks (the top teams'),
-// 2 = Treasure, then Bruiser only.
+// 2 = Treasure, then Bruiser only; 3/4/5 = 1 opening with Capture, Monster or Prospector instead of Treasure (cambc 4.0).
 inline constexpr int BUILD_30 = 0;
 } // namespace bot

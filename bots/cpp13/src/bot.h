@@ -102,13 +102,19 @@ inline std::vector<Stage> build_for(cambc::champion_type kind)
 	const Stage TS{ I::treasure_shard_of_strength, I::treasure_emblem_of_strength, 0 }, TF{ I::treasure_shard_of_focus, I::treasure_emblem_of_focus, 0 };
 	const Stage BS{ I::bruiser_shard_of_strength, I::bruiser_emblem_of_strength, 0 }, BF{ I::bruiser_shard_of_focus, I::bruiser_emblem_of_focus, 0 };
 	const Stage BH{ I::bruiser_shard_of_health, I::bruiser_emblem_of_health, 0 };
+	const Stage CS{ I::capture_shard_of_strength, I::capture_emblem_of_strength, 0 }, CF{ I::capture_shard_of_focus, I::capture_emblem_of_focus, 0 };
+	const Stage RS{ I::prospector_shard_of_strength, I::prospector_emblem_of_strength, 0 }, RF{ I::prospector_shard_of_focus, I::prospector_emblem_of_focus, 0 };
 	auto at = [](Stage s, int n) { s.need = n; return s; };
 	const Stage& M = focus ? MF : MS;
 	const Stage& P = focus ? PF : PS;
 	const Stage& T = focus ? TF : TS;
 	const Stage& B = focus ? BF : BS;
-	if (BUILD_30 == 1)
-		return { at(T, 5), at(JH, 5), at(B, 5), at(DH, 5), at(B, 10), at(BH, 5), at(B, 20), at(BH, 10), at(B, 30), at(BH, 20), at(B, 60) };
+	if (BUILD_30 == 1 || BUILD_30 >= 3)
+	{
+		// cambc 4.0: 3/4/5 open with Capture, Monster or Prospector instead of Treasure (see BUILD30_FIRST in bot.py).
+		const Stage& first = BUILD_30 == 3 ? (focus ? CF : CS) : BUILD_30 == 4 ? M : BUILD_30 == 5 ? (focus ? RF : RS) : T;
+		return { at(first, 5), at(JH, 5), at(B, 5), at(DH, 5), at(B, 10), at(BH, 5), at(B, 20), at(BH, 10), at(B, 30), at(BH, 20), at(B, 60) };
+	}
 	if (BUILD_30 == 2)
 		return { at(T, 5), at(B, 5), at(BH, 5), at(B, 10), at(BH, 10), at(B, 20), at(BH, 20), at(B, 60) };
 	return { at(M, 5), at(P, 5), at(JH, 5), at(P, 10), at(DH, 5), at(P, 30), at(PH, 30), at(P, 60) };
@@ -126,7 +132,7 @@ struct Near
 	int gems;
 };
 
-// A visible camp of a known group: (camp, group index, kind, spawn cell, health).
+// A visible camp of a known group: (camp, group index, kind, spawn cell, health, index in the group).
 struct CampInfo
 {
 	cambc::camp c;
@@ -134,6 +140,7 @@ struct CampInfo
 	int k;
 	vec2 p;
 	double hp;
+	int li;
 };
 
 struct Scored
@@ -502,9 +509,9 @@ private:
 		for (const auto& c : camps)
 		{
 			std::uint32_t h = camp_handle(c);
-			auto it = world.camp_group.find(h);
-			if (it == world.camp_group.end()) continue;
-			Group& g = G(it->second);
+			if (h >= world.camp_g.size() || world.camp_g[h] < 0) continue;
+			Group& g = G(world.camp_g[h]);
+			int li = world.camp_li[h];
 			double chp;
 			try
 			{
@@ -514,12 +521,11 @@ private:
 			{
 				continue;  // listed in vision but not readable this turn (cambc 3.0 quirk)
 			}
-			int k = static_cast<int>(c.kind());
-			camp_info.push_back(CampInfo{ c, g.idx, k, g.cell_of[h], chp });
-			auto hit = g.hp.find(h);
-			if (hit == g.hp.end() || hit->second != chp)
+			int k = g.kinds[li];  // known since the first turn: saves an engine call per visible camp
+			camp_info.push_back(CampInfo{ c, g.idx, k, g.cells[li], chp, li });
+			if (g.hp[li] != chp)
 			{
-				g.hp[h] = chp;
+				g.hp[li] = chp;
 				g.refresh_hp();
 			}
 			if (chp < stat(k).hp) awake.insert(g.idx);
@@ -1383,10 +1389,14 @@ private:
 		idle_turns = 0;
 		support();
 		Group& grp = G(g);
-		if (world.all_camp_tiles.is_set(pos) && !(grp.status == REWARD && grp.tiles.is_set(pos))) step_off();
 		std::vector<CampInfo> alive;
+		alive.reserve(camp_info.size());
 		for (const auto& ci : camp_info)
 			if (ci.g == g) alive.push_back(ci);
+		// A dead camp's tile of the target can't block a respawn before the capture, so stay on it while camps live:
+		// 00vault's inner camps can only be reached across the outer ones' tiles.
+		if (world.all_camp_tiles.is_set(pos) && !((grp.status == REWARD || !alive.empty()) && grp.tiles.is_set(pos)))
+			step_off();
 		if (!alive.empty())
 		{
 			act = "camp";
@@ -1444,18 +1454,16 @@ private:
 	void attack_group(Group& g, const std::vector<CampInfo>& alive)
 	{
 		bool is_awake = awake.count(g.idx) > 0;
-		std::set<std::uint32_t> live;
-		for (const auto& x : alive) live.insert(camp_handle(x.c));
+		std::vector<char> live(g.cells.size(), 0);
+		for (const auto& x : alive) live[x.li] = 1;
 		const CampInfo* best = nullptr;
 		std::tuple<int, double, int> best_key{};
 		std::optional<vec2> aoe;
 		int aoe_n = -1;
 		for (const auto& x : alive)
 		{
-			std::uint32_t h = camp_handle(x.c);
 			int n = 0;
-			for (auto h2 : g.nbrs[h])
-				if (live.count(h2)) ++n;
+			for (int j : g.near[x.li]) n += live[j];
 			if (n > aoe_n)
 			{
 				aoe_n = n;
@@ -1540,10 +1548,11 @@ private:
 		{
 			bitboard off = roots & ~world.all_camp_tiles;
 			if (!off.is_empty()) roots = off;
+			bitboard spawns = world.all_camp_tiles & ~g.tiles;  // walk across the target's dead camps (see step_off() above)
 			if (avoid)
-				*avoid |= world.all_camp_tiles;
+				*avoid |= spawns;
 			else
-				avoid = world.all_camp_tiles;
+				avoid = spawns;
 		}
 		go(roots, true, avoid ? &*avoid : nullptr);
 		if (cheb(cp, pos) <= rng)

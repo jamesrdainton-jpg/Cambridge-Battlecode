@@ -1,4 +1,4 @@
-"""Turn-accurate replay parser for cambc 3.0 replays (format 3), aware of turn priorities.
+"""Turn-accurate replay parser for cambc 3.0 and 4.0 replays, aware of turn priorities.
 
 Strong teams call set_priority(): it appears in the replay as record 00 00 <u32 priority>, takes effect from the next
 round, and persists. Within a team, higher priority acts first (ties in draft order); the two teams alternate champion by
@@ -27,7 +27,7 @@ import replay_decode as RD  # noqa: E402
 
 def _records(data, maps):
     name, mb = next(((n, b) for n, b in maps.items() if b in data), ("?", b""))
-    if not mb or data[10] not in (2, 3):
+    if not mb or RD.version(data) not in RD.SUPPORTED:
         return name, None, None
     o = data.find(mb) + len(mb)
     count = struct.unpack_from("<I", data, o)[0]
@@ -40,7 +40,7 @@ def _records(data, maps):
         if tag == 4:
             picks.append(struct.unpack_from("<I", data, o + 2)[0])
             o += 7
-            draft_end = data[10] >= 3
+            draft_end = RD.draft_end_records(data)
         elif tag == 3:
             if not draft_end:
                 turns.append(cur)

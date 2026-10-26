@@ -27,6 +27,11 @@ SHARD = {  # (shard, emblem) per family/stat
     ("BRUISER", "S"): (IT.BRUISER_SHARD_OF_STRENGTH, IT.BRUISER_EMBLEM_OF_STRENGTH),
     ("BRUISER", "F"): (IT.BRUISER_SHARD_OF_FOCUS, IT.BRUISER_EMBLEM_OF_FOCUS),
     ("BRUISER", "H"): (IT.BRUISER_SHARD_OF_HEALTH, IT.BRUISER_EMBLEM_OF_HEALTH),
+    # cambc 4.0 families (engine 2.0.0).
+    ("CAPTURE", "S"): (IT.CAPTURE_SHARD_OF_STRENGTH, IT.CAPTURE_EMBLEM_OF_STRENGTH),
+    ("CAPTURE", "F"): (IT.CAPTURE_SHARD_OF_FOCUS, IT.CAPTURE_EMBLEM_OF_FOCUS),
+    ("PROSPECTOR", "S"): (IT.PROSPECTOR_SHARD_OF_STRENGTH, IT.PROSPECTOR_EMBLEM_OF_STRENGTH),
+    ("PROSPECTOR", "F"): (IT.PROSPECTOR_SHARD_OF_FOCUS, IT.PROSPECTOR_EMBLEM_OF_FOCUS),
 }
 # Each stage: (family, stat, shards owned when the stage is complete).
 BUILD_STR = [("MONSTER", "S", 5), ("POWER", "S", 5), ("JUNGLE", "H", 5), ("POWER", "S", 10),
@@ -46,6 +51,9 @@ BUILD30_STR = [("TREASURE", "S", 5), ("JUNGLE", "H", 5), ("BRUISER", "S", 5), ("
 BUILD30_FOCUS = [("TREASURE", "F", 5), ("JUNGLE", "H", 5), ("BRUISER", "F", 5), ("DURABILITY", "H", 5),
                  ("BRUISER", "F", 10), ("BRUISER", "H", 5), ("BRUISER", "F", 20), ("BRUISER", "H", 10),
                  ("BRUISER", "F", 30), ("BRUISER", "H", 20), ("BRUISER", "F", 60)]
+# cambc 4.0 (Treasure +20% -> +10% gold; new families): BUILD_30 3/4/5 = BUILD_30 1 with Capture (captures take 3 turns,
+# not 5), Monster (+15% camp damage) or Prospector (+25% of own cluster rewards) as the first emblem instead of Treasure.
+BUILD30_FIRST = {3: "CAPTURE", 4: "MONSTER", 5: "PROSPECTOR"}
 BUILD30_LEAN_STR = [("TREASURE", "S", 5), ("BRUISER", "S", 5), ("BRUISER", "H", 5), ("BRUISER", "S", 10),
                     ("BRUISER", "H", 10), ("BRUISER", "S", 20), ("BRUISER", "H", 20), ("BRUISER", "S", 60)]
 BUILD30_LEAN_FOCUS = [("TREASURE", "F", 5), ("BRUISER", "F", 5), ("BRUISER", "H", 5), ("BRUISER", "F", 10),
@@ -264,10 +272,14 @@ class Bot:
             self.build = [("POWER", stat, n) if fam == "MONSTER" else (fam, stat, n) for fam, stat, n in self.build]
         if BUILD_30:
             focus = self.kind in FOCUS_CHAMPS
-            if BUILD_30 == 1:
-                self.build = BUILD30_FOCUS if focus else BUILD30_STR
-            else:
+            if BUILD_30 == 2:
                 self.build = BUILD30_LEAN_FOCUS if focus else BUILD30_LEAN_STR
+            else:
+                self.build = BUILD30_FOCUS if focus else BUILD30_STR
+                first = BUILD30_FIRST.get(BUILD_30)
+                if first:
+                    # cambc 4.0: same build with another first emblem (Treasure fell to +10% gold).
+                    self.build = [(first, stat, n) if fam == "TREASURE" else (fam, stat, n) for fam, stat, n in self.build]
         self.ward_at = None
         self.splash = me.passive() == cambc.PassiveType.SPLASH_ATTACK
         self.aoe_mod = 0.0
@@ -1582,9 +1594,11 @@ class Bot:
         if self.has_lock and LOCK_DETOUR and g.idx not in self.awake and self.lock_detour():
             self.act = "lock"
             return
-        if self.world.all_camp_tiles.is_set(self.pos) and not (g.status == W.REWARD and g.tiles.is_set(self.pos)):
-            self.step_off()
         alive = [x for x in self.camp_info if x[1] is g]
+        # A dead camp's tile of the target can't block a respawn before the capture, so stay on it while camps live:
+        # 00vault's inner camps can only be reached across the outer ones' tiles.
+        if self.world.all_camp_tiles.is_set(self.pos) and not ((g.status == W.REWARD or alive) and g.tiles.is_set(self.pos)):
+            self.step_off()
         if alive:
             self.act = "camp"
             self.attack_group(g, alive)
@@ -1722,6 +1736,7 @@ class Bot:
             off = roots & ~spawns
             if not off.is_empty():
                 roots = off
+            spawns = spawns & ~g.tiles  # walk across the target's dead camps (see the step_off() check above)
             avoid = spawns if avoid is None else (avoid | spawns)
         self.go(roots, avoid=self.keep_away(avoid))
         if cheb(cp, self.pos) <= self.rng:

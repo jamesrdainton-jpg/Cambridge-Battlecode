@@ -80,15 +80,16 @@ struct Group
 	bitboard tiles;
 	vec2 anchor{};
 	int ax{}, ay{}, lin{};
-	std::unordered_map<std::uint32_t, vec2> cell_of;
-	std::unordered_map<std::uint32_t, std::vector<std::uint32_t>> nbrs;
+	// Per camp, by its index in this group ("local index"; World::camp_li maps a handle to it): vectors, not hash maps,
+	// because wasm charges fuel per instruction and 00vault has 49 camps in one group.
+	std::vector<std::vector<int>> near;  // the group's other camps within one tile (splash / AoE reach)
 	double cluster{};
 	bool enemy_side{};
 	double hp_max{}, hp_now{}, dps{};
 	int rng{};
 	bool boss{};
 	int status{ ALIVE }, alive_at{}, seen{ -1 };
-	std::unordered_map<std::uint32_t, double> hp;  // last seen health per camp handle (missing = full)
+	std::vector<double> hp;  // last seen health per camp (-1 = not seen yet: full)
 	int near_altar{ UNREACHED };
 
 	Group(int i, const cambc::map::camp_group& g)
@@ -112,20 +113,19 @@ struct Group
 		anchor = cells.front();
 		ax = anchor.x;
 		ay = anchor.y;
-		for (std::size_t i = 0; i < handles.size(); ++i) cell_of[handles[i]] = cells[i];
 		std::size_t n = handles.size();
+		near.resize(n);
+		hp.assign(n, -1.0);
 		double total = 0;
 		for (std::size_t i = 0; i < n; ++i)
 		{
-			std::vector<std::uint32_t> near;
 			if (n > 1)
 			{
 				for (std::size_t j = 0; j < n; ++j)
 					if (j != i && std::abs(cells[j].x - cells[i].x) <= 1 && std::abs(cells[j].y - cells[i].y) <= 1)
-						near.push_back(handles[j]);
-				total += static_cast<double>(near.size());
+						near[i].push_back(static_cast<int>(j));
+				total += static_cast<double>(near[i].size());
 			}
-			nbrs[handles[i]] = std::move(near);
 		}
 		cluster = total / static_cast<double>(n);
 		hp_now = hp_max;
@@ -134,17 +134,13 @@ struct Group
 	void refresh_hp()
 	{
 		double total = 0;
-		for (std::size_t i = 0; i < handles.size(); ++i)
-		{
-			auto it = hp.find(handles[i]);
-			total += it != hp.end() ? it->second : stat(kinds[i]).hp;
-		}
+		for (std::size_t i = 0; i < handles.size(); ++i) total += hp[i] >= 0 ? hp[i] : stat(kinds[i]).hp;
 		hp_now = total;
 	}
 
 	void reset_hp()
 	{
-		hp.clear();
+		std::fill(hp.begin(), hp.end(), -1.0);
 		hp_now = hp_max;
 	}
 };
@@ -156,7 +152,7 @@ struct World
 	std::vector<vec2> altar_list, spawn_tiles;
 	vec2 spawn_center{}, enemy_spawn_center{};
 	std::vector<Group> groups;
-	std::unordered_map<std::uint32_t, int> camp_group;  // camp handle -> group index
+	std::vector<int> camp_g, camp_li;  // camp handle -> group index (-1 = none) and local index in it
 	std::map<std::pair<int, int>, std::vector<int>> buckets;  // 10x10 buckets of group indices
 	std::optional<distance_field> altar_f, spawn_f;
 
@@ -185,7 +181,17 @@ struct World
 			int de = cheb(g.anchor, enemy_spawn_center);
 			int dm = cheb(g.anchor, spawn_center);
 			g.enemy_side = de < dm;
-			for (auto hdl : g.handles) camp_group[hdl] = g.idx;
+			for (std::size_t i = 0; i < g.handles.size(); ++i)
+			{
+				std::uint32_t hdl = g.handles[i];
+				if (hdl >= camp_g.size())
+				{
+					camp_g.resize(hdl + 1, -1);
+					camp_li.resize(hdl + 1, -1);
+				}
+				camp_g[hdl] = g.idx;
+				camp_li[hdl] = static_cast<int>(i);
+			}
 		}
 	}
 
