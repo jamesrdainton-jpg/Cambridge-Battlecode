@@ -154,3 +154,4 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-26 22:10,c36r[1],58/140,c29b:58/140(-9388),,c36r (moderate caution) vs c29b (v14); queue 36; cambc 4.0.0, 70 maps, C++,58c6bcd
 2026-10-26 22:12,c36re[1],50/140,c29b:50/140(-22734),,c36re (moderate caution) vs c29b (v14); queue 36; cambc 4.0.0, 70 maps, C++,58c6bcd
 2026-10-26 22:13,c36rm[1],39/140,c29b:39/140(-20356),,c36rm (moderate caution) vs c29b (v14); queue 36; cambc 4.0.0, 70 maps, C++,58c6bcd
+2026-10-26 22:25,c37r[1],73/140,c29b:73/140(+1818),,c37r (RECALL_TRICK) vs c29b (v14); queue 37; cambc 4.0.0, 70 maps, C++,f3fe112
