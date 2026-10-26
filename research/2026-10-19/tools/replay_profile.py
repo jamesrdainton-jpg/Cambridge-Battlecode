@@ -34,7 +34,7 @@ def per_turn(data, maps):
     """Return map, rounds, champs, and per team per champion a list of (round, [actions]) per turn."""
     import struct
     name, mb = next(((n, b) for n, b in maps.items() if b in data), ("?", b""))
-    if not mb or data[10] not in (2, 3):
+    if not mb or RD.version(data) not in RD.SUPPORTED:
         return None
     o = data.find(mb) + len(mb)
     count = struct.unpack_from("<I", data, o)[0]
@@ -47,7 +47,7 @@ def per_turn(data, maps):
         if tag == 4:
             picks.append(struct.unpack_from("<I", data, o + 2)[0])
             o += 7
-            draft_end = data[10] >= 3
+            draft_end = RD.draft_end_records(data)
         elif tag == 3:
             if not draft_end:
                 turns.append(cur)

@@ -1,20 +1,21 @@
-map                  zG         zH         zI         zJ
-ambush              746        756        800        723
-collision           600        600        600        600
-contest            1072        891        988       1030
-corners             486        550        492        505
-eight               454        478        451        463
-elkring             497        497        458        508
-expanse             708        708        708        708
-fragment            606        604        604        604
-interlock           602        577        584        597
-lanes               564        550        528        524
-monolith            464        575        598        578
-packs               467        467        467        467
-pilgrimage          710        579        664        666
-rows                469        502        466        466
-rushbait-v2         654        654        632        624
-stampede            934        565        534        584
-swirl               416        478        480        467
-SUM               10450      10029      10054      10112
-STOPPED after the economy run (2026-10-20 ~22:00): zH/zI/zJ economy 10,029-10,112 vs queue 15's zB 9,610, so zH's head-to-head was skipped for queue 18's zL (zB rebuilt + AWAKE_NEAR).
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x14a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x14b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x14c
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x14d
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x14e
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x14f
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x14b_s1
+vs x14a       wins 31/80  gem margin -5367
+2026-10-25 18:19,x14b[1],31/80,x14a:31/80(-5367),,x14b vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x14c_s1
+vs x14a       wins 30/80  gem margin -10895
+2026-10-25 18:25,x14c[1],30/80,x14a:30/80(-10895),,x14c vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x14d_s1
+vs x14a       wins 53/80  gem margin +9946
+2026-10-25 18:29,x14d[1],53/80,x14a:53/80(+9946),,x14d vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x14e_s1
+vs x14a       wins 65/80  gem margin +27518
+2026-10-25 18:33,x14e[1],65/80,x14a:65/80(+27518),,x14e vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x14f_s1
+vs x14a       wins 65/80  gem margin +21305
+2026-10-25 18:37,x14f[1],65/80,x14a:65/80(+21305),,x14f vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa

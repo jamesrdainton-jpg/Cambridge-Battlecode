@@ -5,7 +5,9 @@ FILE is a .repl26a, a platform match download (.zip with replay.repl26a inside) 
 (zips inside). Files are read in memory only.
 
 Format, validated turn by turn against traced games (DEVLOG experiments 96 and 110):
-  magic "a62per", format byte at offset 10 (2 = cambc 2.2.2, 3 = cambc 2.2.5), the embedded map file, u32 record count, then records:
+  magic "a62per", version u16 major at offset 8 and u16 minor at offset 10 ((0, 2) cambc 2.2.2; (0, 3) cambc 2.2.5 and
+  platform engine 3.0; (1, 3) cambc 3.0.x; (2, 0) cambc 4.0 / engine 2.0, same records as (1, 3)), the embedded map file,
+  u32 record count, then records:
   04 00 <u32 pick> 00                 draft pick, alternating team A / team B (format 3: 04 01 <u32> ff, then 03 00)
   03 <u8 reason>                      end of one champion's turn
   00 <u8 action> <payload>            champion action:
@@ -37,10 +39,22 @@ from pathlib import Path
 
 from common import ROOT
 
-PICKS = ["Ryth", "Vesper", "Vendetta", "Cassi&Issac", "Stellar", "Prism", "Marcella", "Willow", "Ren", "Varg", "Tavi"]
+PICKS = ["Ryth", "Vesper", "Vendetta", "Cassi&Issac", "Stellar", "Prism", "Marcella", "Willow", "Ren", "Varg", "Tavi",
+         "HeartOfRuin"]  # Heart of Ruin: new in cambc 3.0
 FAMILIES = ["Monster", "Power", "Durability", "Treasure", "Jungle", "Home", "Bruiser"]
 ITEMS = [f"{fam} {stat} {kind}" for fam in FAMILIES for stat in ("S", "F", "H") for kind in ("shard", "emblem")]
 PAYLOAD = {0: 4, 1: 8, 2: 9, 3: 17, 4: 0, 5: 8, 6: 8, 7: 0, 8: 8, 9: 9, 10: 8, 11: 4}
+SUPPORTED = {(0, 2), (0, 3), (1, 3), (2, 0)}
+
+
+def version(data: bytes) -> tuple[int, int]:
+    """(major, minor) from the replay header; see SUPPORTED."""
+    return struct.unpack_from("<HH", data, 8)
+
+
+def draft_end_records(data: bytes) -> bool:
+    """From (0, 3) on, every draft pick is followed by its own end-of-turn record."""
+    return version(data) >= (0, 3)
 
 
 def replays(path: Path) -> list[tuple[str, bytes]]:
@@ -60,8 +74,8 @@ def replays(path: Path) -> list[tuple[str, bytes]]:
 def decode(data: bytes, maps: dict[str, bytes]) -> dict:
     """Map name, drafts and per-champion actions [(round, action, args)] for each team."""
     name, mb = next(((n, b) for n, b in maps.items() if b in data), ("?", b""))
-    if not mb or data[10] not in (2, 3):
-        return {"map": name, "error": "unknown map" if not mb else f"replay format {data[10]} unsupported"}
+    if not mb or version(data) not in SUPPORTED:
+        return {"map": name, "error": "unknown map" if not mb else f"replay version {version(data)} unsupported"}
     o = data.find(mb) + len(mb)
     count = struct.unpack_from("<I", data, o)[0]
     o += 4
@@ -76,7 +90,7 @@ def decode(data: bytes, maps: dict[str, bytes]) -> dict:
         if tag == 4:
             picks.append(struct.unpack_from("<I", data, o + 2)[0])
             o += 7
-            draft_end = data[10] >= 3  # format 3 ends every draft pick with its own end-of-turn record
+            draft_end = draft_end_records(data)
         elif tag == 3:
             if not draft_end:
                 turns.append(cur)

@@ -1,20 +1,16 @@
-ambush        3/4     -128
-collision     2/4      -16
-contest       1/4    -1600
-corners       3/4     +410
-eight         2/4     +364
-elkring       0/4    -1224
-expanse       2/4     +338
-fragment      1/4    -1236
-interlock     3/4     +520
-lanes         1/4     +108
-monolith      2/4     -458
-packs         0/4     -900
-pilgrimage    0/4    -1582
-rows          1/4     -528
-rushbait-v2   2/4     -580
-stampede      4/4    +2880
-swirl         1/4    -1544
-per seed: s1 15/34 (-2216)  s2 13/34 (-2960)
-zL vs v12: 28/68, gems -5176
-STOPPED after the head-to-head (2026-10-20): zL lost to v12 28/68 (-5,176), so the economy comparison was replaced by queue 19's layer ablation.
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16a_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16a_s2
+    x16a_s1 vs v13_s1: 49/80 (+8060)
+    x16a_s2 vs v13_s2: 50/80 (+12971)
+vs v13        wins 99/160  gem margin +21031
+economy (rounds to 1000 vs idle, summed over 40 maps): 48839
+2026-10-25 21:02,x16a[1,2],99/160,v13:99/160(+21031),48839,x16a = v13 + BUILD_30 1 (Treasure, Jungle, Bruiser stacks); cambc 3.0.5, 40 maps,54d8d5b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16b_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x16b_s2
+    x16b_s1 vs v13_s1: 46/80 (+719)
+    x16b_s2 vs v13_s2: 34/80 (-4006)
+vs v13        wins 80/160  gem margin -3287
+economy (rounds to 1000 vs idle, summed over 40 maps): 52119
+2026-10-25 21:22,x16b[1,2],80/160,v13:80/160(-3287),52119,x16b = v13 + BUILD_30 2 (Treasure, then Bruiser only); cambc 3.0.5, 40 maps,d56088b

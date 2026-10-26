@@ -1,0 +1,200 @@
+
+== ddcb8363/01 lost-world r341 ours=a CRASH x120 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 0 (first rNone) deaths 0 recalls 0 hits {} champhits 0 casts {}
+       spent r300 0 r1000 0 end 0 first_buy rNone wards 0 locks 0 boss first rNone n=0 dist {}
+     b Vendetta,Cassi,Issac,Varg,Ryth,Ren
+       trib 44 (first r29) deaths 0 recalls 0 hits {'g': 333} champhits 0 casts {'none': 136, 'camp:g': 21}
+       spent r300 0 r1000 0 end 0 first_buy rNone wards 155 locks 0 boss first rNone n=0 dist {}
+
+== ddcb8363/02 boss-battle r2000 ours=a us 0-0 @r2000 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 0 (first rNone) deaths 3 recalls 18 hits {'e': 222, 'G': 7, 'w': 22} champhits 0 casts {'camp:w': 2, 'camp:e': 21, 'camp:G': 6, 'none': 108}
+       spent r300 220 r1000 220 end 220 first_buy r220 wards 0 locks 0 boss first rNone n=0 dist {}
+     b Vendetta,Cassi,Issac,Varg,Ryth,Ren
+       trib 0 (first rNone) deaths 1 recalls 18 hits {'w': 60, 'e': 143, 'G': 51} champhits 0 casts {'none': 375, 'camp:G': 2, 'camp:w': 3, 'camp:e': 2}
+       spent r300 270 r1000 450 end 450 first_buy r127 wards 314 locks 0 boss first rNone n=0 dist {}
+
+== ddcb8363/03 collision r2000 ours=a us 321-0 @r2000 
+  US a Vendetta,Ryth,Tavi
+       trib 18 (first r75) deaths 2 recalls 17 hits {'G': 22, 'e': 102, 'w': 189, 'g': 15} champhits 153 casts {'none': 237, 'camp:e': 3, 'champ': 27, 'camp:w': 10, 'camp:G': 5, 'camp:g': 9}
+       spent r300 880 r1000 1780 end 1780 first_buy r61 wards 36 locks 1 boss first rNone n=0 dist {}
+     b Vendetta,Cassi,Issac,Varg
+       trib 0 (first rNone) deaths 10 recalls 23 hits {'w': 180, 'g': 27, 'G': 46} champhits 41 casts {'none': 519, 'camp:w': 12, 'camp:g': 3, 'camp:G': 8, 'champ': 14}
+       spent r300 210 r1000 730 end 730 first_buy r96 wards 114 locks 0 boss first rNone n=0 dist {}
+
+== ddcb8363/04 stampede r2000 ours=a us 320-0 @r2000 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 2 (first r1575) deaths 15 recalls 90 hits {'G': 295, 'e': 60, 'g': 11} champhits 577 casts {'champ': 96, 'camp:G': 70, 'none': 585, 'camp:e': 4, 'camp:g': 1}
+       spent r300 890 r1000 3510 end 9100 first_buy r106 wards 592 locks 2 boss first rNone n=0 dist {}
+     b Vendetta,Varg,Ryth,Ren,Marcella
+       trib 0 (first rNone) deaths 28 recalls 68 hits {'G': 559, 'e': 31, 'g': 5} champhits 205 casts {'none': 415, 'camp:G': 14, 'champ': 17, 'camp:e': 3}
+       spent r300 720 r1000 4790 end 10430 first_buy r44 wards 672 locks 0 boss first rNone n=0 dist {}
+
+== ddcb8363/05 fracture r2000 ours=a us 311-468 @r2000 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 8 (first r479) deaths 16 recalls 87 hits {'e': 476, 'w': 419, 'g': 29, 'G': 41} champhits 56 casts {'camp:e': 30, 'camp:G': 21, 'camp:g': 19, 'camp:w': 53, 'none': 462, 'champ': 4}
+       spent r300 260 r1000 1400 end 2370 first_buy r90 wards 1870 locks 4 boss first rNone n=0 dist {}
+     b Vendetta,Cassi,Issac,Varg,Ryth,Ren
+       trib 34 (first r164) deaths 4 recalls 82 hits {'G': 67, 'w': 340, 'e': 473, 'g': 16} champhits 31 casts {'none': 753, 'camp:e': 26, 'camp:G': 8, 'camp:w': 24, 'champ': 3}
+       spent r300 60 r1000 750 end 2930 first_buy r101 wards 1019 locks 0 boss first rNone n=0 dist {}
+
+== 678afd2c/01 starfish r1683 ours=b us 972-304 @r1675 
+     a HeartOfRuin,Marcella,Vesper,Prism,Ryth
+       trib 33 (first r528) deaths 174 recalls 37 hits {'g': 14, 'w': 99, 'e': 388, 'G': 2} champhits 171 casts {'none': 285, 'champ': 82, 'camp:w': 7, 'camp:g': 4, 'camp:e': 36}
+       spent r300 0 r1000 1410 end 3420 first_buy r327 wards 0 locks 0 boss first rNone n=0 dist {}
+  US b Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 33 (first r474) deaths 26 recalls 94 hits {'w': 414, 'e': 376, 'g': 71, 'G': 33} champhits 357 casts {'camp:w': 41, 'camp:G': 8, 'champ': 82, 'camp:e': 30, 'camp:g': 15, 'none': 509}
+       spent r300 890 r1000 3800 end 8700 first_buy r134 wards 659 locks 6 boss first rNone n=0 dist {}
+
+== 678afd2c/02 eight r1407 ours=b us 599-950 @r1400 
+     a HeartOfRuin,Marcella,Vesper,Prism,Ryth
+       trib 89 (first r188) deaths 91 recalls 62 hits {'w': 165, 'e': 865, 'G': 20, 'g': 34} champhits 105 casts {'none': 329, 'camp:e': 106, 'champ': 89, 'camp:G': 1, 'camp:w': 19, 'camp:g': 1}
+       spent r300 600 r1000 3840 end 7500 first_buy r95 wards 0 locks 0 boss first rNone n=0 dist {}
+  US b Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 18 (first r249) deaths 33 recalls 79 hits {'w': 307, 'e': 446, 'G': 30, 'g': 21} champhits 95 casts {'camp:w': 36, 'camp:g': 19, 'camp:e': 54, 'camp:G': 15, 'champ': 38, 'none': 439}
+       spent r300 1240 r1000 2440 end 4600 first_buy r81 wards 139 locks 10 boss first rNone n=0 dist {}
+
+== 678afd2c/03 concentrated-wealth r1630 ours=b us 400-964 @r1625 
+     a HeartOfRuin,Marcella,Vesper,Prism,Ryth
+       trib 82 (first r120) deaths 109 recalls 37 hits {'G': 214, 'g': 118, 'e': 362, 'w': 78} champhits 50 casts {'none': 355, 'camp:e': 28, 'camp:w': 12, 'camp:G': 38, 'champ': 25, 'camp:g': 14}
+       spent r300 630 r1000 3360 end 7110 first_buy r204 wards 0 locks 0 boss first rNone n=0 dist {}
+  US b Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 19 (first r1610) deaths 13 recalls 67 hits {'e': 361, 'w': 374, 'g': 35, 'G': 41} champhits 121 casts {'camp:e': 41, 'camp:w': 32, 'camp:G': 20, 'camp:g': 7, 'champ': 24, 'none': 489}
+       spent r300 600 r1000 2080 end 3500 first_buy r111 wards 532 locks 9 boss first rNone n=0 dist {}
+
+== 678afd2c/04 gemfight r1374 ours=b us 666-992 @r1350 
+     a HeartOfRuin,Marcella,Vesper,Prism
+       trib 94 (first r63) deaths 96 recalls 24 hits {'g': 151, 'w': 294, 'e': 168, 'G': 7} champhits 162 casts {'none': 265, 'camp:w': 22, 'champ': 74, 'camp:e': 19, 'camp:g': 18}
+       spent r300 480 r1000 2760 end 4530 first_buy r88 wards 0 locks 0 boss first rNone n=0 dist {}
+  US b Cassi,Issac,Stellar,Ren,Ryth
+       trib 19 (first r402) deaths 19 recalls 48 hits {'w': 138, 'e': 174, 'g': 69, 'G': 14} champhits 213 casts {'camp:w': 13, 'camp:G': 5, 'camp:e': 24, 'champ': 71, 'camp:g': 28, 'none': 371}
+       spent r300 690 r1000 2950 end 3980 first_buy r53 wards 181 locks 12 boss first rNone n=0 dist {}
+
+== 678afd2c/05 corridors r1812 ours=b us 950-712 @r1800 
+     a HeartOfRuin,Marcella,Vesper,Prism,Ryth
+       trib 54 (first r577) deaths 158 recalls 65 hits {'G': 25, 'w': 420, 'e': 727, 'g': 6} champhits 12 casts {'none': 394, 'camp:w': 38, 'camp:g': 3, 'camp:e': 75, 'champ': 19, 'camp:G': 4}
+       spent r300 420 r1000 2490 end 6870 first_buy r122 wards 0 locks 0 boss first rNone n=0 dist {}
+  US b Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 21 (first r285) deaths 12 recalls 289 hits {'w': 369, 'e': 561, 'g': 26, 'G': 14} champhits 60 casts {'camp:w': 69, 'camp:e': 39, 'champ': 15, 'camp:G': 19, 'camp:g': 15, 'none': 565}
+       spent r300 590 r1000 1970 end 4530 first_buy r168 wards 1827 locks 10 boss first rNone n=0 dist {}
+
+== e76ed552/01 starfish r1682 ours=a us 964-32 @r1675 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 32 (first r199) deaths 46 recalls 68 hits {'w': 262, 'G': 19, 'e': 618, 'g': 71} champhits 421 casts {'camp:w': 22, 'camp:G': 9, 'champ': 60, 'camp:e': 50, 'camp:g': 24, 'none': 543}
+       spent r300 800 r1000 3660 end 9370 first_buy r86 wards 644 locks 4 boss first rNone n=0 dist {}
+     b Vendetta,Marcella,Vesper,HeartOfRuin,Varg
+       trib 5 (first r274) deaths 38 recalls 116 hits {'w': 199, 'G': 35, 'e': 200, 'g': 29} champhits 130 casts {'none': 529, 'camp:G': 1, 'camp:w': 2, 'camp:g': 3, 'champ': 2, 'camp:e': 3}
+       spent r300 140 r1000 760 end 1480 first_buy r227 wards 0 locks 5 boss first rNone n=0 dist {}
+
+== e76ed552/02 swirl r1540 ours=a us 961-180 @r1525 
+  US a Cassi,Issac,Stellar,Ren,Ryth
+       trib 70 (first r417) deaths 16 recalls 50 hits {'e': 665, 'w': 244, 'G': 80, 'g': 19} champhits 377 casts {'camp:G': 35, 'camp:e': 59, 'champ': 139, 'camp:w': 23, 'none': 518, 'camp:g': 6}
+       spent r300 1320 r1000 7020 end 11530 first_buy r46 wards 386 locks 9 boss first rNone n=0 dist {}
+     b Vendetta,Marcella,Vesper,HeartOfRuin
+       trib 18 (first r58) deaths 38 recalls 135 hits {'G': 101, 'e': 192, 'w': 74, 'g': 8} champhits 126 casts {'none': 418, 'camp:G': 15, 'camp:e': 8, 'camp:w': 3, 'champ': 2}
+       spent r300 790 r1000 2640 end 4560 first_buy r64 wards 0 locks 8 boss first rNone n=0 dist {}
+
+== e76ed552/03 gem-fields r816 ours=a us 526-937 @r800 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 19 (first r445) deaths 10 recalls 39 hits {'g': 70, 'e': 288} champhits 199 casts {'camp:g': 28, 'camp:e': 30, 'champ': 46, 'none': 282}
+       spent r300 240 r1000 1130 end 1130 first_buy r205 wards 423 locks 2 boss first rNone n=0 dist {}
+     b Vendetta,Marcella,Vesper,HeartOfRuin,Varg
+       trib 41 (first r477) deaths 8 recalls 80 hits {'e': 331, 'g': 164, 'w': 189} champhits 104 casts {'none': 414, 'camp:e': 8, 'camp:g': 12, 'camp:w': 6, 'champ': 1}
+       spent r300 460 r1000 2560 end 2560 first_buy r87 wards 0 locks 1 boss first rNone n=0 dist {}
+
+== e76ed552/04 big-world r1711 ours=a us 960-675 @r1700 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 22 (first r478) deaths 13 recalls 157 hits {'e': 711, 'w': 226, 'g': 60, 'G': 48, 'M': 116} champhits 20 casts {'camp:e': 79, 'camp:G': 26, 'camp:w': 20, 'camp:g': 14, 'none': 530, 'camp:M': 7, 'champ': 7}
+       spent r300 440 r1000 2440 end 5510 first_buy r106 wards 163 locks 2 boss first r804 n=123 dist {1: 116}
+     b Vendetta,Marcella,Vesper,HeartOfRuin,Varg
+       trib 16 (first r157) deaths 13 recalls 84 hits {'e': 292, 'w': 147, 'M': 378, 'g': 24, 'G': 26} champhits 4 casts {'none': 733, 'camp:w': 4, 'camp:e': 2, 'camp:g': 2, 'camp:G': 2, 'camp:M': 10}
+       spent r300 440 r1000 2150 end 2470 first_buy r95 wards 0 locks 0 boss first r682 n=388 dist {1: 191, 2: 23, 3: 158, 5: 6}
+
+== e76ed552/05 quadrants r740 ours=a CRASH x120 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 0 (first rNone) deaths 0 recalls 0 hits {} champhits 0 casts {}
+       spent r300 0 r1000 0 end 0 first_buy rNone wards 0 locks 0 boss first rNone n=0 dist {}
+     b Vendetta,Marcella,Vesper,HeartOfRuin,Varg
+       trib 30 (first r81) deaths 1 recalls 31 hits {'g': 205, 'O': 9, 'w': 572, 'e': 134} champhits 0 casts {'none': 354, 'camp:g': 14, 'camp:w': 15, 'camp:e': 4}
+       spent r300 530 r1000 2230 end 2230 first_buy r123 wards 0 locks 0 boss first r247 n=9 dist {1: 9}
+
+== c365ecd0/01 elkring r1208 ours=a us 990-748 @r1200 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 36 (first r202) deaths 32 recalls 50 hits {'e': 838, 'G': 35, 'g': 33} champhits 301 casts {'camp:e': 80, 'champ': 46, 'camp:g': 28, 'camp:G': 14, 'none': 403}
+       spent r300 1420 r1000 6750 end 7970 first_buy r65 wards 183 locks 8 boss first rNone n=0 dist {}
+     b Varg,Vendetta,Cassi,Issac,Ryth,Ren
+       trib 28 (first r654) deaths 144 recalls 56 hits {'e': 1198, 'G': 45, 'g': 64} champhits 303 casts {'camp:e': 98, 'none': 309, 'champ': 32, 'camp:G': 19, 'camp:g': 24}
+       spent r300 1110 r1000 4890 end 6840 first_buy r51 wards 0 locks 0 boss first rNone n=0 dist {}
+
+== c365ecd0/02 fragment r1999 ours=a us 954-110 @r1975 
+  US a Vendetta,Ryth,Tavi
+       trib 43 (first r117) deaths 23 recalls 47 hits {'g': 25, 'G': 39, 'w': 290, 'e': 287} champhits 544 casts {'none': 446, 'camp:w': 15, 'camp:e': 19, 'champ': 36, 'camp:g': 7, 'camp:G': 11}
+       spent r300 790 r1000 4180 end 8690 first_buy r66 wards 221 locks 5 boss first rNone n=0 dist {}
+     b Varg,Ryth,Vendetta
+       trib 11 (first r77) deaths 113 recalls 42 hits {'w': 284, 'e': 134, 'G': 12, 'g': 5} champhits 404 casts {'none': 286}
+       spent r300 900 r1000 2640 end 3840 first_buy r57 wards 0 locks 0 boss first rNone n=0 dist {}
+
+== c365ecd0/03 packs r1261 ours=a us 996-192 @r1250 
+  US a Vendetta,Ryth,Tavi
+       trib 39 (first r207) deaths 6 recalls 39 hits {'G': 117, 'g': 68, 'w': 171, 'e': 224} champhits 312 casts {'none': 306, 'camp:G': 15, 'camp:w': 15, 'champ': 27, 'camp:e': 9}
+       spent r300 1030 r1000 5540 end 6710 first_buy r54 wards 145 locks 6 boss first rNone n=0 dist {}
+     b Varg,Ryth,Vendetta
+       trib 9 (first r99) deaths 53 recalls 7 hits {'G': 41, 'g': 26, 'w': 76} champhits 247 casts {'none': 179}
+       spent r300 360 r1000 1110 end 1230 first_buy r94 wards 0 locks 0 boss first rNone n=0 dist {}
+
+== c365ecd0/04 the-farm r2000 ours=a us 572-0 @r2000 
+  US a Vendetta,Ryth,Tavi
+       trib 15 (first r132) deaths 8 recalls 25 hits {'G': 22, 'g': 41, 'w': 186, 'e': 420} champhits 35 casts {'none': 353, 'camp:g': 12, 'camp:e': 27, 'camp:w': 9, 'camp:G': 7, 'champ': 2}
+       spent r300 280 r1000 1780 end 3530 first_buy r52 wards 589 locks 3 boss first rNone n=0 dist {}
+     b Varg,Ryth,Vendetta
+       trib 0 (first rNone) deaths 33 recalls 52 hits {'e': 398, 'g': 12, 'G': 20, 'w': 23} champhits 47 casts {'none': 241}
+       spent r300 420 r1000 960 end 1500 first_buy r54 wards 0 locks 0 boss first rNone n=0 dist {}
+
+== c365ecd0/05 collision r1490 ours=a us 211-942 @r1475 
+  US a Vendetta,Ryth,Tavi
+       trib 13 (first r215) deaths 17 recalls 22 hits {'G': 24, 'e': 160, 'w': 203, 'g': 27} champhits 261 casts {'none': 244, 'camp:e': 11, 'camp:G': 5, 'camp:g': 7, 'camp:w': 10, 'champ': 17}
+       spent r300 500 r1000 1800 end 2900 first_buy r68 wards 70 locks 5 boss first rNone n=0 dist {}
+     b Varg,Ryth,Vendetta
+       trib 33 (first r107) deaths 57 recalls 92 hits {'w': 449, 'G': 39, 'g': 47, 'e': 184} champhits 207 casts {'none': 333}
+       spent r300 600 r1000 3150 end 5520 first_buy r51 wards 0 locks 0 boss first rNone n=0 dist {}
+
+== 89b835f5/01 gem-fields r978 ours=a us 953-606 @r975 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 24 (first r296) deaths 14 recalls 58 hits {'g': 107, 'e': 466} champhits 62 casts {'camp:g': 25, 'camp:e': 51, 'champ': 18, 'none': 335}
+       spent r300 180 r1000 1670 end 1670 first_buy r234 wards 462 locks 5 boss first rNone n=0 dist {}
+     b Stellar,Ryth,Vendetta,Willow,Prism
+       trib 47 (first r383) deaths 5 recalls 6 hits {'w': 109, 'g': 98, 'e': 74} champhits 72 casts {'camp:g': 27, 'none': 136, 'champ': 39, 'camp:w': 6, 'camp:e': 8}
+       spent r300 180 r1000 690 end 690 first_buy r182 wards 0 locks 0 boss first rNone n=0 dist {}
+
+== 89b835f5/02 starfish r1707 ours=a us 930-0 @r1700 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 27 (first r125) deaths 40 recalls 80 hits {'w': 320, 'G': 22, 'e': 404, 'g': 37} champhits 332 casts {'camp:w': 21, 'champ': 67, 'camp:G': 9, 'camp:e': 55, 'camp:g': 10, 'none': 506}
+       spent r300 640 r1000 3080 end 6500 first_buy r60 wards 649 locks 2 boss first rNone n=0 dist {}
+     b Stellar,Ryth,Vendetta,Willow,Prism
+       trib 4 (first r1023) deaths 31 recalls 29 hits {'w': 431, 'G': 6, 'g': 24, 'e': 9} champhits 283 casts {'none': 237, 'camp:w': 37, 'champ': 76, 'camp:e': 3}
+       spent r300 480 r1000 1380 end 2580 first_buy r66 wards 0 locks 0 boss first rNone n=0 dist {}
+
+== 89b835f5/03 corners r1349 ours=a us 492-928 @r1325 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 22 (first r124) deaths 14 recalls 82 hits {'e': 786, 'w': 139, 'G': 23, 'g': 27} champhits 44 casts {'camp:g': 17, 'camp:e': 78, 'camp:G': 14, 'camp:w': 12, 'champ': 7, 'none': 404}
+       spent r300 890 r1000 2830 end 3290 first_buy r63 wards 230 locks 5 boss first rNone n=0 dist {}
+     b Stellar,Ryth,Vendetta,Willow,Ren
+       trib 54 (first r98) deaths 1 recalls 38 hits {'e': 1112, 'G': 47, 'w': 212, 'g': 30} champhits 57 casts {'none': 313, 'camp:g': 1, 'camp:e': 66, 'champ': 57, 'camp:w': 7, 'camp:G': 5}
+       spent r300 300 r1000 3300 end 5310 first_buy r138 wards 0 locks 0 boss first rNone n=0 dist {}
+
+== 89b835f5/04 split r778 ours=a CRASH x120 
+  US a Cassi,Issac,Stellar,Ren,Ryth,Varg
+       trib 0 (first rNone) deaths 0 recalls 0 hits {} champhits 0 casts {}
+       spent r300 0 r1000 0 end 0 first_buy rNone wards 0 locks 0 boss first rNone n=0 dist {}
+     b Stellar,Ryth,Vendetta,Willow,Prism
+       trib 39 (first r405) deaths 5 recalls 21 hits {'w': 330, 'e': 331, 'g': 92, 'O': 182, 'G': 1} champhits 0 casts {'none': 225, 'camp:g': 18, 'camp:e': 18, 'camp:w': 20, 'camp:O': 8, 'champ': 32}
+       spent r300 450 r1000 2160 end 2160 first_buy r122 wards 0 locks 0 boss first r233 n=190 dist {1: 110, 3: 72}
+
+== 89b835f5/05 gold-rush r1507 ours=a us 838-374 @r1500 
+  US a Vendetta,Ryth,Tavi
+       trib 51 (first r29) deaths 7 recalls 36 hits {'g': 45, 'w': 407, 'G': 55, 'M': 123} champhits 120 casts {'none': 315, 'champ': 17, 'camp:G': 5, 'camp:g': 12, 'camp:w': 12, 'camp:M': 8}
+       spent r300 1130 r1000 3740 end 5160 first_buy r38 wards 167 locks 6 boss first r1092 n=131 dist {1: 71, 3: 52}
+     b Stellar,Ryth,Vendetta
+       trib 41 (first r746) deaths 15 recalls 20 hits {'g': 40, 'w': 647, 'G': 45} champhits 45 casts {'none': 254, 'camp:w': 28, 'camp:G': 8, 'camp:g': 1, 'champ': 5}
+       spent r300 270 r1000 1260 end 1770 first_buy r59 wards 0 locks 0 boss first rNone n=0 dist {}

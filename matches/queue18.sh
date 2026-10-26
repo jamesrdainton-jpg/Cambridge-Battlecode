@@ -1,25 +1,10 @@
 #!/usr/bin/env bash
-# Queue 18 (2026-10-20, cambc 2.2.5, 17 maps, 4-core Linux cloud machine): from the best economy so far (queue 15's zB,
-# 9,610) with the danger-zone hole fixed (AWAKE_NEAR), vary one thing at a time. Built from bots/mybot at commit d30816a
-# with tools/variant.py (DEBUG off); tools/lab.py econ, seeds 1,2.
-#   zL  = zB (MELEE_REACH WAIT_FIX AWAKE_RECENT WAIT_STRICT RESET_RETARGET PACK_WALK_ALL LIVE_DPS STUN_CAMPS
-#         STUN_DAMAGING PAIR_KILL + MONOLITH_POKE AOE_POKE POKE_SMART) + AWAKE_NEAR
-#   zM  = zL without WAIT_STRICT (v12's squad wait)
-#   zN  = zL + FAST_WALK FAST_SCORE
-#   zO  = zN + HP_AWARE
-# First zL vs v12 head-to-head (seeds 1,2), then the economy of all four.
-# Reproduce: git checkout d30816a, then run this.
+# Queue 18 (2026-10-25, cambc 3.0.5, 40 maps): the top teams' item builds vs v13.
+#   x16a = mybot + BUILD_30 1: Treasure first, Jungle H, Bruiser S, Durability H, then Bruiser S/H stacks
+#   x16b = mybot + BUILD_30 2: Treasure first, then Bruiser S/H only
 cd "$(dirname "$0")/.."
-PY=.venv/bin/python
-V="$PY tools/variant.py"
-L="$PY tools/lab.py"
-on() { for f in "$@"; do printf -- '--set\nbot.py:%s = False=>%s = True\n' "$f" "$f"; done; }
-mk() { local name=$1; shift; local args; mapfile -t args < <(on "$@"); $V "$name" "${args[@]}" >/dev/null || exit 1; }
-L0="MELEE_REACH WAIT_FIX AWAKE_RECENT RESET_RETARGET PACK_WALK_ALL LIVE_DPS STUN_CAMPS STUN_DAMAGING PAIR_KILL MONOLITH_POKE AOE_POKE POKE_SMART AWAKE_NEAR"
-mk zL $L0 WAIT_STRICT
-mk zM $L0
-mk zN $L0 WAIT_STRICT FAST_WALK FAST_SCORE
-mk zO $L0 WAIT_STRICT FAST_WALK FAST_SCORE HP_AWARE
-$L h2h zL v12 --seeds 1,2 --jobs 6
-$L econ zL zM zN zO --seeds 1,2 --jobs 6
-echo QUEUE18 DONE
+PY=.venv/Scripts/python.exe; [ -x "$PY" ] || PY=.venv/bin/python
+$PY tools/variant.py x16a --set "bot.py:BUILD_30 = 0=>BUILD_30 = 1"
+$PY tools/variant.py x16b --set "bot.py:BUILD_30 = 0=>BUILD_30 = 2"
+$PY tools/gauntlet.py x16a --vs v13 --seeds 1,2 --note "x16a = v13 + BUILD_30 1 (Treasure, Jungle, Bruiser stacks); cambc 3.0.5, 40 maps"
+$PY tools/gauntlet.py x16b --vs v13 --seeds 1,2 --note "x16b = v13 + BUILD_30 2 (Treasure, then Bruiser only); cambc 3.0.5, 40 maps"

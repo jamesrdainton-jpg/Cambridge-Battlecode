@@ -1,26 +1,22 @@
 #!/usr/bin/env bash
-# Queue 16 (2026-10-20, cambc 2.2.5, 17 maps, 4-core Linux cloud machine): corrected packages after queue 15
-# (AWAKE_RECENT dropped: a probe showed camps keep attacking a champion that stays in range after one hit). Built from
-# bots/mybot at commit b0ad8ab with tools/variant.py (DEBUG off); tools/lab.py runs (replays in matches/lab/).
-# BASE = MELEE_REACH WAIT_FIX RESET_RETARGET LIVE_DPS STUN_CAMPS PAIR_KILL FAST_WALK FAST_SCORE HP_AWARE, plus:
-#   zG  PACK_NEED (packs sized by need)
-#   zH  PACK_NEED + sieges (MONOLITH_POKE AOE_POKE POKE_SMART)
-#   zI  PACK_WALK_ALL + sieges
-#   zJ  sieges (packs as in v12)
-# Then zH vs v12 head-to-head, seeds 1,2.
-# Reproduce: git checkout b0ad8ab, then run this.
+# Queue 16 (2026-10-25, cambc 3.0.5, 40 maps): screen boss raids and 3.0 drafts against the v13 candidate.
+# Base x14a = mybot (WAIT_LIMIT 0; BOSS_NEED_FRAC and BOSS_WAIT off) with DEBUG off, i.e. x13b's behaviour.
+# Seed 1 only (80 games each) for screening; confirm winners with seed 2.
 cd "$(dirname "$0")/.."
-PY=.venv/bin/python
-V="$PY tools/variant.py"
-L="$PY tools/lab.py"
-on() { for f in "$@"; do printf -- '--set\nbot.py:%s = False=>%s = True\n' "$f" "$f"; done; }
-BASE="MELEE_REACH WAIT_FIX RESET_RETARGET LIVE_DPS STUN_CAMPS PAIR_KILL FAST_WALK FAST_SCORE HP_AWARE"
-SIEGE="MONOLITH_POKE AOE_POKE POKE_SMART"
-mk() { local name=$1; shift; local args; mapfile -t args < <(on "$@"); $V "$name" "${args[@]}" >/dev/null || exit 1; }
-mk zG $BASE PACK_NEED
-mk zH $BASE PACK_NEED $SIEGE
-mk zI $BASE PACK_WALK_ALL $SIEGE
-mk zJ $BASE $SIEGE
-$L econ zG zH zI zJ --seeds 1,2 --jobs 6
-$L h2h zH v12 --seeds 1,2 --jobs 6
-echo QUEUE16 DONE
+PY=.venv/Scripts/python.exe; [ -x "$PY" ] || PY=.venv/bin/python
+V=tools/variant.py
+$PY $V x14a
+# Boss raids: size monolith/golem squads at a higher damage tolerance and gather before engaging.
+$PY $V x14b --set "bot.py:BOSS_NEED_FRAC = 0.0=>BOSS_NEED_FRAC = 1.0" --set "bot.py:BOSS_WAIT = 0=>BOSS_WAIT = 40"
+$PY $V x14c --set "bot.py:BOSS_NEED_FRAC = 0.0=>BOSS_NEED_FRAC = 1.5" --set "bot.py:BOSS_WAIT = 0=>BOSS_WAIT = 40"
+# Drafts (3-pick maps keep Vendetta, Ryth, Tavi unless noted).
+# x14d: the strong teams' 3.0 draft at every size: Vesper, Heart of Ruin, Vendetta; + Cassi & Issac; + Marcella.
+$PY $V x14d --set "draft.py:PRO_DRAFT = (4, 5)=>PRO_DRAFT = (3, 4, 5)" \
+  --set "draft.py:PRO_BY_SIZE = {=>PRO_BY_SIZE = {3: (CD.VESPER_VALE, CD.HEART_OF_RUIN, CD.VENDETTA), 4: (CD.VESPER_VALE, CD.HEART_OF_RUIN, CD.VENDETTA, CD.CASSI_AND_ISSAC), 5: (CD.VESPER_VALE, CD.HEART_OF_RUIN, CD.VENDETTA, CD.CASSI_AND_ISSAC, CD.MARCELLA)}; _OLD_PRO = {"
+# x14e: strength champions the patch buffed, no Heart of Ruin: 4 = Vendetta, Vesper, Tavi, Marcella; 5 = + Ryth.
+$PY $V x14e --set "draft.py:PRO_BY_SIZE = {=>PRO_BY_SIZE = {4: (CD.VENDETTA, CD.VESPER_VALE, CD.TAVI, CD.MARCELLA), 5: (CD.VENDETTA, CD.VESPER_VALE, CD.TAVI, CD.MARCELLA, CD.RYTH)}; _OLD_PRO = {"
+# x14f: drop the 2.2.5 pro draft: 4 = Vendetta, Varg, Ryth, Tavi; 5 = Vendetta, Varg, Ryth, Marcella, Tavi.
+$PY $V x14f --set "draft.py:PRO_DRAFT = (4, 5)=>PRO_DRAFT = ()"
+for X in x14b x14c x14d x14e x14f; do
+  $PY tools/gauntlet.py $X --vs x14a --seeds 1 --no-econ --note "$X vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps"
+done

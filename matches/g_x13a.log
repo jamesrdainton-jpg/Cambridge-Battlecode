@@ -1,0 +1,7 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13a_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13a_s2
+    x13a_s1 vs v12_s1: 42/80 (-14)
+    x13a_s2 vs v12_s2: 40/80 (+688)
+vs v12        wins 82/160  gem margin +674
+economy (rounds to 1000 vs idle, summed over 40 maps): 63921
+2026-10-25 17:47,x13a[1,2],82/160,v12:82/160(+674),63921,x13a = mybot@74afa8d (3.0 camp stats fix) DEBUG off; cambc 3.0.5, 40 maps,74afa8d

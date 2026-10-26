@@ -1,0 +1,7 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\v13_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\v13_s2
+    v13_s1 vs v12_s1: 71/80 (+40772)
+    v13_s2 vs v12_s2: 70/80 (+37952)
+vs v12        wins 141/160  gem margin +78724
+economy (rounds to 1000 vs idle, summed over 40 maps): 50783
+2026-10-25 20:14,v13[1,2],141/160,v12:141/160(+78724),50783,v13 final check vs v12 (camp stats fix + WAIT_LIMIT 0 + 3.0 strength draft); cambc 3.0.5, 40 maps,485355a

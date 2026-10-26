@@ -22,7 +22,11 @@ PY = sys.executable
 
 
 MAPS = ""
-JOBS = ""
+
+
+def seed_file(bot: str) -> str:
+    """The source file holding a bot's SEED constant: bot.py for Python bots, params.h for C++ bots (bots/cpp*)."""
+    return "params.h" if (ROOT / "bots" / bot / "src" / "main.cpp").exists() else "bot.py"
 
 
 def run_arena(bot: str, opp: str, one_side: bool = False) -> tuple[int, int, int, int]:
@@ -31,8 +35,6 @@ def run_arena(bot: str, opp: str, one_side: bool = False) -> tuple[int, int, int
         cmd.append("--one-side")
     if MAPS:
         cmd += ["--maps", MAPS]
-    if JOBS:
-        cmd += ["--jobs", JOBS]
     out = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True).stdout
     wins = games = mine = theirs = rounds = 0
     for line in out.splitlines():
@@ -56,18 +58,16 @@ def main() -> None:
     parser.add_argument("--no-econ", action="store_true")
     parser.add_argument("--seeds", default="", help="comma list of SEED values; plays a seeded copy per seed")
     parser.add_argument("--maps", default="", help="comma list of maps (default: all)")
-    parser.add_argument("--jobs", default="", help="parallel games for cambc run-batch (default: arena.py's 18)")
     args = parser.parse_args()
-    global MAPS, JOBS
+    global MAPS
     MAPS = args.maps
-    JOBS = args.jobs
     bots = [args.bot]
     if args.seeds:
         bots = []
         for seed in args.seeds.split(","):
             name = f"{args.bot}_s{seed}"
             subprocess.run([PY, str(ROOT / "tools" / "variant.py"), name, "--src", args.bot,
-                            "--set", f"bot.py:SEED = 0=>SEED = {seed}"], cwd=ROOT, check=True)
+                            "--set", f"{seed_file(args.bot)}:SEED = 0=>SEED = {seed}"], cwd=ROOT, check=True)
             bots.append(name)
     seeds = args.seeds.split(",") if args.seeds else []
     parts = []
@@ -75,13 +75,13 @@ def main() -> None:
     for opp in args.vs.split(","):
         # Seed the opponent too when it supports SEED, so both sides are perturbed alike.
         opps = [opp] * len(bots)
-        opp_src = ROOT / "bots" / opp / "src" / "bot.py"
+        opp_src = ROOT / "bots" / opp / "src" / seed_file(opp)
         if seeds and opp_src.exists() and "SEED = 0" in opp_src.read_text():
             opps = []
             for seed in seeds:
                 name = f"{opp}_s{seed}"
                 subprocess.run([PY, str(ROOT / "tools" / "variant.py"), name, "--src", opp,
-                                "--set", f"bot.py:SEED = 0=>SEED = {seed}"], cwd=ROOT, check=True,
+                                "--set", f"{seed_file(opp)}:SEED = 0=>SEED = {seed}"], cwd=ROOT, check=True,
                                stdout=subprocess.DEVNULL)
                 opps.append(name)
         w_sum = g_sum = m_sum = 0

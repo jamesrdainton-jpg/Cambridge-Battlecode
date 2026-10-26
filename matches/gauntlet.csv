@@ -86,6 +86,35 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-18 20:41,v11[5,6],34/68,v10:34/68(+200),,confirm v11 vs v10 seeds 5,6,27ee920
 2026-10-18 20:45,v11[3],31/34,meta:31/34(+11290),,v11 vs meta seed 3 (vs v10 vs meta seed 3 in session C),2fb618f
 2026-10-19 13:07,v12[1,2],45/68,v10:45/68(+11138),10504,v12 final: v10 + shop 150/any HP + pro draft 4-5 + pro packs 150 + claim on kill; poke off,826b5cc
-2026-10-20 23:10,v13[1,2],37/68,v12:37/68(+3376),,queue21 zT (= v13) via tools/lab.py h2h: MELEE_REACH WAIT_FIX + stampede-only sieges; 10 maps identical to v12; stampede 4/4,635630f
-2026-10-20 22:05,zL[1,2],28/68,v12:28/68(-5176),,queue18 zL via tools/lab.py h2h: full economy package (8.5% faster unopposed) REJECTED,d30816a
-2026-10-20 22:20,zR[1,2],37/68,v12:37/68(+2854),,queue20 zR via tools/lab.py h2h: fixes + FAST + sieges on stampede+contest; contest 0/4 elkring 0/4,0c41bef
+2026-10-25 17:47,x13a[1,2],82/160,v12:82/160(+674),63921,x13a = mybot@74afa8d (3.0 camp stats fix) DEBUG off; cambc 3.0.5, 40 maps,74afa8d
+2026-10-25 17:59,x13b[1,2],102/160,v12:102/160(+30718),,x13b = x13a + WAIT_LIMIT 0 (never wait for a squad); cambc 3.0.5, 40 maps,d1d7958
+2026-10-25 18:12,x13c[1,2],79/160,v12:79/160(+2491),,x13c = x13a + WAIT_LIMIT 10; cambc 3.0.5, 40 maps,d1d7958
+2026-10-25 18:19,x14b[1],31/80,x14a:31/80(-5367),,x14b vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+2026-10-25 18:25,x14c[1],30/80,x14a:30/80(-10895),,x14c vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+2026-10-25 18:29,x14d[1],53/80,x14a:53/80(+9946),,x14d vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+2026-10-25 18:33,x14e[1],65/80,x14a:65/80(+27518),,x14e vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+2026-10-25 18:37,x14f[1],65/80,x14a:65/80(+21305),,x14f vs x14a (base: WAIT_LIMIT 0); queue 16 screening; cambc 3.0.5, 40 maps,df70cfa
+2026-10-25 19:29,y15e[2],65/80,y15a:65/80(+23990),,y15e vs y15a seed 2 (queue 17 confirmation); cambc 3.0.5, 40 maps,72c80e2
+2026-10-25 19:35,y15f[2],60/80,y15a:60/80(+19774),,y15f vs y15a seed 2 (queue 17 confirmation); cambc 3.0.5, 40 maps,72c80e2
+2026-10-25 19:54,y15e[1,2],103/160,y15f:103/160(+17688),50720,y15e vs y15f head to head (queue 17), with economy; cambc 3.0.5, 40 maps,72c80e2
+2026-10-25 20:14,v13[1,2],141/160,v12:141/160(+78724),50783,v13 final check vs v12 (camp stats fix + WAIT_LIMIT 0 + 3.0 strength draft); cambc 3.0.5, 40 maps,485355a
+2026-10-25 21:02,x16a[1,2],99/160,v13:99/160(+21031),48839,x16a = v13 + BUILD_30 1 (Treasure, Jungle, Bruiser stacks); cambc 3.0.5, 40 maps,54d8d5b
+2026-10-25 21:22,x16b[1,2],80/160,v13:80/160(-3287),52119,x16b = v13 + BUILD_30 2 (Treasure, then Bruiser only); cambc 3.0.5, 40 maps,d56088b
+2026-10-25 21:29,y19p[1],41/80,y19a:41/80(+3414),,y19p vs y19a (BUILD_30 1 base); queue 19 fight-flag screening; cambc 3.0.5, 40 maps,d86eb39
+2026-10-25 21:36,y19h[1],38/80,y19a:38/80(-582),,y19h vs y19a (BUILD_30 1 base); queue 19 fight-flag screening; cambc 3.0.5, 40 maps,d86eb39
+2026-10-25 21:42,y19s[1],28/80,y19a:28/80(-16125),,y19s vs y19a (BUILD_30 1 base); queue 19 fight-flag screening; cambc 3.0.5, 40 maps,d86eb39
+2026-10-25 21:49,y19c[1],38/80,y19a:38/80(+440),,y19c vs y19a (BUILD_30 1 base); queue 19 fight-flag screening; cambc 3.0.5, 40 maps,d86eb39
+2026-10-25 21:57,cpp13[1,2],72/160,v13:72/160(-6561),51592,cpp13 (C++ port of v13) vs v13 parity; cambc 3.0.5, 40 maps,43e2942
+2026-10-25 22:04,y21g[1],38/80,y21a:38/80(-2670),,y21g = BUILD_30 1 + SHOP_GOLD 90 vs y21a; queue 21; cambc 3.0.5, 40 maps,231df60
+2026-10-25 22:08,y21w[1],39/80,y21a:39/80(-585),,y21w = BUILD_30 1 + GOLD_WEIGHT 0.8 vs y21a; queue 21; cambc 3.0.5, 40 maps,231df60
+2026-10-25 22:12,y19p[2],46/80,y19a:46/80(+8702),,y19p (FIGHT_PRIO) vs y19a seed 2 confirmation; queue 21; cambc 3.0.5, 40 maps,231df60
+2026-10-25 22:13,cpp13[1,2],0/160,v13:0/160(+0),0,cpp13 (C++ port, go() with compute_to) vs v13 parity; cambc 3.0.5, 40 maps,231df60
+2026-10-26 12:02,z25a[1],86/140,v13:86/140(+12395),,z25a = BUILD_30 1 + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,1007f7b+dirty
+2026-10-26 12:16,z25c[1],87/140,v13:87/140(+14524),,z25c = BUILD_30 3 (Capture first) + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,1007f7b+dirty
+2026-10-26 12:29,z25m[1],97/140,v13:97/140(+19696),,z25m = BUILD_30 4 (Monster first) + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,00f020c
+2026-10-26 12:41,z25p[1],87/140,v13:87/140(+13192),,z25p = BUILD_30 5 (Prospector first) + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,00f020c
+2026-10-26 12:46,c25a[1],82/140,v13:82/140(+9599),,c25a = C++ + BUILD_30 1 + FIGHT_PRIO vs v13; queue 25; cambc 4.0.0, 70 maps,9bb95f8
+2026-10-26 12:52,z26g[1,2,3,4],19/24,z26b:19/24(-243),,z26g (LOCKED_GOLD) vs z26b, altar-locked maps only; queue 26; cambc 4.0.0 maps=01boss-battle,02guardians,02the-pack,9f156ee
+2026-10-26 12:54,c26g[1,2,3,4],17/24,c26b:17/24(-451),,c26g (LOCKED_GOLD, C++) vs c26b, altar-locked maps only; queue 26; cambc 4.0.0 maps=01boss-battle,02guardians,02the-pack,9f156ee
+2026-10-26 13:03,z26g[2],85/140,v13:85/140(+10065),,z26g = BUILD_30 4 + FIGHT_PRIO + LOCKED_GOLD vs v13 seed 2; queue 26; cambc 4.0.0, 70 maps,88ebd09
+2026-10-26 13:12,c26g[1,2],138/280,z26g:138/280(-4221),,c26g vs z26g: same flags, C++ vs Python; queue 26; cambc 4.0.0, 70 maps,88ebd09

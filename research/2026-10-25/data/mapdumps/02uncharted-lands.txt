@@ -1,0 +1,69 @@
+SURVEY map 50x46 picks=5 altars=4 bushes=216 holes=1186 spawn=14,7 espawn=33,36
+GROUP ggOg gold=160 gems=57 respawn=80 at=25,11 id=0
+CAMPH 0 g 25 11 0
+CAMPH 8 g 25 12 0
+CAMPH 40 O 26 12 0
+CAMPH 42 g 26 11 0
+GROUP ggOg gold=160 gems=57 respawn=80 at=24,34 id=1
+CAMPH 1 g 24 34 1
+CAMPH 9 g 24 33 1
+CAMPH 41 O 23 33 1
+CAMPH 43 g 23 34 1
+GROUP wwGg gold=100 gems=15 respawn=50 at=2,14 id=2
+CAMPH 2 w 2 14 2
+CAMPH 4 w 3 14 2
+CAMPH 6 G 3 15 2
+CAMPH 44 g 2 15 2
+GROUP wwGg gold=100 gems=15 respawn=50 at=47,31 id=3
+CAMPH 3 w 47 31 3
+CAMPH 5 w 46 31 3
+CAMPH 7 G 46 30 3
+CAMPH 45 g 47 30 3
+GROUP wg gold=40 gems=11 respawn=50 at=32,7 id=4
+CAMPH 10 w 32 7 4
+CAMPH 34 g 31 7 4
+GROUP wg gold=40 gems=11 respawn=50 at=17,38 id=5
+CAMPH 11 w 17 38 5
+CAMPH 35 g 18 38 5
+GROUP w gold=40 gems=4 respawn=40 at=13,3 id=6
+CAMPH 12 w 13 3 6
+GROUP w gold=40 gems=4 respawn=40 at=36,42 id=7
+CAMPH 13 w 36 42 7
+GROUP ggw gold=40 gems=18 respawn=50 at=1,2 id=8
+CAMPH 14 g 1 2 8
+CAMPH 16 g 2 2 8
+CAMPH 18 w 2 1 8
+GROUP ggw gold=40 gems=18 respawn=50 at=48,43 id=9
+CAMPH 15 g 48 43 9
+CAMPH 17 g 47 43 9
+CAMPH 19 w 47 44 9
+GROUP gg gold=0 gems=14 respawn=50 at=23,12 id=10
+CAMPH 20 g 23 12 10
+CAMPH 46 g 23 11 10
+GROUP gg gold=0 gems=14 respawn=50 at=26,33 id=11
+CAMPH 21 g 26 33 11
+CAMPH 47 g 26 34 11
+GROUP g gold=0 gems=7 respawn=50 at=36,17 id=12
+CAMPH 22 g 36 17 12
+GROUP g gold=0 gems=7 respawn=50 at=13,28 id=13
+CAMPH 23 g 13 28 13
+GROUP eggg gold=90 gems=36 respawn=60 at=2,25 id=14
+CAMPH 24 e 2 25 14
+CAMPH 26 g 1 24 14
+CAMPH 28 g 2 24 14
+CAMPH 30 g 3 25 14
+GROUP eggg gold=90 gems=36 respawn=60 at=47,20 id=15
+CAMPH 25 e 47 20 15
+CAMPH 27 g 48 21 15
+CAMPH 29 g 47 21 15
+CAMPH 31 g 46 20 15
+GROUP wG gold=60 gems=4 respawn=50 at=12,19 id=16
+CAMPH 32 w 12 19 16
+CAMPH 36 G 11 19 16
+GROUP wG gold=60 gems=4 respawn=50 at=37,26 id=17
+CAMPH 33 w 37 26 17
+CAMPH 37 G 38 26 17
+GROUP M gold=300 gems=200 respawn=150 at=33,18 id=18
+CAMPH 38 M 33 18 18
+GROUP M gold=300 gems=200 respawn=150 at=16,27 id=19
+CAMPH 39 M 16 27 19

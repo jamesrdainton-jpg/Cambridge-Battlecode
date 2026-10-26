@@ -1,20 +1,14 @@
-map                  zA         zB
-ambush              627        704
-collision           622        622
-contest            1024        862
-corners             497        497
-eight               444        399
-elkring             463        463
-expanse             738        642
-fragment            607        607
-interlock           578        585
-lanes               481        481
-monolith            494        566
-packs               450        450
-pilgrimage          691        612
-rows                455        470
-rushbait-v2         632        632
-stampede           1098        555
-swirl               387        464
-SUM               10287       9610
-STOPPED after the economy run (2026-10-20 21:58): AWAKE_RECENT was found wrong by a probe (camps keep attacking a champion in range after one hit), so the zA/zB head-to-heads were not run. See queue 16.
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13c
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13b_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13b_s2
+    x13b_s1 vs v12_s1: 50/80 (+13448)
+    x13b_s2 vs v12_s2: 52/80 (+17270)
+vs v12        wins 102/160  gem margin +30718
+2026-10-25 17:59,x13b[1,2],102/160,v12:102/160(+30718),,x13b = x13a + WAIT_LIMIT 0 (never wait for a squad); cambc 3.0.5, 40 maps,d1d7958
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13c_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\x13c_s2
+    x13c_s1 vs v12_s1: 41/80 (+1826)
+    x13c_s2 vs v12_s2: 38/80 (+665)
+vs v12        wins 79/160  gem margin +2491
+2026-10-25 18:12,x13c[1,2],79/160,v12:79/160(+2491),,x13c = x13a + WAIT_LIMIT 10; cambc 3.0.5, 40 maps,d1d7958

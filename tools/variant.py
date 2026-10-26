@@ -20,9 +20,10 @@ src_dir = dst / "src"
 if src_dir.exists():
     shutil.rmtree(src_dir, ignore_errors=True)
 # Overwrite in place: the old build cache (.cambc) can be locked briefly on Windows.
-shutil.copytree(ROOT / "bots" / args.src, dst, ignore=shutil.ignore_patterns(".cambc", ".ruff_cache"),
+shutil.copytree(ROOT / "bots" / args.src, dst, ignore=shutil.ignore_patterns(".cambc", ".ruff_cache", "__pycache__"),
                 dirs_exist_ok=True)
-for needed in ("main.py", "bot.py", "draft.py", "world.py"):
+CPP = (src_dir / "main.cpp").exists()  # C++ bots (bots/cpp*): tunables live in src/params.h
+for needed in (("main.cpp", "params.h") if CPP else ("main.py", "bot.py", "draft.py", "world.py")):
     if not (src_dir / needed).exists():
         raise SystemExit(f"copy of {args.src} into {args.name} is missing {needed}")
 if args.draft:
@@ -40,6 +41,6 @@ for spec in args.set:
     if old not in text:
         raise SystemExit(f"{old!r} not found in {fname}")
     f.write_text(text.replace(old, new))
-b = dst / "src" / "bot.py"
-b.write_text(b.read_text().replace("DEBUG = True", "DEBUG = False"))
+b = dst / "src" / ("params.h" if CPP else "bot.py")
+b.write_text(b.read_text().replace("DEBUG = True", "DEBUG = False").replace("DEBUG = true", "DEBUG = false"))
 print("created", dst)

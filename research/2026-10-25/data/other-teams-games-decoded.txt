@@ -1,0 +1,160 @@
+
+== 2d7303cf/01 gold-rush r1105 ours=None  
+     a Vesper,HeartOfRuin,Vendetta
+       trib 2 (first r1049) deaths 37 recalls 15 hits {'G': 50, 'g': 4, 'w': 48, 'M': 1} champhits 364 casts {'none': 244}
+       spent r300 0 r1000 150 end 360 first_buy r888 wards 102 locks 0 boss first r575 n=1 dist {3: 1}
+     b HeartOfRuin,Vendetta,Vesper
+       trib 36 (first r41) deaths 0 recalls 2760 hits {'w': 304, 'G': 256, 'g': 25, 'M': 228} champhits 297 casts {'none': 437}
+       spent r300 2630 r1000 11160 end 12150 first_buy r48 wards 150 locks 0 boss first r521 n=228 dist {1: 39, 2: 51, 3: 108, 8: 20, 10: 10}
+
+== 2d7303cf/02 eight r1120 ours=None  
+     a Vesper,Vendetta,HeartOfRuin,Cassi,Issac,Willow
+       trib 51 (first r691) deaths 76 recalls 79 hits {'G': 56, 'g': 40, 'e': 729, 'w': 317} champhits 280 casts {'none': 570, 'champ': 81, 'camp:e': 43, 'camp:w': 32, 'camp:G': 5, 'camp:g': 3}
+       spent r300 1250 r1000 6670 end 7160 first_buy r37 wards 176 locks 11 boss first rNone n=0 dist {}
+     b HeartOfRuin,Marcella,Ryth,Vendetta,Vesper
+       trib 57 (first r475) deaths 12 recalls 4389 hits {'w': 502, 'g': 27, 'e': 556, 'G': 30} champhits 174 casts {'none': 504, 'camp:w': 10, 'camp:e': 19, 'champ': 24, 'camp:g': 1}
+       spent r300 1480 r1000 6780 end 8290 first_buy r47 wards 204 locks 7 boss first rNone n=0 dist {}
+
+== 2d7303cf/03 lanes r959 ours=None  
+     a Vesper,Vendetta,HeartOfRuin,Cassi,Issac,Marcella
+       trib 51 (first r54) deaths 36 recalls 53 hits {'G': 103, 'e': 657, 'w': 737, 'g': 87} champhits 50 casts {'none': 515, 'camp:G': 13, 'camp:w': 58, 'champ': 15, 'camp:e': 40, 'camp:g': 3}
+       spent r300 1500 r1000 8040 end 8040 first_buy r80 wards 299 locks 0 boss first rNone n=0 dist {}
+     b HeartOfRuin,Marcella,Ryth,Vendetta,Vesper
+       trib 56 (first r135) deaths 1 recalls 4281 hits {'G': 75, 'w': 759, 'g': 47, 'e': 368} champhits 47 casts {'camp:G': 1, 'none': 489, 'camp:w': 22, 'champ': 9, 'camp:e': 12}
+       spent r300 1680 r1000 7440 end 7440 first_buy r65 wards 175 locks 0 boss first rNone n=0 dist {}
+
+== 2d7303cf/04 contest r867 ours=None  
+     a Vesper,Vendetta,HeartOfRuin,Cassi,Issac,Marcella
+       trib 7 (first r773) deaths 46 recalls 43 hits {'G': 268, 'M': 498} champhits 299 casts {'none': 426, 'champ': 57, 'camp:G': 19, 'camp:M': 25}
+       spent r300 2860 r1000 8600 end 8600 first_buy r46 wards 220 locks 2 boss first r263 n=523 dist {1: 192, 2: 25, 3: 64, 4: 10, 5: 9, 6: 14, 8: 9, 9: 11, 10: 17, 13: 3, 15: 1, 16: 10, 17: 39, 18: 7, 19: 7, 20: 9, 21: 6, 25: 34, 26: 6, 27: 5, 28: 20}
+     b HeartOfRuin,Marcella,Ryth,Vendetta,Vesper
+       trib 0 (first rNone) deaths 16 recalls 2979 hits {'G': 233} champhits 186 casts {'none': 270, 'camp:G': 13, 'champ': 11}
+       spent r300 600 r1000 4080 end 4080 first_buy r35 wards 185 locks 2 boss first rNone n=0 dist {}
+
+== 2d7303cf/05 split r799 ours=None  
+     a Vesper,Vendetta,HeartOfRuin,Cassi,Issac,Marcella
+       trib 19 (first r142) deaths 34 recalls 53 hits {'G': 30, 'e': 344, 'O': 336, 'w': 268, 'g': 79, 'M': 34} champhits 134 casts {'none': 420, 'camp:w': 26, 'camp:g': 4, 'camp:O': 32, 'champ': 19, 'camp:e': 28, 'camp:G': 6, 'camp:M': 2}
+       spent r300 1500 r1000 4260 end 4260 first_buy r78 wards 59 locks 0 boss first r47 n=404 dist {1: 187, 2: 22, 3: 79, 4: 3, 5: 9, 6: 2, 7: 1, 9: 1, 10: 8, 13: 13, 14: 2, 15: 6, 17: 1, 19: 12, 25: 8, 26: 3, 28: 13}
+     b HeartOfRuin,Marcella,Ryth,Vendetta,Vesper
+       trib 40 (first r437) deaths 3 recalls 3272 hits {'e': 169, 'w': 547, 'G': 35, 'g': 93, 'O': 106, 'M': 16} champhits 153 casts {'camp:w': 17, 'none': 413, 'camp:e': 9, 'camp:g': 2, 'champ': 8, 'camp:O': 1}
+       spent r300 1240 r1000 5010 end 5010 first_buy r95 wards 170 locks 1 boss first r418 n=123 dist {1: 103, 2: 1, 3: 13, 6: 1, 9: 4}
+
+== 3642c5bb/01 starfish r938 ours=None  
+     a Marcella,Vendetta,Ryth,Vesper,HeartOfRuin
+       trib 36 (first r482) deaths 19 recalls 1611 hits {'w': 454, 'G': 29, 'e': 46, 'g': 23} champhits 259 casts {'none': 391, 'champ': 15, 'camp:w': 11, 'camp:G': 1}
+       spent r300 1260 r1000 3960 end 3960 first_buy r50 wards 311 locks 0 boss first rNone n=0 dist {}
+     b Vesper,Vendetta,HeartOfRuin,Cassi,Issac,Willow
+       trib 23 (first r534) deaths 49 recalls 60 hits {'w': 411, 'g': 96, 'e': 669, 'G': 75} champhits 279 casts {'none': 530, 'champ': 67, 'camp:e': 48, 'camp:w': 26, 'camp:G': 1, 'camp:g': 1}
+       spent r300 1590 r1000 9820 end 9820 first_buy r32 wards 417 locks 7 boss first rNone n=0 dist {}
+
+== 3642c5bb/02 shortcut r977 ours=None  
+     a Marcella,Vendetta,Ryth,Vesper
+       trib 11 (first r115) deaths 12 recalls 1730 hits {'G': 65, 'e': 376, 'w': 13, 'g': 88} champhits 64 casts {'none': 307, 'camp:G': 1, 'camp:e': 18, 'champ': 7, 'camp:g': 1}
+       spent r300 720 r1000 3310 end 3310 first_buy r51 wards 116 locks 0 boss first rNone n=0 dist {}
+     b Vesper,Vendetta,HeartOfRuin,Cassi,Issac
+       trib 12 (first r421) deaths 51 recalls 75 hits {'G': 158, 'e': 627, 'w': 364, 'g': 86, 'M': 57} champhits 53 casts {'none': 437, 'camp:w': 14, 'camp:G': 13, 'camp:e': 31, 'champ': 14, 'camp:g': 3}
+       spent r300 2020 r1000 8540 end 8540 first_buy r21 wards 172 locks 1 boss first r679 n=57 dist {1: 14, 2: 1, 7: 6, 8: 7, 9: 11, 10: 8, 11: 2, 12: 2, 24: 5, 27: 1}
+
+== 3642c5bb/03 collision r1207 ours=None  
+     a Marcella,Vendetta,Ryth
+       trib 44 (first r314) deaths 8 recalls 1422 hits {'w': 441, 'G': 91, 'g': 37, 'e': 250} champhits 120 casts {'none': 340, 'camp:w': 15, 'champ': 23, 'camp:G': 2, 'camp:g': 1, 'camp:e': 7}
+       spent r300 1320 r1000 4890 end 6540 first_buy r37 wards 2 locks 0 boss first rNone n=0 dist {}
+     b Vesper,HeartOfRuin,Marcella
+       trib 24 (first r241) deaths 25 recalls 33 hits {'w': 439, 'G': 161, 'g': 61, 'e': 408} champhits 106 casts {'none': 390, 'champ': 14, 'camp:w': 15, 'camp:e': 24, 'camp:G': 2, 'camp:g': 1}
+       spent r300 1470 r1000 8680 end 10460 first_buy r123 wards 9 locks 6 boss first rNone n=0 dist {}
+
+== 3642c5bb/04 gem-fields r575 ours=None  
+     a Marcella,Vendetta,Ryth,Vesper,HeartOfRuin
+       trib 27 (first r352) deaths 5 recalls 1243 hits {'e': 270, 'g': 147, 'w': 1} champhits 182 casts {'none': 292, 'champ': 14, 'camp:e': 8, 'camp:g': 1}
+       spent r300 510 r1000 1030 end 1030 first_buy r120 wards 171 locks 0 boss first rNone n=0 dist {}
+     b Vesper,Vendetta,HeartOfRuin,Cassi,Issac,Marcella
+       trib 29 (first r31) deaths 36 recalls 21 hits {'g': 200, 'e': 335, 'w': 146} champhits 147 casts {'none': 357, 'champ': 27, 'camp:g': 13, 'camp:e': 29, 'camp:w': 7}
+       spent r300 1110 r1000 2340 end 2340 first_buy r57 wards 294 locks 0 boss first rNone n=0 dist {}
+
+== 3642c5bb/05 lost-world r747 ours=None  
+     a Marcella,Vendetta,Ryth,Vesper,HeartOfRuin
+       trib 53 (first r93) deaths 10 recalls 1677 hits {'g': 222, 'w': 7} champhits 357 casts {'none': 350, 'camp:g': 6, 'champ': 30}
+       spent r300 550 r1000 2310 end 2310 first_buy r59 wards 191 locks 0 boss first rNone n=0 dist {}
+     b Vesper,Vendetta,HeartOfRuin,Cassi,Issac,Marcella
+       trib 29 (first r557) deaths 63 recalls 48 hits {'g': 121, 'O': 64, 'G': 11, 'M': 3} champhits 324 casts {'none': 315, 'champ': 51, 'camp:g': 10, 'camp:O': 6, 'camp:M': 1}
+       spent r300 340 r1000 1590 end 1590 first_buy r101 wards 307 locks 2 boss first r74 n=74 dist {1: 27, 2: 21, 4: 4, 5: 1, 7: 5, 25: 3, 32: 6}
+
+== 3fb7f0ee/01 rows r1219 ours=None  
+     a Prism,Vesper,Marcella,HeartOfRuin
+       trib 24 (first r578) deaths 2 recalls 4362 hits {'w': 763, 'G': 97, 'g': 16} champhits 0 casts {'none': 365, 'camp:w': 76, 'camp:g': 1}
+       spent r300 1810 r1000 7400 end 10070 first_buy r35 wards 275 locks 1 boss first rNone n=0 dist {}
+     b Vesper,Vendetta,HeartOfRuin,Varg
+       trib 28 (first r1025) deaths 26 recalls 47 hits {'w': 1227, 'G': 90, 'g': 50, 'M': 5} champhits 0 casts {'none': 542}
+       spent r300 1620 r1000 6510 end 8460 first_buy r36 wards 267 locks 0 boss first r1204 n=5 dist {1: 5}
+
+== 3fb7f0ee/02 collision r1409 ours=None  
+     a Prism,Vesper,HeartOfRuin
+       trib 20 (first r258) deaths 4 recalls 3433 hits {'G': 113, 'w': 368, 'e': 236, 'g': 60} champhits 90 casts {'none': 416, 'camp:w': 24, 'camp:e': 24, 'champ': 9, 'camp:G': 4}
+       spent r300 1470 r1000 4710 end 7540 first_buy r50 wards 2 locks 7 boss first rNone n=0 dist {}
+     b Vesper,HeartOfRuin,Marcella
+       trib 46 (first r388) deaths 23 recalls 40 hits {'w': 476, 'G': 145, 'e': 414, 'g': 64} champhits 78 casts {'none': 447, 'camp:G': 11, 'camp:w': 29, 'champ': 20, 'camp:g': 1, 'camp:e': 4}
+       spent r300 1660 r1000 8060 end 10910 first_buy r70 wards 3 locks 6 boss first rNone n=0 dist {}
+
+== 3fb7f0ee/03 contest r1087 ours=None  
+     a Prism,Vesper,Marcella,Willow,HeartOfRuin
+       trib 0 (first rNone) deaths 2 recalls 3760 hits {'G': 213, 'M': 63} champhits 340 casts {'none': 301, 'champ': 62, 'camp:G': 9, 'camp:M': 1}
+       spent r300 990 r1000 3120 end 3350 first_buy r62 wards 61 locks 12 boss first r499 n=64 dist {1: 2, 2: 10, 3: 19, 7: 4, 9: 1, 12: 2, 14: 5, 16: 1, 27: 13, 28: 6}
+     b Vesper,Vendetta,HeartOfRuin,Cassi,Issac,Marcella
+       trib 28 (first r1063) deaths 90 recalls 68 hits {'G': 322, 'M': 517} champhits 387 casts {'none': 533, 'champ': 75, 'camp:G': 28, 'camp:M': 34}
+       spent r300 1880 r1000 8990 end 9440 first_buy r56 wards 315 locks 2 boss first r328 n=551 dist {1: 210, 2: 20, 3: 82, 4: 7, 5: 9, 6: 71, 7: 22, 8: 5, 9: 15, 10: 8, 11: 15, 12: 9, 13: 1, 14: 5, 16: 10, 17: 3, 19: 6, 21: 4, 24: 1, 25: 2, 26: 1, 27: 5, 30: 4, 31: 2}
+
+== 3fb7f0ee/04 corridors r1020 ours=None  
+     a Prism,Vesper,Marcella,Willow,HeartOfRuin
+       trib 9 (first r555) deaths 3 recalls 4489 hits {'e': 483, 'w': 376, 'G': 41, 'g': 12} champhits 119 casts {'none': 370, 'camp:w': 17, 'champ': 35, 'camp:e': 29}
+       spent r300 1150 r1000 3970 end 3970 first_buy r35 wards 340 locks 4 boss first rNone n=0 dist {}
+     b Vesper,Vendetta,HeartOfRuin,Cassi,Issac,Willow
+       trib 26 (first r556) deaths 32 recalls 47 hits {'g': 49, 'e': 411, 'w': 747, 'G': 39, 'M': 95} champhits 81 casts {'none': 502, 'champ': 42, 'camp:e': 15, 'camp:w': 51, 'camp:g': 1}
+       spent r300 1470 r1000 5770 end 6010 first_buy r69 wards 618 locks 2 boss first r795 n=95 dist {1: 17, 3: 57, 9: 4, 12: 1, 15: 4, 16: 6, 18: 6}
+
+== 3fb7f0ee/05 pilgrimage r1139 ours=None  
+     a Prism,Vesper,Marcella,Willow,HeartOfRuin
+       trib 10 (first r451) deaths 2 recalls 5088 hits {'G': 302, 'w': 456, 'g': 32, 'e': 196} champhits 61 casts {'none': 341, 'champ': 24, 'camp:G': 8, 'camp:e': 17, 'camp:w': 28}
+       spent r300 870 r1000 4360 end 6130 first_buy r97 wards 165 locks 3 boss first rNone n=0 dist {}
+     b Vesper,Vendetta,HeartOfRuin,Cassi,Issac,Ren
+       trib 30 (first r1127) deaths 45 recalls 69 hits {'G': 333, 'g': 61, 'e': 378, 'w': 328} champhits 79 casts {'none': 513, 'champ': 19, 'camp:G': 34, 'camp:w': 33, 'camp:e': 20, 'camp:g': 1}
+       spent r300 1110 r1000 8170 end 9400 first_buy r25 wards 242 locks 0 boss first rNone n=0 dist {}
+
+== 607b7dc4/01 gemfight r723 ours=None  
+     a Vesper,Vendetta,HeartOfRuin,Cassi,Issac
+       trib 4 (first r316) deaths 10 recalls 1888 hits {'g': 73, 'w': 147, 'G': 23, 'e': 44} champhits 215 casts {'none': 258, 'camp:g': 8, 'camp:w': 4, 'champ': 23, 'camp:G': 3}
+       spent r300 310 r1000 710 end 710 first_buy r56 wards 37 locks 0 boss first rNone n=0 dist {}
+     b Vesper,Vendetta,HeartOfRuin,Cassi,Issac
+       trib 35 (first r261) deaths 50 recalls 42 hits {'w': 262, 'g': 135, 'e': 226, 'G': 33} champhits 266 casts {'none': 396, 'camp:G': 7, 'camp:e': 23, 'camp:g': 11, 'camp:w': 17, 'champ': 11}
+       spent r300 1660 r1000 4660 end 4660 first_buy r70 wards 105 locks 3 boss first rNone n=0 dist {}
+
+== 607b7dc4/02 big-world r965 ours=None  
+     a Vesper,Vendetta,HeartOfRuin,Tavi,Marcella
+       trib 23 (first r391) deaths 0 recalls 4339 hits {'G': 110, 'g': 94, 'w': 436, 'e': 496} champhits 0 casts {'none': 445, 'camp:G': 9, 'camp:w': 30, 'camp:e': 25, 'camp:g': 2}
+       spent r300 1510 r1000 7070 end 7070 first_buy r31 wards 213 locks 2 boss first rNone n=0 dist {}
+     b Vesper,Vendetta,HeartOfRuin,Varg,Cassi,Issac
+       trib 24 (first r190) deaths 43 recalls 32 hits {'G': 92, 'w': 303, 'e': 729, 'g': 53, 'M': 5} champhits 0 casts {'none': 470, 'camp:w': 7, 'camp:e': 42, 'camp:G': 2}
+       spent r300 1830 r1000 6540 end 6540 first_buy r46 wards 139 locks 0 boss first r937 n=5 dist {3: 1, 20: 4}
+
+== 607b7dc4/03 pilgrimage r1350 ours=None  
+     a Vesper,Vendetta,HeartOfRuin,Tavi,Marcella
+       trib 13 (first r924) deaths 4 recalls 5821 hits {'G': 263, 'w': 432, 'g': 54, 'e': 229} champhits 139 casts {'none': 607, 'camp:G': 21, 'camp:w': 33, 'camp:e': 7, 'champ': 22, 'camp:g': 1}
+       spent r300 1410 r1000 5700 end 8060 first_buy r87 wards 252 locks 3 boss first rNone n=0 dist {}
+     b Vesper,Vendetta,HeartOfRuin,Cassi,Issac,Ren
+       trib 25 (first r617) deaths 51 recalls 68 hits {'G': 369, 'e': 408, 'g': 53, 'w': 374} champhits 120 casts {'none': 626, 'champ': 28, 'camp:e': 20, 'camp:w': 34, 'camp:G': 50, 'camp:g': 6}
+       spent r300 970 r1000 7240 end 11370 first_buy r25 wards 224 locks 0 boss first rNone n=0 dist {}
+
+== 607b7dc4/04 broken-curve r854 ours=None  
+     a Vesper,HeartOfRuin,Vendetta
+       trib 50 (first r109) deaths 1 recalls 2158 hits {'G': 151, 'g': 122, 'w': 451, 'e': 222} champhits 10 casts {'none': 350}
+       spent r300 1450 r1000 6740 end 6740 first_buy r70 wards 203 locks 2 boss first rNone n=0 dist {}
+     b Vesper,HeartOfRuin,Marcella
+       trib 19 (first r384) deaths 23 recalls 39 hits {'G': 62, 'e': 497, 'w': 240, 'g': 32, 'M': 125} champhits 25 casts {'none': 297, 'camp:e': 15, 'camp:G': 6, 'camp:w': 10, 'camp:g': 1, 'camp:M': 9, 'champ': 5}
+       spent r300 1020 r1000 5940 end 5940 first_buy r51 wards 138 locks 0 boss first r512 n=134 dist {1: 41, 2: 1, 3: 59, 5: 16, 12: 3, 13: 4, 14: 1}
+
+== 607b7dc4/05 reverse-spiral r1224 ours=None  
+     a Vesper,Vendetta,HeartOfRuin,Cassi,Issac
+       trib 34 (first r158) deaths 8 recalls 4370 hits {'g': 147, 'w': 446, 'e': 180, 'O': 50, 'G': 9} champhits 349 casts {'none': 590, 'champ': 69, 'camp:w': 4, 'camp:g': 12}
+       spent r300 720 r1000 4180 end 4720 first_buy r66 wards 228 locks 5 boss first r674 n=50 dist {1: 19, 7: 5, 15: 9, 18: 10, 21: 3, 26: 4}
+     b Vesper,Vendetta,HeartOfRuin,Cassi,Issac
+       trib 20 (first r859) deaths 87 recalls 51 hits {'e': 89, 'w': 201, 'g': 54, 'O': 24, 'G': 7} champhits 378 casts {'none': 436, 'champ': 112, 'camp:w': 5, 'camp:g': 3}
+       spent r300 300 r1000 1710 end 1840 first_buy r79 wards 321 locks 4 boss first r749 n=24 dist {1: 9, 3: 5, 23: 10}

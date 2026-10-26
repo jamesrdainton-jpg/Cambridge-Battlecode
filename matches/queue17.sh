@@ -1,25 +1,15 @@
 #!/usr/bin/env bash
-# Queue 17 (2026-10-20, cambc 2.2.5, 4-core Linux cloud machine): which shared fix costs time on the small 3-pick maps
-# (queue 16: zG packs 474 and fragment 612 vs v12 427 and 589)? Each zK_<FLAG> = queue 16's zG without that one flag;
-# STUN_CAMPS now covers only damage-free stuns (none in the 3-pick draft), and zKdmg adds STUN_DAMAGING (the old
-# STUN_CAMPS behaviour for Tavi's damaging stun).
-# Built from bots/mybot at commit b67c406 with tools/variant.py (DEBUG off); tools/lab.py econ, seeds 1-3, packs+fragment.
-# Reproduce: git checkout b67c406, then run this.
+# Queue 17 (2026-10-25, cambc 3.0.5, 40 maps): confirm the two winning drafts of queue 16 on seed 2 and play them
+# head to head. All variants come from mybot at commit cda0be7 (WAIT_LIMIT 0, camp-vision guard), DEBUG off.
+#   y15a = mybot (2.2.5 pro draft at 4-5 picks: Cassi & Issac, Stellar, Ren, Ryth, Varg)
+#   y15e = 4 = Vendetta, Vesper, Tavi, Marcella; 5 = + Ryth (queue 16: 65/80, +27,518)
+#   y15f = PRO_DRAFT off: 4 = Vendetta, Varg, Ryth, Tavi; 5 = Vendetta, Varg, Ryth, Marcella, Tavi (65/80, +21,305)
 cd "$(dirname "$0")/.."
-PY=.venv/bin/python
-V="$PY tools/variant.py"
-L="$PY tools/lab.py"
-on() { for f in "$@"; do printf -- '--set\nbot.py:%s = False=>%s = True\n' "$f" "$f"; done; }
-G="MELEE_REACH WAIT_FIX RESET_RETARGET LIVE_DPS STUN_CAMPS PAIR_KILL FAST_WALK FAST_SCORE HP_AWARE PACK_NEED"
-mk() { local name=$1; shift; local args; mapfile -t args < <(on "$@"); $V "$name" "${args[@]}" >/dev/null || exit 1; }
-mk zKall $G
-mk zKdmg $G STUN_DAMAGING
-BOTS="v12 zKall zKdmg"
-for drop in MELEE_REACH WAIT_FIX RESET_RETARGET LIVE_DPS FAST_WALK FAST_SCORE HP_AWARE; do
-  keep=""
-  for f in $G; do [ "$f" != "$drop" ] && keep="$keep $f"; done
-  mk "zK_$drop" $keep
-  BOTS="$BOTS zK_$drop"
-done
-$L econ $BOTS --seeds 1,2,3 --maps packs,fragment --jobs 6
-echo QUEUE17 DONE
+PY=.venv/Scripts/python.exe; [ -x "$PY" ] || PY=.venv/bin/python
+V=tools/variant.py
+$PY $V y15a
+$PY $V y15e --set "draft.py:PRO_BY_SIZE = {=>PRO_BY_SIZE = {4: (CD.VENDETTA, CD.VESPER_VALE, CD.TAVI, CD.MARCELLA), 5: (CD.VENDETTA, CD.VESPER_VALE, CD.TAVI, CD.MARCELLA, CD.RYTH)}; _OLD_PRO = {"
+$PY $V y15f --set "draft.py:PRO_DRAFT = (4, 5)=>PRO_DRAFT = ()"
+$PY tools/gauntlet.py y15e --vs y15a --seeds 2 --no-econ --note "y15e vs y15a seed 2 (queue 17 confirmation); cambc 3.0.5, 40 maps"
+$PY tools/gauntlet.py y15f --vs y15a --seeds 2 --no-econ --note "y15f vs y15a seed 2 (queue 17 confirmation); cambc 3.0.5, 40 maps"
+$PY tools/gauntlet.py y15e --vs y15f --seeds 1,2 --note "y15e vs y15f head to head (queue 17), with economy; cambc 3.0.5, 40 maps"

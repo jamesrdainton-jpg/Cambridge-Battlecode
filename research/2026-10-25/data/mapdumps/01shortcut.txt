@@ -1,0 +1,108 @@
+SURVEY map 40x40 picks=4 altars=2 bushes=52 holes=136 spawn=18,25 espawn=18,12
+GROUP gggg gold=0 gems=28 respawn=50 at=19,19 id=0
+CAMPH 0 g 19 19 0
+CAMPH 1 g 19 20 0
+CAMPH 2 g 20 19 0
+CAMPH 3 g 20 20 0
+GROUP eeGG gold=220 gems=30 respawn=60 at=22,20 id=1
+CAMPH 4 e 22 20 1
+CAMPH 5 e 22 19 1
+CAMPH 38 G 23 19 1
+CAMPH 39 G 23 20 1
+GROUP wwGG gold=120 gems=8 respawn=50 at=17,20 id=2
+CAMPH 6 w 17 20 2
+CAMPH 7 w 17 19 2
+CAMPH 36 G 16 19 2
+CAMPH 37 G 16 20 2
+GROUP eGGg gold=130 gems=22 respawn=60 at=12,14 id=3
+CAMPH 8 e 12 14 3
+CAMPH 42 G 12 13 3
+CAMPH 44 G 13 14 3
+CAMPH 46 g 13 13 3
+GROUP eGGg gold=130 gems=22 respawn=60 at=12,25 id=4
+CAMPH 9 e 12 25 4
+CAMPH 43 G 12 26 4
+CAMPH 45 G 13 25 4
+CAMPH 47 g 13 26 4
+GROUP Mggggg gold=300 gems=235 respawn=150 at=31,12 id=5
+CAMPH 10 M 31 12 5
+CAMPH 76 g 30 12 5
+CAMPH 78 g 31 11 5
+CAMPH 80 g 31 13 5
+CAMPH 82 g 30 11 5
+CAMPH 84 g 30 13 5
+GROUP Mggggg gold=300 gems=235 respawn=150 at=31,27 id=6
+CAMPH 11 M 31 27 6
+CAMPH 77 g 30 27 6
+CAMPH 79 g 31 28 6
+CAMPH 81 g 31 26 6
+CAMPH 83 g 30 28 6
+CAMPH 85 g 30 26 6
+GROUP wwGG gold=120 gems=8 respawn=50 at=16,6 id=7
+CAMPH 12 w 16 6 7
+CAMPH 14 w 15 6 7
+CAMPH 48 G 14 6 7
+CAMPH 50 G 17 6 7
+GROUP wwGG gold=120 gems=8 respawn=50 at=16,33 id=8
+CAMPH 13 w 16 33 8
+CAMPH 15 w 15 33 8
+CAMPH 49 G 14 33 8
+CAMPH 51 G 17 33 8
+GROUP ggg gold=0 gems=21 respawn=50 at=39,0 id=9
+CAMPH 16 g 39 0 9
+CAMPH 60 g 38 0 9
+CAMPH 62 g 39 1 9
+GROUP ggg gold=0 gems=21 respawn=50 at=39,39 id=10
+CAMPH 17 g 39 39 10
+CAMPH 61 g 38 39 10
+CAMPH 63 g 39 38 10
+GROUP eeeeggGG gold=400 gems=74 respawn=60 at=1,2 id=11
+CAMPH 18 e 1 2 11
+CAMPH 20 e 1 1 11
+CAMPH 22 e 2 1 11
+CAMPH 24 e 2 2 11
+CAMPH 52 g 3 1 11
+CAMPH 54 g 3 2 11
+CAMPH 56 G 0 1 11
+CAMPH 58 G 0 2 11
+GROUP eeeeggGG gold=400 gems=74 respawn=60 at=1,37 id=12
+CAMPH 19 e 1 37 12
+CAMPH 21 e 1 38 12
+CAMPH 23 e 2 38 12
+CAMPH 25 e 2 37 12
+CAMPH 53 g 3 38 12
+CAMPH 55 g 3 37 12
+CAMPH 57 G 0 38 12
+CAMPH 59 G 0 37 12
+GROUP eegg gold=180 gems=44 respawn=60 at=33,6 id=13
+CAMPH 26 e 33 6 13
+CAMPH 32 e 32 6 13
+CAMPH 66 g 32 7 13
+CAMPH 68 g 33 7 13
+GROUP eegg gold=180 gems=44 respawn=60 at=33,33 id=14
+CAMPH 27 e 33 33 14
+CAMPH 33 e 32 33 14
+CAMPH 67 g 32 32 14
+CAMPH 69 g 33 32 14
+GROUP egg gold=90 gems=29 respawn=60 at=27,6 id=15
+CAMPH 28 e 27 6 15
+CAMPH 64 g 27 7 15
+CAMPH 74 g 28 6 15
+GROUP egg gold=90 gems=29 respawn=60 at=27,33 id=16
+CAMPH 29 e 27 33 16
+CAMPH 65 g 27 32 16
+CAMPH 75 g 28 33 16
+GROUP egg gold=90 gems=29 respawn=60 at=38,6 id=17
+CAMPH 30 e 38 6 17
+CAMPH 70 g 38 7 17
+CAMPH 72 g 37 6 17
+GROUP egg gold=90 gems=29 respawn=60 at=38,33 id=18
+CAMPH 31 e 38 33 18
+CAMPH 71 g 38 32 18
+CAMPH 73 g 37 33 18
+GROUP GG gold=40 gems=0 respawn=50 at=16,11 id=19
+CAMPH 34 G 16 11 19
+CAMPH 40 G 15 11 19
+GROUP GG gold=40 gems=0 respawn=50 at=16,28 id=20
+CAMPH 35 G 16 28 20
+CAMPH 41 G 15 28 20

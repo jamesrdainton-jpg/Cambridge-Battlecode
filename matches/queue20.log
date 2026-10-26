@@ -1,20 +1,7 @@
-ambush        2/4     +476
-collision     2/4       -6
-contest       0/4    -2400
-corners       3/4     +812
-eight         3/4    +1324
-elkring       0/4    -1188
-expanse       2/4      -64
-fragment      2/4     +880
-interlock     3/4     +156
-lanes         4/4     +558
-monolith      3/4     +562
-packs         2/4      +16
-pilgrimage    3/4     +120
-rows          2/4      -66
-rushbait-v2   1/4     -366
-stampede      4/4    +2880
-swirl         1/4     -840
-per seed: s1 19/34 (+946)  s2 18/34 (+1908)
-zR vs v12: 37/68, gems +2854
-QUEUE20 DONE
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\cpp13_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\cpp13_s2
+    cpp13_s1 vs v13_s1: 37/80 (-4588)
+    cpp13_s2 vs v13_s2: 35/80 (-1973)
+vs v13        wins 72/160  gem margin -6561
+economy (rounds to 1000 vs idle, summed over 40 maps): 51592
+2026-10-25 21:57,cpp13[1,2],72/160,v13:72/160(-6561),51592,cpp13 (C++ port of v13) vs v13 parity; cambc 3.0.5, 40 maps,43e2942

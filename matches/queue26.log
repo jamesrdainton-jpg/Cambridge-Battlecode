@@ -1,0 +1,33 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z26b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z26g
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c26b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c26g
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z26g_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z26g_s2
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z26g_s3
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z26g_s4
+    z26g_s1 vs z26b_s1: 5/6 (-18)
+    z26g_s2 vs z26b_s2: 5/6 (-18)
+    z26g_s3 vs z26b_s3: 4/6 (-163)
+    z26g_s4 vs z26b_s4: 5/6 (-44)
+vs z26b       wins 19/24  gem margin -243
+2026-10-26 12:52,z26g[1,2,3,4],19/24,z26b:19/24(-243),,z26g (LOCKED_GOLD) vs z26b, altar-locked maps only; queue 26; cambc 4.0.0 maps=01boss-battle,02guardians,02the-pack,9f156ee
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c26g_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c26g_s2
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c26g_s3
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c26g_s4
+    c26g_s1 vs c26b_s1: 4/6 (-147)
+    c26g_s2 vs c26b_s2: 4/6 (-181)
+    c26g_s3 vs c26b_s3: 4/6 (-90)
+    c26g_s4 vs c26b_s4: 5/6 (-33)
+vs c26b       wins 17/24  gem margin -451
+2026-10-26 12:54,c26g[1,2,3,4],17/24,c26b:17/24(-451),,c26g (LOCKED_GOLD, C++) vs c26b, altar-locked maps only; queue 26; cambc 4.0.0 maps=01boss-battle,02guardians,02the-pack,9f156ee
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\z26g_s2
+vs v13        wins 85/140  gem margin +10065
+2026-10-26 13:03,z26g[2],85/140,v13:85/140(+10065),,z26g = BUILD_30 4 + FIGHT_PRIO + LOCKED_GOLD vs v13 seed 2; queue 26; cambc 4.0.0, 70 maps,88ebd09
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c26g_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\c26g_s2
+    c26g_s1 vs z26g_s1: 71/140 (-598)
+    c26g_s2 vs z26g_s2: 67/140 (-3623)
+vs z26g       wins 138/280  gem margin -4221
+2026-10-26 13:12,c26g[1,2],138/280,z26g:138/280(-4221),,c26g vs z26g: same flags, C++ vs Python; queue 26; cambc 4.0.0, 70 maps,88ebd09

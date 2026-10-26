@@ -1,0 +1,16 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y15a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y15e
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y15f
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y15e_s2
+vs y15a       wins 65/80  gem margin +23990
+2026-10-25 19:29,y15e[2],65/80,y15a:65/80(+23990),,y15e vs y15a seed 2 (queue 17 confirmation); cambc 3.0.5, 40 maps,72c80e2
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y15f_s2
+vs y15a       wins 60/80  gem margin +19774
+2026-10-25 19:35,y15f[2],60/80,y15a:60/80(+19774),,y15f vs y15a seed 2 (queue 17 confirmation); cambc 3.0.5, 40 maps,72c80e2
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y15e_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\y15e_s2
+    y15e_s1 vs y15f_s1: 55/80 (+10306)
+    y15e_s2 vs y15f_s2: 48/80 (+7382)
+vs y15f       wins 103/160  gem margin +17688
+economy (rounds to 1000 vs idle, summed over 40 maps): 50720
+2026-10-25 19:54,y15e[1,2],103/160,y15f:103/160(+17688),50720,y15e vs y15f head to head (queue 17), with economy; cambc 3.0.5, 40 maps,72c80e2
