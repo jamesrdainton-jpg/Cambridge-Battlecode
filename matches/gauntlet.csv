@@ -123,3 +123,7 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-26 14:11,zh2[1],67/140,cpp14:67/140(-481),,zh2 = HOR_DASH + DRAFT_SET 2 vs cpp14; queue 28; cambc 4.0.0, 70 maps,4ae9e37
 2026-10-26 14:13,zg[1],73/140,cpp14:73/140(+218),,zg = EARLY_GOLD 1.5 to r150 vs cpp14; queue 28; cambc 4.0.0, 70 maps,4ae9e37
 2026-10-26 14:14,zr[1],58/140,cpp14:58/140(-9254),,zr = FIGHT_RESPECT 1.5 vs cpp14; queue 28; cambc 4.0.0, 70 maps,4ae9e37
+2026-10-26 14:19,zm4[1,2],149/280,cpp14:149/280(+9309),,zm4 = HOR_DASH + DRAFT_SET 4 vs cpp14; queue 29; cambc 4.0.0, 70 maps,c61c2c1
+2026-10-26 14:23,zho[1,2],137/280,cpp14:137/280(-1835),,zho = HOLD_FIX vs cpp14; queue 29; cambc 4.0.0, 70 maps,c61c2c1
+2026-10-26 14:25,zg[2],75/140,cpp14:75/140(+6478),,zg = EARLY_GOLD 1.5 to r150 vs cpp14, seed 2; queue 29; cambc 4.0.0, 70 maps,c61c2c1
+2026-10-26 14:29,zc[1,2],144/280,cpp14:144/280(+7262),,zc = HOR_DASH + DRAFT_SET 4 + EARLY_GOLD 1.5 + HOLD_FIX + TELEMETRY vs cpp14; queue 29; cambc 4.0.0, 70 maps,c61c2c1

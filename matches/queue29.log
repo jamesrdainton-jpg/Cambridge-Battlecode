@@ -1,0 +1,22 @@
+created /home/user/Cambridge-Battlecode/bots/zm4_s1
+created /home/user/Cambridge-Battlecode/bots/zm4_s2
+    zm4_s1 vs cpp14_s1: 76/140 (+4672)
+    zm4_s2 vs cpp14_s2: 73/140 (+4637)
+vs cpp14      wins 149/280  gem margin +9309
+2026-10-26 14:19,zm4[1,2],149/280,cpp14:149/280(+9309),,zm4 = HOR_DASH + DRAFT_SET 4 vs cpp14; queue 29; cambc 4.0.0, 70 maps,c61c2c1
+created /home/user/Cambridge-Battlecode/bots/zho_s1
+created /home/user/Cambridge-Battlecode/bots/zho_s2
+    zho_s1 vs cpp14_s1: 70/140 (-1606)
+    zho_s2 vs cpp14_s2: 67/140 (-229)
+vs cpp14      wins 137/280  gem margin -1835
+2026-10-26 14:23,zho[1,2],137/280,cpp14:137/280(-1835),,zho = HOLD_FIX vs cpp14; queue 29; cambc 4.0.0, 70 maps,c61c2c1
+created /home/user/Cambridge-Battlecode/bots/zg_s2
+vs cpp14      wins 75/140  gem margin +6478
+2026-10-26 14:25,zg[2],75/140,cpp14:75/140(+6478),,zg = EARLY_GOLD 1.5 to r150 vs cpp14, seed 2; queue 29; cambc 4.0.0, 70 maps,c61c2c1
+created /home/user/Cambridge-Battlecode/bots/zc_s1
+created /home/user/Cambridge-Battlecode/bots/zc_s2
+    zc_s1 vs cpp14_s1: 74/140 (+7258)
+    zc_s2 vs cpp14_s2: 70/140 (+4)
+vs cpp14      wins 144/280  gem margin +7262
+2026-10-26 14:29,zc[1,2],144/280,cpp14:144/280(+7262),,zc = HOR_DASH + DRAFT_SET 4 + EARLY_GOLD 1.5 + HOLD_FIX + TELEMETRY vs cpp14; queue 29; cambc 4.0.0, 70 maps,c61c2c1
+QUEUE29 DONE
