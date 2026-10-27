@@ -13,3 +13,9 @@ created C:\Users\james\GitHub\Cambridge-Battlecode\bots\lo6_s1
 created C:\Users\james\GitHub\Cambridge-Battlecode\bots\lo6_s2
 created C:\Users\james\GitHub\Cambridge-Battlecode\bots\lo6_s3
 created C:\Users\james\GitHub\Cambridge-Battlecode\bots\lo6_s4
+    lo6_s1 vs c29b_s1: 4/6 (+15)
+    lo6_s2 vs c29b_s2: 0/6 (+0)
+    lo6_s3 vs c29b_s3: 5/6 (+1514)
+    lo6_s4 vs c29b_s4: 2/6 (+560)
+vs c29b       wins 11/24  gem margin +2089
+2026-10-27 10:30,lo6[1,2,3,4],11/24,c29b:11/24(+2089),,lo6 (BUILD_30 6 + LOCKED_OPEN) vs c29b (v14) on the locked maps; queue 41; cambc 4.0.0, C++ maps=01boss-battle,02guardians,02the-pack,e5685be

@@ -1,0 +1,14 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\u1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\u1_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\u1_s2
+    u1_s1 vs c29b_s1: 74/140 (+5996)
+    u1_s2 vs c29b_s2: 75/140 (+5337)
+vs c29b       wins 149/280  gem margin +11333
+2026-10-27 10:30,u1[1,2],149/280,c29b:149/280(+11333),,u1 (UNSTICK) vs c29b (v14); queue 43; cambc 4.0.0, 70 maps, C++,e5685be
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\bu6
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\bu6_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\bu6_s2
+    bu6_s1 vs b6_s1: 68/140 (-1772)
+    bu6_s2 vs b6_s2: 68/140 (-2756)
+vs b6         wins 136/280  gem margin -4528
+2026-10-27 10:35,bu6[1,2],136/280,b6:136/280(-4528),,bu6 (BUILD_30 6 + UNSTICK) vs b6 (BUILD_30 6); queue 43; cambc 4.0.0, 70 maps, C++,92be8c0
