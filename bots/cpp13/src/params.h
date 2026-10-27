@@ -92,6 +92,10 @@ inline constexpr bool CAMP_TILE_FIX = true;
 // we spent 8,505 champion-rounds bouncing (the opponents 4,256), 40% of all our turns on 01the-farm. Inside an avoid
 // zone, keep to the direct path; after 4 bounces ignore avoid zones for 8 turns; after 8, drop the target.
 inline constexpr bool UNSTICK = false;
+// FEAR (2026-10-27): the other bounce: retreat from an enemy, lose sight of it, walk back to the camp beside it, see
+// it, retreat... (33 rounds on 02treasure-box). After a retreat, treat the enemies' reach as an avoid zone for 8 turns
+// and drop a target inside it.
+inline constexpr bool FEAR = false;
 inline constexpr bool WARDS = true;
 
 // Tributes, recalls, shopping.

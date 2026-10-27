@@ -321,6 +321,8 @@ private:
 	bool open_now{};
 	vec2 prev1{ -1, -1 }, prev2{ -1, -1 };  // UNSTICK: positions at the start of the last two turns
 	int bounces{}, no_avoid_until{ -1 };
+	bitboard fear_zone;   // FEAR: reach of the enemies we last retreated from, until fear_until
+	int fear_until{ -1 };
 	int target{ -1 };
 	int target_round{ -100 };
 	std::optional<double> last_hp;
@@ -816,6 +818,7 @@ private:
 					if (x.d <= rng && (!weakest || x.hp < weakest->hp)) weakest = &x;
 				if (weakest) basic_attack_champion(weakest->e);
 			}
+			remember_fear(near);
 			retreat(near);
 			return true;
 		}
@@ -1034,6 +1037,7 @@ private:
 		double engage_at = (committed ? FIGHT2_RETREAT : FIGHT2_ENGAGE) + extra;
 		if (ratio < retreat_at || (frac < (fragile ? 0.5 : LOW_HP_RETREAT) && closest <= LOW_HP_REACH))
 		{
+			remember_fear(near);
 			retreat2(near);
 			return true;
 		}
@@ -1046,6 +1050,7 @@ private:
 			// reach (74% of our platform deaths came after 11+ rounds near an enemy).
 			if (threatened && ratio < 1.0)
 			{
+				remember_fear(near);
 				retreat2(near);
 				return true;
 			}
@@ -1135,6 +1140,15 @@ private:
 			return true;
 		}
 		return closest <= 2;
+	}
+
+	// FEAR: the reach of the enemies we are retreating from becomes an avoid zone for 8 turns.
+	void remember_fear(const std::vector<Near>& near)
+	{
+		if (!FEAR) return;
+		fear_zone = bitboard{};
+		for (const auto& x : near) fear_zone.draw_chebyshev(x.p, static_cast<float>(std::max(x.reach, x.rng + 2)));
+		fear_until = now + 8;
 	}
 
 	void retreat2(const std::vector<Near>& near)
@@ -1917,6 +1931,7 @@ private:
 			else if (need > 1 && sit != cl.end() && !sit->second.empty() && *std::min_element(sit->second.begin(), sit->second.end()) < slot)
 				value *= 1.2;
 			if (g.enemy_side) value *= ENEMY_SIDE;
+			if (FEAR && now < fear_until && fear_zone.is_set(g.anchor)) value *= 0.2;
 			if (g.idx == target) value *= 1.1;
 			double score = value / (cost + 5);
 			if (SEED)
@@ -1999,7 +2014,13 @@ private:
 			G(g).status = ALIVE;
 			G(g).reset_hp();
 		}
-		if (g >= 0 && (G(g).status == RESPAWN || now - target_round >= RETARGET_EVERY))
+		bool feared = FEAR && now < fear_until;
+		if (g >= 0 && feared && fear_zone.is_set(G(g).anchor))
+		{
+			g = choose_target(g);
+			target_round = now;
+		}
+		else if (g >= 0 && (G(g).status == RESPAWN || now - target_round >= RETARGET_EVERY))
 		{
 			g = choose_target();
 			target_round = now;
@@ -2084,6 +2105,13 @@ private:
 		for (auto c : grp.cells) roots.draw_chebyshev(c, 1);
 		roots &= ~(world.block | world.all_camp_tiles);
 		auto dz = danger(g);
+		if (feared)
+		{
+			if (dz)
+				*dz |= fear_zone;
+			else
+				dz = fear_zone;
+		}
 		if (!go(roots, true, dz ? &*dz : nullptr) && cheb(grp.anchor, pos) <= 2) grp.status = ALIVE;
 	}
 
