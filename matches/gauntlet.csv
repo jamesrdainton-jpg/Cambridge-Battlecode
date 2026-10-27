@@ -162,3 +162,6 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-27 10:13,f2b[2],80/140,c29b:80/140(+4820),,f2b (FIGHT2 + BUILD_30 6) vs c29b (v14) seed 2; queue 40; cambc 4.0.0, 70 maps, C++,1c597d8
 2026-10-27 10:15,f2c[1,2],146/280,c29b:146/280(+6608),,f2c (f2b, engage 1.0 retreat 0.7) vs c29b (v14); queue 40; cambc 4.0.0, 70 maps, C++,1c597d8
 2026-10-27 10:18,f2d[1,2],136/280,c29b:136/280(-7181),,f2d (f2b, engage 1.3 retreat 0.9) vs c29b (v14); queue 40; cambc 4.0.0, 70 maps, C++,1c597d8+dirty
+2026-10-27 10:21,f2e[1,2],156/280,c29b:156/280(+17348),,f2e (f2b, allies within 6) vs c29b (v14); queue 40; cambc 4.0.0, 70 maps, C++,5cc4558
+2026-10-27 10:23,b7[1,2],157/280,c29b:157/280(+11424),,b7 (BUILD_30 7) vs c29b (v14); queue 42; cambc 4.0.0, 70 maps, C++,5cc4558
+2026-10-27 10:23,lo6[1,2,3,4],11/24,b6:11/24(+2329),,lo6 (BUILD_30 6 + LOCKED_OPEN) vs b6 (BUILD_30 6) on the locked maps; queue 41; cambc 4.0.0, C++ maps=01boss-battle,02guardians,02the-pack,5cc4558

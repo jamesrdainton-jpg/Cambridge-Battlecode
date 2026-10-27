@@ -319,6 +319,8 @@ private:
 	int last_champ_hit{ -100 };  // FIGHT2: round we last hit an enemy champion (hysteresis)
 	int open_checked{ -100 };    // LOCKED_OPEN: last altar reachability check, and its answer
 	bool open_now{};
+	vec2 prev1{ -1, -1 }, prev2{ -1, -1 };  // UNSTICK: positions at the start of the last two turns
+	int bounces{}, no_avoid_until{ -1 };
 	int target{ -1 };
 	int target_round{ -100 };
 	std::optional<double> last_hp;
@@ -380,6 +382,7 @@ private:
 		if (!can_move) return false;
 		bitboard roots = roots_in & ~occ;
 		if (roots.is_empty() || roots.is_set(pos)) return false;
+		if (UNSTICK && avoid && (now < no_avoid_until || avoid->is_set(pos))) avoid = nullptr;  // see UNSTICK
 		bitboard walls = world.block | occ;
 		distance_field field;
 		bitboard visited, stop_at;
@@ -509,6 +512,21 @@ private:
 			return;
 		}
 		pos = me.position();
+		if (UNSTICK)
+		{
+			// A, B, A, B...: stop steering around avoid zones for a while, then give up the target.
+			bounces = (pos == prev2 && pos != prev1) ? bounces + 1 : 0;
+			prev2 = prev1;
+			prev1 = pos;
+			if (bounces == 4) no_avoid_until = now + 8;
+			if (bounces >= 8 && target >= 0)
+			{
+				target = choose_target(target);
+				target_round = now;
+				claim(target);
+				bounces = 0;
+			}
+		}
 		hp = me.health();
 		max_hp = me.max_health();
 		gems = static_cast<int>(me.gem_count());

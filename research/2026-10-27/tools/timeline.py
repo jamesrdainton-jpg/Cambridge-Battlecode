@@ -1,6 +1,6 @@
 """Per-champion timeline of one platform game: what each of our champions (and theirs) did in each window of rounds.
 
-Usage: python -I research/2026-10-27/tools/timeline.py replays/platform/match-group-ID.zip GAME [--window 25] [--until 600]
+Usage: python -I research/2026-10-27/tools/timeline.py (replays/platform/match-group-ID.zip GAME | local.repl26a 1) [--window 25] [--until 600]
 GAME is the 1-based position in the group. Per window and champion: last position, and counts of moves (m), camp hits
 (c), champion hits (h), casts (x), recalls (R), tributes (T), gold spent (g), and D when a 55+ round gap (death) starts.
 """
@@ -26,12 +26,18 @@ def main():
     ap.add_argument("--until", type=int, default=600)
     args = ap.parse_args()
     maps = {p.stem: p.read_bytes() for p in (ROOT / "maps").glob("*.map26a")}
-    with zipfile.ZipFile(args.zip) as z:
-        name = sorted(n for n in z.namelist() if n.endswith(".zip"))[args.game - 1]
-        inner = zipfile.ZipFile(io.BytesIO(z.read(name)))
+    if args.zip.endswith(".repl26a"):  # a local replay bundle: "us" = team A
+        inner = zipfile.ZipFile(args.zip)
         names = inner.namelist()
-        ours = "a" if "team-a.stdout" in names else "b"
-        g = R.parse(inner.read(next(n for n in names if n.endswith(".repl26a"))), maps)
+        ours = "a"
+        g = R.parse(inner.read("replay.repl26a"), maps)
+    else:
+        with zipfile.ZipFile(args.zip) as z:
+            name = sorted(n for n in z.namelist() if n.endswith(".zip"))[args.game - 1]
+            inner = zipfile.ZipFile(io.BytesIO(z.read(name)))
+            names = inner.namelist()
+            ours = "a" if "team-a.stdout" in names else "b"
+            g = R.parse(inner.read(next(n for n in names if n.endswith(".repl26a"))), maps)
     print(f"{g['map']} rounds {g['rounds']}, us = team {ours}")
     for t in (ours, "b" if ours == "a" else "a"):
         print(f"== {'us' if t == ours else 'them'}: {', '.join(g['champs'][t])}")

@@ -87,6 +87,11 @@ inline constexpr int FIGHT2_MEMORY = 3;
 // Camps, captures, vision.
 inline constexpr bool CLAIM_ON_KILL = true;
 inline constexpr bool CAMP_TILE_FIX = true;
+// UNSTICK (2026-10-27): go() bounced between two tiles at the edge of an awake camp's reach (outside: no detour, so the
+// direct path steps in; inside: our own tile is free in the detour search, which leads back out). On the 60 panel games
+// we spent 8,505 champion-rounds bouncing (the opponents 4,256), 40% of all our turns on 01the-farm. Inside an avoid
+// zone, keep to the direct path; after 4 bounces ignore avoid zones for 8 turns; after 8, drop the target.
+inline constexpr bool UNSTICK = false;
 inline constexpr bool WARDS = true;
 
 // Tributes, recalls, shopping.
