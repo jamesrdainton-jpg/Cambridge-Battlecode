@@ -131,6 +131,19 @@ inline std::vector<Stage> build_for(cambc::champion_type kind)
 	const Stage CS{ I::capture_shard_of_strength, I::capture_emblem_of_strength, 0 }, CF{ I::capture_shard_of_focus, I::capture_emblem_of_focus, 0 };
 	const Stage RS{ I::prospector_shard_of_strength, I::prospector_emblem_of_strength, 0 }, RF{ I::prospector_shard_of_focus, I::prospector_emblem_of_focus, 0 };
 	auto at = [](Stage s, int n) { s.need = n; return s; };
+	if (BUILD_30 == 6)
+	{
+		// The stronger platform teams' order (research/2026-10-27/tools/builds.py, 30 panel games, 2026-10-27): Jungle,
+		// Durability H, Monster, then Bruiser H and Bruiser of the main stat in turn; Marcella, Heart of Ruin and Ren
+		// build focus there too.
+		bool f = focus || kind == cambc::champion_type::marcella || kind == cambc::champion_type::heart_of_ruin ||
+				 kind == cambc::champion_type::ren;
+		const Stage JS{ I::jungle_shard_of_strength, I::jungle_emblem_of_strength, 0 }, JF{ I::jungle_shard_of_focus, I::jungle_emblem_of_focus, 0 };
+		const Stage& J = f ? JF : JS;
+		const Stage& M6 = f ? MF : MS;
+		const Stage& B6 = f ? BF : BS;
+		return { at(J, 5), at(DH, 5), at(M6, 5), at(BH, 5), at(B6, 5), at(BH, 10), at(B6, 10), at(BH, 20), at(B6, 20), at(BH, 30), at(B6, 30), at(B6, 60) };
+	}
 	const Stage& M = focus ? MF : MS;
 	const Stage& P = focus ? PF : PS;
 	const Stage& T = focus ? TF : TS;
