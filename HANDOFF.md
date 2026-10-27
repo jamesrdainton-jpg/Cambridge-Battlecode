@@ -1,10 +1,18 @@
 # Handover — Cambridge Battlecode 2026 bot
 
-State as of **2026-10-27 evening** (DEVLOG rows 188-190; first section below). Before that, **2026-10-27** (DEVLOG rows 172-187). Before that, **2026-10-26** (patch 4.0, v14; DEVLOG rows 158–171). Before that, **2026-10-25** (engine 3.0 diagnosis, v13; DEVLOG rows 143 onwards; report: [research/2026-10-25/REPORT.md](research/2026-10-25/REPORT.md)). Before that: v12 from the 2026-10-19 research report (rows 135–142), the 2026-10-18 sprint (rows 120–134) and the 2026-10-16 platform-data session (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md).
+State as of **2026-10-27 evening** (DEVLOG rows 188-196; first section below). Before that, **2026-10-27** (DEVLOG rows 172-187). Before that, **2026-10-26** (patch 4.0, v14; DEVLOG rows 158–171). Before that, **2026-10-25** (engine 3.0 diagnosis, v13; DEVLOG rows 143 onwards; report: [research/2026-10-25/REPORT.md](research/2026-10-25/REPORT.md)). Before that: v12 from the 2026-10-19 research report (rows 135–142), the 2026-10-18 sprint (rows 120–134) and the 2026-10-16 platform-data session (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md).
 
 **Team rule:** more than one person works on this repo, each on their own computer, so every result must be reproducible on a different computer from a git commit. Commit code before testing it, record the commit and the exact command, keep queue scripts and `matches\gauntlet.csv` in git, and use the pinned cambc with the committed maps. Details are in the "Team rule" section near the top of DEVLOG.md.
 
-## 2026-10-27 (evening): gold valued all game; `cpp20` = platform v19
+## 2026-10-27 (evening): gold all game + bigger squads; `cpp21` = platform v20 (panel 19/30)
+
+- **Live: v20 = `bots/cpp21`** = `cpp20` + `NEED_FRAC` 0.25 (ZIP `submissions/cambridge-bot-2026-10-27-4.zip` = `cambridge-bot-latest.zip`, hash `45fd2eeba644`, verified 6/6; commit `dce32e7`; live 19:41 UTC). `tools/release.py` defaults to `--src cpp21`. New variants: `tools/variant.py NAME --src cpp21 --set "params.h:OLD=>NEW"` (see `matches/queue60.sh`).
+- **Panel (same pinned opponents, maps, sides): `cpp21` 19/30**, `cpp20` 14/30, `cpp19` 12/30. Our deaths per 100 rounds 0.63 vs 0.66 (`cpp19`: 0.90 vs 0.63); engagements won 111 vs 121 (91 vs 158); gold spent by r500 97% of theirs (82%). DEVLOG 191, 195.
+- **Self-play sweeps on settings tuned on engine 2.x (DEVLOG 189-196), vs the version before:** `GOLD_TAPER` 500 / 1000 / 2000 / none = 140 / 144 / **157** / 151 of 280; `NEED_FRAC` 0.7 / 0.55 / 0.45 / 0.35 / **0.25** / 0.2 / 0.15 = 119 / 140 / 161 / 164 / **173** / 162 / 152; `ENEMY_SIDE` 1.0 / 0.7 = 128 / 150 on `cpp20`, but 0.7 on top of `NEED_FRAC` 0.35 = 144 (dropped). The engine is deterministic: a rerun gave identical games.
+- **Ranked:** `cpp20` (v19, 18:01-19:41) went 16/32; ladder #216 (1,683) at 19:20. Check `cpp21` with `python -I research/2026-10-27/tools/ranked.py --since 2026-10-27T19:41`.
+- **Next:** more settings from older engines on top of `cpp21` (queue 60: `WAIT_LIMIT` 10, `ENEMY_SIDE` 1.0; then fight thresholds `FIGHT_ENGAGE`/`FIGHT_RETREAT`, `ALLY_RANGE`, `TRIBUTE_BIG`/`MID`, `SHOP_GOLD`); a panel for any clear winner.
+
+## 2026-10-27 (evening, first part): gold valued all game; `cpp20` = platform v19
 
 - **Submitted: v19 = `bots/cpp20`** = `cpp19` + `GOLD_TAPER` 2000 (ZIP `submissions/cambridge-bot-2026-10-27-3.zip` = `cambridge-bot-latest.zip`, hash `b86b072db8c1`, verified 6/6; commit `46b7f5d`). `tools/release.py` now defaults to `--src cpp20` (`cpp13`, the development copy, still has older defaults; variants set the `cpp19` flags with `--set`, see `matches/queue54.sh`).
 - **Why (DEVLOG 188-190):** in v18's ranked losses the opponents out-spend us 1.7x before r500 and 2.5x after it; we valued gold at 0.4 fading to the 0.06 floor by r425. Valuing it longer, vs `cpp19`, seeds 1,2: taper 1000 144/280, **taper 2000 157/280 (+9,222; 77 and 80)**, no fade 151/280, weight 0.6 + taper 2000 144/280; all gem margins positive.
