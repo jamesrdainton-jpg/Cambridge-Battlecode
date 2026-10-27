@@ -260,7 +260,7 @@ public:
 		if (TRACE_TO > 0 && now >= TRACE_FROM && now <= TRACE_TO)
 			log(act + " at " + std::to_string(pos.x) + "," + std::to_string(pos.y) + " tgt " + std::to_string(target) +
 				(target >= 0 ? "@" + std::to_string(G(target).ax) + "," + std::to_string(G(target).ay) + " st" + std::to_string(G(target).status) : "") +
-				" gems " + std::to_string(gems) + " hp " + std::to_string(static_cast<int>(hp)));
+				" gems " + std::to_string(gems) + " hp " + std::to_string(static_cast<int>(hp)) + trace_group());
 		if (WARDS && act != "dead" && act != "recall" && act != "submit" && act != "tp" && act != "?") ward_bush();
 		if (RECALL_TRICK && act != "dead" && act != "recall" && act != "submit" && act != "tp" && act != "go_recall" &&
 			act != "recall_travel")
@@ -273,6 +273,26 @@ public:
 			catch (const cambc::error&)
 			{
 			}
+		}
+	}
+
+	// TRACE: the target group's true state (engine) next to what we believe.
+	std::string trace_group()
+	{
+		if (target < 0) return "";
+		int vis = 0;
+		for (const auto& ci : camp_info)
+			if (ci.g == target) ++vis;
+		try
+		{
+			auto cs = G(target).obj.capture_state();
+			auto gs = G(target).obj.state();
+			return " | engine state " + std::to_string(gs.index()) + " capture " + std::to_string(static_cast<int>(cs.state)) + " t" +
+				   std::to_string(cs.timer) + " visible camps " + std::to_string(vis) + " awake " + std::to_string(awake.count(target));
+		}
+		catch (const cambc::error& e)
+		{
+			return std::string(" | engine state ? (") + e.what() + ") visible camps " + std::to_string(vis);
 		}
 	}
 
@@ -2130,7 +2150,16 @@ private:
 			}
 		}
 		bitboard roots;
-		for (auto c : grp.cells) roots.draw_chebyshev(c, 1);
+		if (SEEK_HIDDEN && grp.status == ALIVE && cheb(grp.anchor, pos) <= 12)
+		{
+			// A living group none of whose camps we can see: its survivors are behind a wall (02gift-wrapping's rings
+			// around a wall core). Head for the cells we can't see instead of waiting beside the ones we can.
+			auto vis = cambc::vision::visible_tiles();
+			for (auto c : grp.cells)
+				if (!vis.is_set(c)) roots.draw_chebyshev(c, 1);
+		}
+		if (roots.is_empty())
+			for (auto c : grp.cells) roots.draw_chebyshev(c, 1);
 		roots &= ~(world.block | world.all_camp_tiles);
 		auto dz = danger(g);
 		if (feared)

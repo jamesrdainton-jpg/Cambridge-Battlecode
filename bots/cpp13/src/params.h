@@ -107,6 +107,9 @@ inline constexpr bool CAMP_AWAKE = false;
 // TARGET_STATE (2026-10-27): always refresh the target group's state when one of its tiles is in view (the per-turn refresh
 // only covered groups whose anchor tile is within 9; see update_knowledge()).
 inline constexpr bool TARGET_STATE = false;
+// SEEK_HIDDEN (2026-10-27): when the target group is alive but none of its camps is in view (the survivors are behind
+// a wall), walk to the tiles beside its unseen cells; we used to wait beside the dead ones forever (02gift-wrapping).
+inline constexpr bool SEEK_HIDDEN = false;
 inline constexpr bool WARDS = true;
 
 // Tributes, recalls, shopping.
