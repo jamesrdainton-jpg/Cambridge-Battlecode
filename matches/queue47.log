@@ -1,0 +1,14 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ts6
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ts6_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ts6_s2
+    ts6_s1 vs b6_s1: 80/140 (+7483)
+    ts6_s2 vs b6_s2: 78/140 (-1080)
+vs b6         wins 158/280  gem margin +6403
+2026-10-27 11:03,ts6[1,2],158/280,b6:158/280(+6403),,ts6 (BUILD_30 6 + CAMP_AWAKE + TARGET_STATE) vs b6 (BUILD_30 6); queue 47; cambc 4.0.0, 70 maps, C++,73ac47a
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ts6_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ts6_s2
+    ts6_s1 vs c29b_s1: 87/140 (+13794)
+    ts6_s2 vs c29b_s2: 88/140 (+16277)
+vs c29b       wins 175/280  gem margin +30071
+economy (rounds to 1000 vs idle, summed over 70 maps): 77335
+2026-10-27 11:11,ts6[1,2],175/280,c29b:175/280(+30071),77335,ts6 (BUILD_30 6 + CAMP_AWAKE + TARGET_STATE) vs c29b (v14) + economy; queue 47; cambc 4.0.0, 70 maps, C++,73ac47a

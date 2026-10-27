@@ -177,3 +177,7 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-27 10:51,cf[1,2],147/280,c29b:147/280(+7848),,cf (BUILD_30 6 + FIGHT2 allies 6 + FEAR + UNSTICK + LOCKED_OPEN) vs c29b (v14); queue 45; cambc 4.0.0, 70 maps, C++,ce893b5+dirty
 2026-10-27 10:55,ca6[1,2],155/280,b6:155/280(+11912),,ca6 (BUILD_30 6 + CAMP_AWAKE) vs b6 (BUILD_30 6); queue 46; cambc 4.0.0, 70 maps, C++,ce07314
 2026-10-27 10:57,ca6[1,2],172/280,c29b:172/280(+32761),,ca6 (BUILD_30 6 + CAMP_AWAKE) vs c29b (v14); queue 46; cambc 4.0.0, 70 maps, C++,ce07314+dirty
+2026-10-27 11:03,ts6[1,2],158/280,b6:158/280(+6403),,ts6 (BUILD_30 6 + CAMP_AWAKE + TARGET_STATE) vs b6 (BUILD_30 6); queue 47; cambc 4.0.0, 70 maps, C++,73ac47a
+2026-10-27 11:11,ts6[1,2],175/280,c29b:175/280(+30071),77335,ts6 (BUILD_30 6 + CAMP_AWAKE + TARGET_STATE) vs c29b (v14) + economy; queue 47; cambc 4.0.0, 70 maps, C++,73ac47a
+2026-10-27 11:14,tsu[1,2],135/280,ts6:135/280(-4683),,tsu (ts6 + UNSTICK) vs ts6 (BUILD_30 6 + CAMP_AWAKE + TARGET_STATE); queue 48; cambc 4.0.0, 70 maps, C++,4b9bd06
+2026-10-27 11:20,tsu[1,2],172/280,c29b:172/280(+25669),75960,tsu (BUILD_30 6 + CAMP_AWAKE + TARGET_STATE + UNSTICK) vs c29b (v14) + economy; queue 48; cambc 4.0.0, 70 maps, C++,4b9bd06+dirty
