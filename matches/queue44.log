@@ -1,0 +1,13 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\bf6
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\bf6_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\bf6_s2
+    bf6_s1 vs b6_s1: 74/140 (-2082)
+    bf6_s2 vs b6_s2: 70/140 (-728)
+vs b6         wins 144/280  gem margin -2810
+2026-10-27 10:43,bf6[1,2],144/280,b6:144/280(-2810),,bf6 (BUILD_30 6 + UNSTICK + FEAR) vs b6 (BUILD_30 6); queue 44; cambc 4.0.0, 70 maps, C++,ce893b5
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\bf6_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\bf6_s2
+    bf6_s1 vs c29b_s1: 79/140 (+3512)
+    bf6_s2 vs c29b_s2: 74/140 (-2497)
+vs c29b       wins 153/280  gem margin +1015
+2026-10-27 10:48,bf6[1,2],153/280,c29b:153/280(+1015),,bf6 (BUILD_30 6 + UNSTICK + FEAR) vs c29b (v14); queue 44; cambc 4.0.0, 70 maps, C++,ce893b5

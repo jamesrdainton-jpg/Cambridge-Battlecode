@@ -257,6 +257,10 @@ public:
 			}
 		}
 		_turn();
+		if (TRACE_TO > 0 && now >= TRACE_FROM && now <= TRACE_TO)
+			log(act + " at " + std::to_string(pos.x) + "," + std::to_string(pos.y) + " tgt " + std::to_string(target) +
+				(target >= 0 ? "@" + std::to_string(G(target).ax) + "," + std::to_string(G(target).ay) + " st" + std::to_string(G(target).status) : "") +
+				" gems " + std::to_string(gems) + " hp " + std::to_string(static_cast<int>(hp)));
 		if (WARDS && act != "dead" && act != "recall" && act != "submit" && act != "tp" && act != "?") ward_bush();
 		if (RECALL_TRICK && act != "dead" && act != "recall" && act != "submit" && act != "tp" && act != "go_recall" &&
 			act != "recall_travel")
@@ -655,7 +659,21 @@ private:
 				g.hp[li] = chp;
 				g.refresh_hp();
 			}
-			if (chp < stat(k).hp) awake.insert(g.idx);
+			if (chp < stat(k).hp)
+			{
+				bool asleep = false;
+				if (CAMP_AWAKE)
+				{
+					try
+					{
+						asleep = c.is_asleep();
+					}
+					catch (const cambc::error&)
+					{
+					}
+				}
+				if (!asleep) awake.insert(g.idx);
+			}
 			g.status = ALIVE;
 			g.seen = now;
 			seen.insert(g.idx);

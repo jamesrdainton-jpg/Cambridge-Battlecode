@@ -7,6 +7,9 @@ namespace bot
 // Testing only: a non-zero SEED perturbs target scores by up to 2% so repeated matches diverge.
 inline constexpr int SEED = 0;
 inline constexpr bool DEBUG = false;
+// Testing only: log action, position, target and gems every turn for rounds TRACE_FROM..TRACE_TO (0 = off).
+inline constexpr int TRACE_FROM = 0;
+inline constexpr int TRACE_TO = 0;
 
 // Squads and targets.
 inline constexpr int MIN_SQUAD = 1;
@@ -96,6 +99,11 @@ inline constexpr bool UNSTICK = false;
 // it, retreat... (33 rounds on 02treasure-box). After a retreat, treat the enemies' reach as an avoid zone for 8 turns
 // and drop a target inside it.
 inline constexpr bool FEAR = false;
+// CAMP_AWAKE (2026-10-27): a camp below full health counted as awake forever (camps never heal), so a group someone
+// once hit stayed a danger zone after it went back to sleep (2 turns without damage) — on 01shortcut it closed the only
+// walking route to the altar and three champions carrying 140 gems bounced beside it from round ~600 to 2000. Ask the
+// engine (camp.is_asleep()) instead.
+inline constexpr bool CAMP_AWAKE = false;
 inline constexpr bool WARDS = true;
 
 // Tributes, recalls, shopping.
