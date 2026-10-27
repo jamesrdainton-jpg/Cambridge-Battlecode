@@ -699,31 +699,41 @@ private:
 					if (seen.count(gi)) continue;
 					int dx = g.ax - px, dy = g.ay - py;
 					if (dx > 9 || dx < -9 || dy > 9 || dy < -9) continue;
-					if (g.status == RESPAWN && now < g.alive_at - 2) continue;
-					if (!vis) vis = cambc::vision::visible_tiles();
-					if ((*vis & g.tiles).is_empty()) continue;
-					cambc::map::camp_group_state state;
-					try
-					{
-						state = g.obj.state();
-					}
-					catch (const cambc::error&)
-					{
-						continue;
-					}
-					g.seen = now;
-					if (auto r = std::get_if<cambc::map::camp_group_respawning>(&state))
-					{
-						g.status = RESPAWN;
-						g.alive_at = now + r->timer;
-						g.reset_hp();
-					}
-					else if (std::holds_alternative<cambc::map::camp_group_reward_available>(state))
-						g.status = REWARD;
-					else
-						g.status = ALIVE;
+					refresh_group(g, vis);
 				}
 			}
+		// TARGET_STATE: the loop above only looks at groups whose anchor is within 9 tiles, so on a long group (00the-line:
+		// 23 camps in a row) a champion standing at its far end kept a stale "reward" status, waited to capture forever,
+		// and its occupied spawn tile kept the group from respawning for everyone (1,700 idle rounds).
+		if (TARGET_STATE && target >= 0 && !seen.count(target)) refresh_group(G(target), vis);
+	}
+
+	// Ask the engine for the state of a group with no visible camps but some tile in view.
+	void refresh_group(Group& g, std::optional<bitboard>& vis)
+	{
+		if (g.status == RESPAWN && now < g.alive_at - 2) return;
+		if (!vis) vis = cambc::vision::visible_tiles();
+		if ((*vis & g.tiles).is_empty()) return;
+		cambc::map::camp_group_state state;
+		try
+		{
+			state = g.obj.state();
+		}
+		catch (const cambc::error&)
+		{
+			return;
+		}
+		g.seen = now;
+		if (auto r = std::get_if<cambc::map::camp_group_respawning>(&state))
+		{
+			g.status = RESPAWN;
+			g.alive_at = now + r->timer;
+			g.reset_hp();
+		}
+		else if (std::holds_alternative<cambc::map::camp_group_reward_available>(state))
+			g.status = REWARD;
+		else
+			g.status = ALIVE;
 	}
 
 	// ------------------------------------------------------------------ combat

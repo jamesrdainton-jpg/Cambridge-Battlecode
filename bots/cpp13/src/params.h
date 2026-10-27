@@ -104,6 +104,9 @@ inline constexpr bool FEAR = false;
 // walking route to the altar and three champions carrying 140 gems bounced beside it from round ~600 to 2000. Ask the
 // engine (camp.is_asleep()) instead.
 inline constexpr bool CAMP_AWAKE = false;
+// TARGET_STATE (2026-10-27): always refresh the target group's state when one of its tiles is in view (the per-turn refresh
+// only covered groups whose anchor tile is within 9; see update_knowledge()).
+inline constexpr bool TARGET_STATE = false;
 inline constexpr bool WARDS = true;
 
 // Tributes, recalls, shopping.

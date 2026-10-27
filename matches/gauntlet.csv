@@ -175,3 +175,5 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-27 10:47,cf[1,2],132/280,b6:132/280(-10562),,cf (BUILD_30 6 + FIGHT2 allies 6 + FEAR + UNSTICK + LOCKED_OPEN) vs b6; queue 45; cambc 4.0.0, 70 maps, C++,ce893b5
 2026-10-27 10:48,bf6[1,2],153/280,c29b:153/280(+1015),,bf6 (BUILD_30 6 + UNSTICK + FEAR) vs c29b (v14); queue 44; cambc 4.0.0, 70 maps, C++,ce893b5
 2026-10-27 10:51,cf[1,2],147/280,c29b:147/280(+7848),,cf (BUILD_30 6 + FIGHT2 allies 6 + FEAR + UNSTICK + LOCKED_OPEN) vs c29b (v14); queue 45; cambc 4.0.0, 70 maps, C++,ce893b5+dirty
+2026-10-27 10:55,ca6[1,2],155/280,b6:155/280(+11912),,ca6 (BUILD_30 6 + CAMP_AWAKE) vs b6 (BUILD_30 6); queue 46; cambc 4.0.0, 70 maps, C++,ce07314
+2026-10-27 10:57,ca6[1,2],172/280,c29b:172/280(+32761),,ca6 (BUILD_30 6 + CAMP_AWAKE) vs c29b (v14); queue 46; cambc 4.0.0, 70 maps, C++,ce07314+dirty
