@@ -5,7 +5,7 @@ Running record of everything tried on the bot: setup, discovered game mechanics,
 ## Latest bot
 
 > **When the user asks for "the latest bot":**
-> 1. Run `.venv\Scripts\python.exe tools\release.py --verify` from the project folder (on Mac/Linux, `.venv/bin/python tools/release.py --verify`). It rebuilds the upload ZIP from the newest frozen **C++** release (`--src` defaults to `bots/cpp20` since 2026-10-27; `bots/cpp13` is the development copy, whose defaults are older; the Python `bots/mybot` is the reference copy, `--src mybot`), checks it, and plays 6 games against the starter. If a batch is running, leave out `--verify`, because extra games can make batch games fail. If `bots/mybot` has an experimental change turned on, release the last frozen version instead with `--src v7` (or newer). `submissions/` is not in git, so on a fresh clone this step creates the ZIP; the same commit always gives the same content hash.
+> 1. Run `.venv\Scripts\python.exe tools\release.py --verify` from the project folder (on Mac/Linux, `.venv/bin/python tools/release.py --verify`). It rebuilds the upload ZIP from the newest frozen **C++** release (`--src` defaults to `bots/cpp21` since 2026-10-27; `bots/cpp13` is the development copy, whose defaults are older; the Python `bots/mybot` is the reference copy, `--src mybot`), checks it, and plays 6 games against the starter. If a batch is running, leave out `--verify`, because extra games can make batch games fail. If `bots/mybot` has an experimental change turned on, release the last frozen version instead with `--src v7` (or newer). `submissions/` is not in git, so on a fresh clone this step creates the ZIP; the same commit always gives the same content hash.
 > 2. Reply with the ZIP's full path on the computer you are on (the tool prints it; on James's PC it is `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip`) and the dated copy it matches. Say what changed since the previous release.
 > 3. Update the table and the release history below, and add a row to the experiment log.
 >
@@ -14,10 +14,10 @@ Running record of everything tried on the bot: setup, discovered game mechanics,
 | | |
 |---|---|
 | **ZIP to upload** | `submissions/cambridge-bot-latest.zip` (committed in git, so it can be downloaded from GitHub; on James's PC: `C:\Users\james\GitHub\Cambridge-Battlecode\submissions\cambridge-bot-latest.zip` after pulling) |
-| Same file as | `submissions/cambridge-bot-2026-10-27-3.zip` (content hash `b86b072db8c1`), built from `bots/cpp20` at commit `46b7f5d` (row 190) |
-| Bot | **C++**: `bots/cpp20` (= `bots/cpp13` with the flags in row 190, DEBUG off), 27.1 KB: `src/main.cpp`, `src/bot.h`, `src/draft.h`, `src/params.h`, `src/world.h`. Platform v19 |
+| Same file as | `submissions/cambridge-bot-2026-10-27-4.zip` (content hash `45fd2eeba644`), built from `bots/cpp21` at commit `dce32e7` (row 194) |
+| Bot | **C++**: `bots/cpp21` (= `bots/cpp20` + `NEED_FRAC` 0.25, DEBUG off), 27.1 KB: `src/main.cpp`, `src/bot.h`, `src/draft.h`, `src/params.h`, `src/world.h`. Platform v20 |
 | Verified | 2026-10-27: 6/6 wins vs the starter (00packs, 00lanes, 00monolith) on cambc 4.0.0, no error lines from our bot |
-| New since the previous ZIP | `cpp20` = `cpp19` + gold valued all game (`GOLD_TAPER` 2000; was fading to its floor by r425): 157/280, +9,222 vs `cpp19` (rows 189-190) |
+| New since the previous ZIP | `cpp21` = `cpp20` + bigger squads (`NEED_FRAC` 0.25, was 0.55): 173/280, +27,826 vs `cpp20` (rows 192-194). `cpp20` = `cpp19` + gold valued all game (`GOLD_TAPER` 2000): 157/280 vs `cpp19` |
 
 To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submit release`, which sends `bots/release`, the same code as the ZIP (needs `cambc login` and the Avast exception).
 
@@ -25,6 +25,7 @@ To upload, use the platform's submission page, or `.venv\Scripts\cambc.exe submi
 
 | Date | ZIP | Source | What it added | Verified |
 |---|---|---|---|---|
+| 2026-10-27 ~19:45 UTC | `cambridge-bot-2026-10-27-4.zip` | `cpp21` at commit `dce32e7` | Bigger squads (`NEED_FRAC` 0.25) | 6/6 vs starter (cambc 4.0.0) |
 | 2026-10-27 ~18:00 UTC | `cambridge-bot-2026-10-27-3.zip` | `cpp20` at commit `46b7f5d` | Gold valued all game (`GOLD_TAPER` 2000) | 6/6 vs starter (cambc 4.0.0) |
 | 2026-10-27 ~11:30 UTC | `cambridge-bot-2026-10-27-2.zip` | `cpp19` at commit `41c34d5` | Item order of the stronger teams (`BUILD_30` 6) + camp-state fixes (`CAMP_AWAKE`, `TARGET_STATE`, `SEEK_HIDDEN`) + `LOCKED_OPEN` (row 183) | 6/6 vs starter (cambc 4.0.0) |
 | 2026-10-26 | `cambridge-bot-2026-10-26-2.zip` | `cpp14` (C++) | v14's strategy in C++; C++ is the main bot from now on | 6/6 vs starter (cambc 4.0.0) |
