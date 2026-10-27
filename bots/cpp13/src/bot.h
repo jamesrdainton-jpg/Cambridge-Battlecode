@@ -58,11 +58,16 @@ inline AbInfo read_ability(const cambc::ability& ab)
 	return r;
 }
 
-// Champion damage profile per type: strength multiplier, focus-per-turn multiplier, attack range.
+// Champion damage profile per type: strength multiplier, focus-per-turn multiplier, attack range. FIGHT2 also uses the
+// burst of all abilities at once (focus and strength multipliers), the number of stuns, the reach of a threat next turn
+// (move + dash + attack or the longest ability) and Heart of Ruin's missing-health passive.
 struct Profile
 {
 	double str_mul{ 1.0 }, foc_mul{ 0.0 };
 	int rng{ 1 };
+	double burst_foc{ 0.0 }, burst_str{ 0.0 };
+	int stuns{ 0 }, reach{ 2 };
+	bool dash{}, hor{};
 };
 
 inline const Profile& profile(cambc::champion_type kind)
@@ -74,13 +79,31 @@ inline const Profile& profile(cambc::champion_type kind)
 	{
 		Profile p;
 		champion d{ kind };
+		int ab_reach = 0;
 		for (const auto& ab : d.abilities())
 		{
 			AbInfo i = read_ability(ab);
-			if (i.kind == K_RESET) p.str_mul += 0.125;
-			else if (i.kind == K_DAMAGE || i.kind == K_AOE || i.kind == K_CC) p.foc_mul += i.modifier / 8.0;
+			if (i.kind == K_RESET)
+			{
+				p.str_mul += 0.125;
+				p.burst_str += 1.0;
+			}
+			else if (i.kind == K_DAMAGE || i.kind == K_AOE || i.kind == K_CC)
+			{
+				p.foc_mul += i.modifier / 8.0;
+				p.burst_foc += i.modifier;
+				ab_reach = std::max(ab_reach, static_cast<int>(i.range + i.radius));
+			}
+			if (i.kind == K_CC || (i.kind == K_DASH && i.duration > 0)) ++p.stuns;
+			if (i.kind == K_DASH)
+			{
+				p.dash = true;
+				p.burst_foc += i.modifier;  // Heart of Ruin's landing damage
+			}
 		}
 		p.rng = d.base_stats().base_attack_range;
+		p.reach = std::max(p.rng + 1 + (p.dash ? 2 : 0) + (kind == cambc::champion_type::heart_of_ruin ? 1 : 0), ab_reach);
+		p.hor = d.passive() == cambc::passive_type::missing_health_damage;
 		cache[k] = p;
 	}
 	return *cache[k];
@@ -134,6 +157,7 @@ struct Near
 	int d;
 	int gems;
 	bool stunned{};
+	int reach{ 2 };  // FIGHT2: tiles it can threaten next turn
 };
 
 // A visible camp of a known group: (camp, group index, kind, spawn cell, health, index in the group).
@@ -261,6 +285,17 @@ private:
 	int partner_slot{ -1 };  // META_PAIR: Cassi's partner Issac (shared-memory slot); she takes his target
 	bool trick_recall{};     // RECALL_TRICK: a recall we started at the end of last turn, to cancel now
 	bool fragile{};          // META_CASSI: Cassi (600 HP) waits for a tank at camps and leaves fights at half health
+	// FIGHT2: enemy champions as last seen (they stay a threat for FIGHT2_MEMORY rounds after a bush hides them).
+	struct Ghost
+	{
+		std::uint32_t h;
+		vec2 p;
+		int round;
+		double hp, dps, burst;
+		int reach;
+	};
+	std::vector<Ghost> ghosts;
+	int last_champ_hit{ -100 };  // FIGHT2: round we last hit an enemy champion (hysteresis)
 	int target{ -1 };
 	int target_round{ -100 };
 	std::optional<double> last_hp;
@@ -473,7 +508,7 @@ private:
 		if (has_lock) place_lock();
 		update_knowledge();
 		if (HELP_CALLS) help_call = read_help();
-		if (!enemies.empty() && fight())
+		if (!enemies.empty() && (FIGHT2 ? fight2() : fight()))
 		{
 			act = "fight";
 			if (FIGHT_PRIO) set_prio(10);
@@ -802,6 +837,398 @@ private:
 		return false;
 	}
 
+	// ------------------------------------------------------------------ FIGHT2
+	// Damage over a short fight: sustained damage plus a share of the burst of all abilities (assumed ready unless
+	// burst_scale says otherwise) and a turn of an average champion per stun, scaled by Heart of Ruin's passive.
+	static double power_dps(const Profile& prof, double str, double foc, double h, double mh, double burst_scale)
+	{
+		double dps = str * prof.str_mul + foc * prof.foc_mul;
+		dps += burst_scale * (foc * prof.burst_foc + str * prof.burst_str + 60.0 * prof.stuns) / FIGHT2_HORIZON;
+		if (prof.hor && mh > 0) dps *= 1.0 + 0.5 * std::max(0.0, 1.0 - h / mh);
+		return dps;
+	}
+
+	// Our own fighting damage: exact burst from the abilities that are off cooldown now.
+	double my_power()
+	{
+		const auto& prof = profile(kind);
+		double ready = 0;
+		for (int i = 0; i < 2; ++i)
+		{
+			if (abilities[static_cast<std::size_t>(i)].cooldown() != 0) continue;
+			int k = ab[i].kind;
+			if (k == K_DAMAGE || k == K_AOE || k == K_CC || k == K_DASH) ready += focus_now * ab[i].modifier;
+			if (k == K_RESET) ready += strength_now;
+			if (k == K_CC || (k == K_DASH && ab[i].duration > 0)) ready += 60.0;
+		}
+		double dps = dps_now + ready / FIGHT2_HORIZON;
+		if (prof.hor) dps *= 1.0 + 0.5 * std::max(0.0, 1.0 - hp / max_hp);
+		return dps;
+	}
+
+	bool fight2()
+	{
+		std::vector<Near> near;
+		const bitboard* campers = (IGNORE_SPAWN_CAMPERS && !taking_damage()) ? &world.enemy_spawn : nullptr;
+		double their_hp = 0, their_dps = 0;
+		std::vector<std::uint32_t> seen_now;
+		for (auto& e : enemies)
+		{
+			vec2 ep;
+			try
+			{
+				if (!e.is_visible()) continue;
+				ep = e.position();
+			}
+			catch (const cambc::error&)
+			{
+				continue;
+			}
+			if (campers && campers->is_set(ep)) continue;
+			int d = cheb(ep, pos);
+			if (d <= 10) enemy_seen = now;
+			if (d > 9) continue;
+			try
+			{
+				std::uint32_t h = static_cast<std::uint32_t>(static_cast<cambc::handle_champion_t>(e));
+				auto kit = kinds.find(h);
+				if (kit == kinds.end()) kit = kinds.emplace(h, e.champion_name()).first;
+				const auto& prof = profile(kit->second);
+				double ehp = e.health();
+				double dps = power_dps(prof, e.strength(), e.focus(), ehp, e.max_health(), 1.0);
+				bool stunned = e.restrictions().contains(cambc::buff_restrictions::attack);
+				if (stunned) dps *= 0.75;  // loses its next turn
+				int eg = static_cast<int>(e.gem_count());
+				near.push_back(Near{ e, ep, ehp, prof.rng, dps, d, eg, stunned, prof.reach });
+				seen_now.push_back(h);
+				double w = d <= 7 ? 1.0 : 0.6;
+				their_hp += w * ehp;
+				their_dps += w * dps;
+				auto git = std::find_if(ghosts.begin(), ghosts.end(), [&](const Ghost& g) { return g.h == h; });
+				if (git == ghosts.end())
+					ghosts.push_back(Ghost{ h, ep, now, ehp, dps, 0.0, prof.reach });
+				else
+					*git = Ghost{ h, ep, now, ehp, dps, 0.0, prof.reach };
+			}
+			catch (const cambc::error&)
+			{
+				continue;
+			}
+		}
+		// Enemies that just slipped out of sight (into a bush) still count, at a discount.
+		for (auto it = ghosts.begin(); it != ghosts.end();)
+		{
+			if (now - it->round > FIGHT2_MEMORY)
+			{
+				it = ghosts.erase(it);
+				continue;
+			}
+			if (it->round != now && cheb(it->p, pos) <= 7)
+			{
+				their_hp += 0.6 * it->hp;
+				their_dps += 0.6 * it->dps;
+			}
+			++it;
+		}
+		if (near.empty()) return false;
+		int dmin = 999;
+		for (const auto& x : near) dmin = std::min(dmin, x.d);
+		if (!zones.empty() && taking_damage() && hp < 0.5 * max_hp)
+		{
+			auto dz = danger(-1);
+			if (dmin > 4 && dz && dz->is_set(pos))
+			{
+				bitboard zone;
+				for (const auto& x : near) zone.draw_chebyshev(x.p, static_cast<float>(x.rng + 1));
+				if (escape(&zone)) return true;
+			}
+		}
+		// Only allies who can fight now: alive, not channelling, close, and not about to run themselves.
+		double our_hp = hp, our_dps = my_power();
+		for (auto& a : allies)
+		{
+			try
+			{
+				if (!a.is_visible()) continue;
+				vec2 ap = a.position();
+				if (cheb(ap, pos) > FIGHT2_ALLY) continue;
+				auto st = a.state();
+				if (!st.contains(cambc::champion_state::alive) || st.contains(cambc::champion_state::recalling) ||
+					st.contains(cambc::champion_state::submitting_gems) || st.contains(cambc::champion_state::teleporting))
+					continue;
+				double ahp = a.health(), amax = a.max_health();
+				if (ahp < 0.3 * amax) continue;
+				our_hp += ahp;
+				our_dps += power_dps(profile(a.champion_name()), a.strength(), a.focus(), ahp, amax, 0.5);
+			}
+			catch (const cambc::error&)
+			{
+			}
+		}
+		double ratio = (our_hp * our_dps) / std::max(1.0, their_hp * their_dps * ENEMY_DPS_MUL);
+		int home = world.spawn_field().get(pos);
+		if (home <= 6) ratio *= 1.4;
+		if (cheb(pos, world.enemy_spawn_center) <= 7) ratio *= 0.6;
+		int closest = 999;
+		bool threatened = false;
+		for (const auto& x : near)
+		{
+			closest = std::min(closest, x.d - x.rng);
+			if (x.d <= x.reach) threatened = true;
+		}
+		double frac = hp / max_hp;
+		double burst_dmg = burst();
+		for (auto& x : near)
+		{
+			if (x.d <= rng && x.hp <= burst_dmg)
+			{
+				hit_champion(x.e, x.p);
+				return true;
+			}
+		}
+		if (FIGHT_SHIELD) shield_up(closest);
+		double extra = gems >= 20 ? FIGHT_GEM_EXTRA : 0.0;
+		bool committed = now - last_champ_hit <= 2;
+		double retreat_at = FIGHT2_RETREAT + extra;
+		double engage_at = (committed ? FIGHT2_RETREAT : FIGHT2_ENGAGE) + extra;
+		if (ratio < retreat_at || (frac < (fragile ? 0.5 : LOW_HP_RETREAT) && closest <= LOW_HP_REACH))
+		{
+			retreat2(near);
+			return true;
+		}
+		const Near* weakest = nullptr;
+		for (const auto& x : near)
+			if (x.d <= rng && (!weakest || x.hp < weakest->hp)) weakest = &x;
+		if (ratio < engage_at)
+		{
+			// Not strong enough to start a fight: hit back what is in range, and don't farm inside a stronger enemy's
+			// reach (74% of our platform deaths came after 11+ rounds near an enemy).
+			if (threatened && ratio < 1.0)
+			{
+				retreat2(near);
+				return true;
+			}
+			if (weakest && can_attack && !ranged)
+			{
+				if (basic_attack_champion(weakest->e)) use_reset_champion(weakest->e);
+			}
+			else if (weakest && ranged)
+				hit_champion(weakest->e, weakest->p);
+			return closest <= 2;
+		}
+		// Engage: focus the champion our others are hitting (shared memory bytes 6-7: handle, round).
+		int focus_h = -1;
+		if (!HELP_CALLS)
+		{
+			try
+			{
+				int fr = static_cast<std::uint8_t>(cambc::shared_memory[7]);
+				if (fr == (now & 255) || fr == ((now - 1) & 255)) focus_h = static_cast<std::uint8_t>(cambc::shared_memory[6]);
+			}
+			catch (...)
+			{
+			}
+		}
+		const Near* best = &near[0];
+		double best_v = -1.0;
+		for (const auto& x : near)
+		{
+			double v = (100.0 + 2.0 * x.gems) / (x.hp + 50.0);
+			if (x.d <= rng) v *= 2.0;
+			if (x.stunned) v *= 1.5;
+			if (focus_h >= 0 && x.d <= rng + 1 &&
+				static_cast<int>(static_cast<std::uint32_t>(static_cast<cambc::handle_champion_t>(x.e)) & 255) == focus_h)
+				v *= 2.0;
+			v /= 1.0 + 0.1 * x.d;
+			if (v > best_v)
+			{
+				best_v = v;
+				best = &x;
+			}
+		}
+		if (!HELP_CALLS)
+		{
+			try
+			{
+				cambc::shared_memory[6] = static_cast<std::uint8_t>(static_cast<std::uint32_t>(static_cast<cambc::handle_champion_t>(best->e)) & 255);
+				cambc::shared_memory[7] = static_cast<std::uint8_t>(now & 255);
+			}
+			catch (...)
+			{
+			}
+		}
+		if (META_PLAY && stun_dash >= 0)
+		{
+			std::vector<vec2> tg;
+			for (const auto& x : near)
+				if (x.d <= 3) tg.push_back(x.p);
+			if (dash_stun(tg, 1, best->p))
+			{
+				const Near* hitme = cheb(best->p, pos) <= rng ? best : nullptr;
+				for (const auto& x : near)
+					if (!hitme && cheb(x.p, pos) <= rng) hitme = &x;
+				if (hitme) hit_champion(hitme->e, hitme->p);
+				return true;
+			}
+		}
+		if (best->d <= rng)
+		{
+			hit_champion(best->e, best->p);
+			return true;
+		}
+		if (weakest && can_attack && !ranged)
+		{
+			if (basic_attack_champion(weakest->e)) use_reset_champion(weakest->e);
+		}
+		cast_offense_champion(best->e, best->p);
+		if (best->d <= 5 && cheb(best->p, world.enemy_spawn_center) > 3)
+		{
+			bitboard roots;
+			roots.draw_chebyshev(best->p, static_cast<float>(rng));
+			go(roots, true);
+			if (cheb(best->p, pos) <= rng)
+			{
+				basic_attack_champion(best->e);
+				use_reset_champion(best->e);
+			}
+			return true;
+		}
+		return closest <= 2;
+	}
+
+	void retreat2(const std::vector<Near>& near)
+	{
+		const Near* weakest = nullptr;
+		for (const auto& x : near)
+			if (x.d <= rng && (!weakest || x.hp < weakest->hp)) weakest = &x;
+		// A melee champion can attack and then move: hit on the way out.
+		if (!ranged && can_attack && weakest)
+		{
+			if (basic_attack_champion(weakest->e)) use_reset_champion(weakest->e);
+		}
+		if (at_spawn) return;
+		// A ranged champion caught by melee with no dash, far from home: running only gives free hits, so shoot back.
+		if (ranged && weakest)
+		{
+			bool melee_on_me = false;
+			for (const auto& x : near)
+				if (x.d <= 1 && x.rng <= 1) melee_on_me = true;
+			bool dash_ready = dash_slot >= 0 && can_cast && abilities[static_cast<std::size_t>(dash_slot)].cooldown() == 0;
+			if (melee_on_me && !dash_ready && world.spawn_field().get(pos) > 4)
+			{
+				hit_champion(weakest->e, weakest->p);
+				return;
+			}
+		}
+		int far = 999;
+		for (const auto& x : near) far = std::min(far, x.d);
+		auto camps_zone = danger(-1);
+		bool in_camp = camps_zone && camps_zone->is_set(pos);
+		if (far >= 8 && !in_camp && world.spawn_field().get(pos) > 8 && try_recall()) return;
+		flee2(near, camps_zone ? &*camps_zone : nullptr);
+	}
+
+	// Step (or dash) to the neighbouring tile least inside the enemies' reach, then nearest home. No path is kept, so it
+	// can't flip between two routes as the old retreat did when the soft-avoid path changed each turn.
+	bool flee2(const std::vector<Near>& near, const bitboard* camp_zone)
+	{
+		if (!can_move) return false;
+		const auto& sf = world.spawn_field();
+		int here_sd = sf.get(pos);
+		auto score = [&](vec2 t) {
+			double threat = 0;
+			int dclose = 99;
+			for (const auto& x : near)
+			{
+				int d = cheb(t, x.p);
+				threat += x.dps * std::max(0, x.reach + 1 - d);
+				dclose = std::min(dclose, d);
+			}
+			for (const auto& g : ghosts)
+				if (g.round != now) threat += 0.5 * g.dps * std::max(0, g.reach + 1 - cheb(t, g.p));
+			int sd = sf.get(t);
+			double s = -threat / 40.0 + 0.6 * (static_cast<double>(here_sd) - sd) + 0.2 * std::min(dclose, 8);
+			if (camp_zone && camp_zone->is_set(t)) s -= 5.0;
+			return s;
+		};
+		vec2 best = pos;
+		double best_s = score(pos);
+		bool best_dash = false;
+		for (int dx = -1; dx <= 1; ++dx)
+			for (int dy = -1; dy <= 1; ++dy)
+			{
+				if (dx == 0 && dy == 0) continue;
+				vec2 t{ pos.x + dx, pos.y + dy };
+				if (t.x < 0 || t.y < 0 || t.x >= world.w || t.y >= world.h) continue;
+				if (world.block.is_set(t) || occ.is_set(t) || sf.get(t) >= UNREACHED) continue;
+				double s = score(t);
+				if (s > best_s)
+				{
+					best_s = s;
+					best = t;
+				}
+			}
+		if (dash_slot >= 0 && can_cast && abilities[static_cast<std::size_t>(dash_slot)].cooldown() == 0)
+		{
+			double step_best = best_s;
+			for (int dx = -2; dx <= 2; ++dx)
+				for (int dy = -2; dy <= 2; ++dy)
+				{
+					if (std::max(std::abs(dx), std::abs(dy)) != 2) continue;
+					vec2 t{ pos.x + dx, pos.y + dy };
+					if (t.x < 0 || t.y < 0 || t.x >= world.w || t.y >= world.h) continue;
+					if (world.block.is_set(t) || occ.is_set(t) || sf.get(t) >= UNREACHED) continue;
+					bool path = false;
+					for (int mx = -1; mx <= 1 && !path; ++mx)
+						for (int my = -1; my <= 1 && !path; ++my)
+						{
+							vec2 m{ pos.x + mx, pos.y + my };
+							if (m.x < 0 || m.y < 0 || m.x >= world.w || m.y >= world.h) continue;
+							if ((mx != 0 || my != 0) && cheb(m, t) == 1 && !world.walls.is_set(m) && !occ.is_set(m)) path = true;
+						}
+					if (!path) continue;
+					double s = score(t);
+					if (s > best_s && s > step_best + 1.0)
+					{
+						best_s = s;
+						best = t;
+						best_dash = true;
+					}
+				}
+		}
+		if (best == pos) return false;
+		if (best_dash)
+		{
+			try
+			{
+				if (abilities[static_cast<std::size_t>(dash_slot)].use(best))
+				{
+					pos = best;
+					can_cast = false;
+					return true;
+				}
+			}
+			catch (const cambc::error&)
+			{
+			}
+			return false;
+		}
+		try
+		{
+			if (me.move_absolute(best))
+			{
+				pos = best;
+				can_move = false;
+				if (ranged) can_attack = false;
+				return true;
+			}
+		}
+		catch (const cambc::error&)
+		{
+		}
+		return false;
+	}
+
 	bool fight30_stand(const std::vector<Near>& near, double frac)
 	{
 		int dmin = 999;
@@ -1061,6 +1488,7 @@ private:
 	template <typename U> void hit(const U& u, vec2 upos, bool is_champion)
 	{
 		if (FIGHT_COMMIT != 0 && is_champion) commit_until = now + FIGHT_COMMIT;
+		if (is_champion) last_champ_hit = now;
 		if (CAST_FIRST && ranged)
 		{
 			cast_offense(u, upos, is_champion);
@@ -1671,7 +2099,17 @@ private:
 				}
 			if (dash_stun(tg, strong ? 1 : 2, cp)) d = cheb(cp, pos);
 		}
-		if (hp < (fragile ? 0.6 : 0.35) * max_hp && taking_damage() && (g.dps > 0 || !zones.empty()))
+		double leave_hp = (fragile ? 0.6 : 0.35) * max_hp;
+		if (FIGHT2)
+		{
+			// Leave with three turns of the awake camps' damage in hand (an elk trio hits for 180 a turn): camps never
+			// heal, so coming back later costs only the walk.
+			double camp_in = 0;
+			for (const auto& x : alive)
+				if (awake.count(x.g) && stat(x.k).str > 0 && cheb(x.p, pos) <= stat(x.k).rng) camp_in += stat(x.k).str;
+			leave_hp = std::max(leave_hp, 3.0 * camp_in);
+		}
+		if (hp < leave_hp && taking_damage() && (g.dps > 0 || !zones.empty()))
 		{
 			if (ranged && d <= 4) cast_offense(camp, cp, false);
 			if (!escape(nullptr)) step_away(cp, 4);

@@ -66,6 +66,19 @@ inline constexpr int FIGHT_COMMIT = 0;
 inline constexpr bool HELP_CALLS = false;
 inline constexpr bool FIGHT_PRIO = true;
 inline constexpr int HELP_RANGE = 8;
+// FIGHT2 (2026-10-27, platform deaths vs mid-ladder teams): count only allies who can fight now (alive, not channelling,
+// within FIGHT2_ALLY tiles, above 30% health); add enemy burst (abilities assumed ready), stuns and Heart of Ruin's
+// passive; keep counting enemies seen in the last FIGHT2_MEMORY rounds (bushes hide them); hysteresis between
+// FIGHT2_ENGAGE and FIGHT2_RETREAT once we have hit a champion; step out of reach of stronger enemies instead of
+// farming beside them; flee by the safest next step (the old path to spawn flipped between two tiles each turn);
+// ranged champions caught by melee with no escape fight back; focus fire through shared memory bytes 6-7; leave a
+// camp fight when health is below 3 turns of its damage.
+inline constexpr bool FIGHT2 = false;
+inline constexpr int FIGHT2_ALLY = 4;
+inline constexpr double FIGHT2_ENGAGE = 1.1;
+inline constexpr double FIGHT2_RETREAT = 0.8;
+inline constexpr double FIGHT2_HORIZON = 6.0;
+inline constexpr int FIGHT2_MEMORY = 3;
 
 // Camps, captures, vision.
 inline constexpr bool CLAIM_ON_KILL = true;
