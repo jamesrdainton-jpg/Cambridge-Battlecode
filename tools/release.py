@@ -1,6 +1,6 @@
 """Package the best bot as an upload ZIP and print where it is.
 
-Usage: python tools/release.py [--src cpp13] [--verify] [--check]   (cpp13 = the C++ main bot since 2026-10-26)
+Usage: python tools/release.py [--src cpp20] [--verify] [--check]   (default: the newest frozen C++ release; cpp13 = the development copy)
 
 1. Copies bots/<src> into bots/release with DEBUG off (tools/variant.py); refuses unless SEED = 0.
 2. Bundles it with `cambc bundle` as submissions/cambridge-bot-YYYY-MM-DD.zip (a different release
@@ -122,7 +122,7 @@ def problems(path: Path, src: str) -> list[str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--src", default="cpp13", help="bot folder to release (default: cpp13, the C++ main bot)")
+    parser.add_argument("--src", default="cpp20", help="bot folder to release (default: cpp20, the newest frozen C++ release; bump it with each new freeze)")
     parser.add_argument("--verify", action="store_true", help="also play 6 games vs the starter")
     parser.add_argument("--check", action="store_true", help="only check that the latest ZIP is current")
     args = parser.parse_args()
