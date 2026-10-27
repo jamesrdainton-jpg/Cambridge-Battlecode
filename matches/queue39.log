@@ -1,0 +1,7 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\f2b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\f2b_s1
+vs c29b       wins 73/140  gem margin +5014
+2026-10-27 10:06,f2b[1],73/140,c29b:73/140(+5014),,f2b (FIGHT2 + BUILD_30 6) vs c29b (v14); queue 39; cambc 4.0.0, 70 maps, C++,012748e+dirty
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\f2a_s2
+vs c29b       wins 57/140  gem margin -6912
+2026-10-27 10:08,f2a[2],57/140,c29b:57/140(-6912),,f2a (FIGHT2) vs c29b (v14) seed 2; queue 39; cambc 4.0.0, 70 maps, C++,012748e+dirty
