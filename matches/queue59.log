@@ -1,0 +1,16 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf20
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf15
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf20_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf20_s2
+    nf20_s1 vs cpp20_s1: 84/140 (+15775)
+    nf20_s2 vs cpp20_s2: 78/140 (+15266)
+vs cpp20      wins 162/280  gem margin +31041
+economy (rounds to 1000 vs idle, summed over 70 maps): 78646
+2026-10-27 19:45,nf20[1,2],162/280,cpp20:162/280(+31041),78646,nf20 (cpp20 + NEED_FRAC 0.2) vs cpp20; queue 59; cambc 4.0.0, 70 maps, C++,b41a07b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf15_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf15_s2
+    nf15_s1 vs cpp20_s1: 72/140 (+7892)
+    nf15_s2 vs cpp20_s2: 80/140 (+10792)
+vs cpp20      wins 152/280  gem margin +18684
+economy (rounds to 1000 vs idle, summed over 70 maps): 80860
+2026-10-27 19:51,nf15[1,2],152/280,cpp20:152/280(+18684),80860,nf15 (cpp20 + NEED_FRAC 0.15) vs cpp20; queue 59; cambc 4.0.0, 70 maps, C++,47a4778
