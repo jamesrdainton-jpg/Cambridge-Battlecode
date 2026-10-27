@@ -158,3 +158,7 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-27 10:03,f2a[1],65/140,c29b:65/140(+194),,f2a (FIGHT2) vs c29b (v14); queue 38; cambc 4.0.0, 70 maps, C++,ecdb86b
 2026-10-27 10:06,f2b[1],73/140,c29b:73/140(+5014),,f2b (FIGHT2 + BUILD_30 6) vs c29b (v14); queue 39; cambc 4.0.0, 70 maps, C++,012748e+dirty
 2026-10-27 10:08,f2a[2],57/140,c29b:57/140(-6912),,f2a (FIGHT2) vs c29b (v14) seed 2; queue 39; cambc 4.0.0, 70 maps, C++,012748e+dirty
+2026-10-27 10:12,b6[1,2],158/280,c29b:158/280(+19220),,b6 (BUILD_30 6) vs c29b (v14); queue 40; cambc 4.0.0, 70 maps, C++,1c597d8
+2026-10-27 10:13,f2b[2],80/140,c29b:80/140(+4820),,f2b (FIGHT2 + BUILD_30 6) vs c29b (v14) seed 2; queue 40; cambc 4.0.0, 70 maps, C++,1c597d8
+2026-10-27 10:15,f2c[1,2],146/280,c29b:146/280(+6608),,f2c (f2b, engage 1.0 retreat 0.7) vs c29b (v14); queue 40; cambc 4.0.0, 70 maps, C++,1c597d8
+2026-10-27 10:18,f2d[1,2],136/280,c29b:136/280(-7181),,f2d (f2b, engage 1.3 retreat 0.9) vs c29b (v14); queue 40; cambc 4.0.0, 70 maps, C++,1c597d8+dirty

@@ -20,6 +20,10 @@ inline constexpr int GOLD_TAPER = 500;
 // Maps where no altar can be reached without killing a camp first (play_draft() works it out and passes it through
 // draft memory): target gold only and never walk to an altar; the round limit decides on lifetime gold (as bot.py).
 inline constexpr bool LOCKED_GOLD = true;
+// LOCKED_OPEN (2026-10-27): on those maps strong teams kill the guards late and tribute (smurphy won 01boss-battle 913-0
+// and 02the-pack 948-0 against v14). Value gems at half weight too, and every 10 rounds check whether an altar can be
+// walked to past the groups we haven't seen dead; while one can, tribute carried gems as on any map.
+inline constexpr bool LOCKED_OPEN = false;
 // Meta champions (2026-10-26, the user's request): play Heart of Ruin's stun-dash in fights and on camps, value stunned
 // enemies, let pure stuns (Cassi) hit camps, shield whenever hurt. META_DRAFT (draft.h): 0 = v14's; 1 = the top teams'
 // core (Heart of Ruin, Vesper, Vendetta; + Cassi & Issac; + Marcella); 2 = core + Tavi (stun buffed in 4.0) at 4, + Cassi &

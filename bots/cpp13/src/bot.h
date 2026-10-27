@@ -309,6 +309,8 @@ private:
 	};
 	std::vector<Ghost> ghosts;
 	int last_champ_hit{ -100 };  // FIGHT2: round we last hit an enemy champion (hysteresis)
+	int open_checked{ -100 };    // LOCKED_OPEN: last altar reachability check, and its answer
+	bool open_now{};
 	int target{ -1 };
 	int target_round{ -100 };
 	std::optional<double> last_hp;
@@ -1647,9 +1649,27 @@ private:
 		return false;
 	}
 
+	// LOCKED_OPEN: can we walk to an altar now, past every group not known to be dead? Checked every 10 rounds.
+	bool altar_open()
+	{
+		if (now - open_checked < 10) return open_now;
+		open_checked = now;
+		bitboard walls = world.block;
+		for (const auto& g : world.groups)
+			if (g.status == ALIVE || (g.status == RESPAWN && now >= g.alive_at)) walls |= g.tiles;
+		walls.set(pos, false);
+		bitboard roots = world.altar_approach & ~walls;
+		bitboard visited, stop;
+		stop.set(pos);
+		distance_field f;
+		f.compute_to(walls, roots, stop, visited);
+		open_now = f.get(pos) < UNREACHED;
+		return open_now;
+	}
+
 	bool want_tribute()
 	{
-		if (locked) return false;
+		if (locked && !(LOCKED_OPEN && gems >= 10 && altar_open())) return false;
 		if (gems + static_cast<int>(cambc::global_submitted_gems(team::ally)) >= 1000) return true;
 		if (now >= 1940) return true;
 		if (target >= 0 && G(target).status == REWARD && G(target).tiles.is_set(pos)) return false;
@@ -1865,7 +1885,7 @@ private:
 			double gdps = cluster_dps > 0 ? dps + cluster_dps * g.cluster : dps;
 			double cost = kk * (d + wait) + hp_left / gdps + (locked ? 5.0 : 5 + 0.5 * g.near_altar + g.gems / 10.0);
 			if (others + 1 < need) cost += 4 * (need - others - 1);
-			double value = locked ? g.gold : g.gems + gold_w * g.gold;
+			double value = locked ? g.gold + (LOCKED_OPEN ? 0.5 * g.gems : 0.0) : g.gems + gold_w * g.gold;
 			if (need && others >= need)
 				value *= 0.5;
 			else if (need > 1 && sit != cl.end() && !sit->second.empty() && *std::min_element(sit->second.begin(), sit->second.end()) < slot)
@@ -1970,7 +1990,7 @@ private:
 		{
 			act = "idle";
 			++idle_turns;
-			if (gems > 0 && !locked)
+			if (gems > 0 && (!locked || (LOCKED_OPEN && altar_open())))
 				tribute();
 			else
 				go(world.altar_approach);
