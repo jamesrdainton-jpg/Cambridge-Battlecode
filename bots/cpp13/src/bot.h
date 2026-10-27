@@ -409,6 +409,7 @@ private:
 		bitboard roots = roots_in & ~occ;
 		if (roots.is_empty() || roots.is_set(pos)) return false;
 		if (UNSTICK && avoid && (now < no_avoid_until || avoid->is_set(pos))) avoid = nullptr;  // see UNSTICK
+		if (TILE_PASS && avoid && world.all_camp_tiles.is_set(pos)) avoid = nullptr;            // see TILE_PASS
 		bitboard walls = world.block | occ;
 		distance_field field;
 		bitboard visited, stop_at;

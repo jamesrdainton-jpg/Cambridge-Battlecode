@@ -110,6 +110,10 @@ inline constexpr bool TARGET_STATE = false;
 // SEEK_HIDDEN (2026-10-27): when the target group is alive but none of its camps is in view (the survivors are behind
 // a wall), walk to the tiles beside its unseen cells; we used to wait beside the dead ones forever (02gift-wrapping).
 inline constexpr bool SEEK_HIDDEN = false;
+// TILE_PASS (2026-10-27): the narrow part of UNSTICK. Standing on a camp's spawn tile, take the direct path (the detour
+// search frees our own tile and leads back across it, and standing there blocks that group's respawn: 01yellow-brick-road
+// stalled at 339 gems). UNSTICK also walked straight through awake camps' reach and lost head to head.
+inline constexpr bool TILE_PASS = false;
 inline constexpr bool WARDS = true;
 
 // Tributes, recalls, shopping.
