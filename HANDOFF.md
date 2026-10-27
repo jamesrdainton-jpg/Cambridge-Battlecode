@@ -1,8 +1,15 @@
 # Handover — Cambridge Battlecode 2026 bot
 
-State as of **2026-10-27** (DEVLOG rows 172 onwards; section below). Before that, **2026-10-26** (patch 4.0, v14; DEVLOG rows 158–171). Before that, **2026-10-25** (engine 3.0 diagnosis, v13; DEVLOG rows 143 onwards; report: [research/2026-10-25/REPORT.md](research/2026-10-25/REPORT.md)). Before that: v12 from the 2026-10-19 research report (rows 135–142), the 2026-10-18 sprint (rows 120–134) and the 2026-10-16 platform-data session (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md).
+State as of **2026-10-27 evening** (DEVLOG rows 188-190; first section below). Before that, **2026-10-27** (DEVLOG rows 172-187). Before that, **2026-10-26** (patch 4.0, v14; DEVLOG rows 158–171). Before that, **2026-10-25** (engine 3.0 diagnosis, v13; DEVLOG rows 143 onwards; report: [research/2026-10-25/REPORT.md](research/2026-10-25/REPORT.md)). Before that: v12 from the 2026-10-19 research report (rows 135–142), the 2026-10-18 sprint (rows 120–134) and the 2026-10-16 platform-data session (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md).
 
 **Team rule:** more than one person works on this repo, each on their own computer, so every result must be reproducible on a different computer from a git commit. Commit code before testing it, record the commit and the exact command, keep queue scripts and `matches\gauntlet.csv` in git, and use the pinned cambc with the committed maps. Details are in the "Team rule" section near the top of DEVLOG.md.
+
+## 2026-10-27 (evening): gold valued all game; `cpp20` = platform v19
+
+- **Submitted: v19 = `bots/cpp20`** = `cpp19` + `GOLD_TAPER` 2000 (ZIP `submissions/cambridge-bot-2026-10-27-3.zip` = `cambridge-bot-latest.zip`, hash `b86b072db8c1`, verified 6/6; commit `46b7f5d`). `tools/release.py` now defaults to `--src cpp20` (`cpp13`, the development copy, still has older defaults; variants set the `cpp19` flags with `--set`, see `matches/queue54.sh`).
+- **Why (DEVLOG 188-190):** in v18's ranked losses the opponents out-spend us 1.7x before r500 and 2.5x after it; we valued gold at 0.4 fading to the 0.06 floor by r425. Valuing it longer, vs `cpp19`, seeds 1,2: taper 1000 144/280, **taper 2000 157/280 (+9,222; 77 and 80)**, no fade 151/280, weight 0.6 + taper 2000 144/280; all gem margins positive.
+- **Tested and dropped:** Strength item tails (`BUILD_30` 10: 125/280; 11 = Treasure first: 119/280 vs `cpp19`). The winners own ~2.7x our Strength at r800 but the same Health; their edge is the amount of gold, not its split.
+- **Next:** panel `cpp20` once `cambc submissions list` shows `Live: 19` (`python tools/panel.py queue cpp20 --pin base12 --expect-live 19`, then `fetch cpp20`, `table`; `cpp19` got 12/30), and compare ranked results since v19 went live (`research/2026-10-27/tools/ranked.py --since <UTC>`). If the panel or the ladder is clearly worse, re-submit `cpp19`.
 
 ## 2026-10-27: platform test panel, item order, camp-state bugs (live: `cpp19` = platform v18)
 
