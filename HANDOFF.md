@@ -1,8 +1,17 @@
 # Handover — Cambridge Battlecode 2026 bot
 
-State as of **2026-10-26** (patch 4.0, v14; DEVLOG rows 158–162). Before that, **2026-10-25** (engine 3.0 diagnosis, v13; DEVLOG rows 143 onwards; report: [research/2026-10-25/REPORT.md](research/2026-10-25/REPORT.md)). Before that: v12 from the 2026-10-19 research report (rows 135–142), the 2026-10-18 sprint (rows 120–134) and the 2026-10-16 platform-data session (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md).
+State as of **2026-10-27** (DEVLOG rows 172 onwards; section below). Before that, **2026-10-26** (patch 4.0, v14; DEVLOG rows 158–171). Before that, **2026-10-25** (engine 3.0 diagnosis, v13; DEVLOG rows 143 onwards; report: [research/2026-10-25/REPORT.md](research/2026-10-25/REPORT.md)). Before that: v12 from the 2026-10-19 research report (rows 135–142), the 2026-10-18 sprint (rows 120–134) and the 2026-10-16 platform-data session (rows 82–109). The full history of every experiment is in [DEVLOG.md](DEVLOG.md).
 
 **Team rule:** more than one person works on this repo, each on their own computer, so every result must be reproducible on a different computer from a git commit. Commit code before testing it, record the commit and the exact command, keep queue scripts and `matches\gauntlet.csv` in git, and use the pinned cambc with the committed maps. Details are in the "Team rule" section near the top of DEVLOG.md.
+
+## 2026-10-27: platform test panel, fight rewrite, the stronger teams' item order
+
+- **Platform test panel** (`tools/panel.py`, results in `matches/panel.csv`): 6 teams from #42 to #253, 5 fixed maps each; every version after the baseline replays the *same* opponent bot versions (`--pin base12`). `panel.py queue LABEL --pin base12 --expect-live N`, then `panel.py fetch LABEL` and `panel.py table`. Quota: 50 groups per window (6 per panel run). An upload must be live (`cambc submissions list` shows `Live: N`) before queueing.
+- **Results:** baseline v12 (`cpp14`) **11/30**; `cpp18` (FIGHT2, platform v17) **10/30** with 27% fewer deaths (the opponents farmed the room we gave up). Against these teams our farming is close to theirs; fights and the gold they bring decide.
+- **The stronger teams' item order** (`research/2026-10-27/tools/builds.py`): Jungle > Durability H > Monster > Bruiser H / Bruiser S-F alternating (focus for Marcella, Heart of Ruin, Ren). `BUILD_30 6`: **158/280, +19,220 vs v14** in self-play — the best local result of the day.
+- **New C++ options (all off in `cpp13`'s defaults):** `FIGHT2` (fight rewrite), `BUILD_30` 6-9, `LOCKED_OPEN` (tribute on altar-locked maps once the seal is broken), `UNSTICK` and `FEAR` (bouncing between two tiles; `research/2026-10-27/tools/oscillation.py`).
+- **Tools:** `research/2026-10-27/tools/deathzoom.py` (rounds before each death), `timeline.py` (per-champion activity; also reads local replays), `builds.py`, `oscillation.py`; probe bots in `research/2026-10-27/probes/` (the recall trick does not block stuns).
+- **Local games are fast now** (~2 minutes per 140-game gauntlet), so screen everything locally first.
 
 ## 2026-10-26 (afternoon): patch 4.0; v14 released
 
