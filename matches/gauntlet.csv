@@ -189,3 +189,5 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-27 11:49,tkf[1,2],136/280,tsk:136/280(-726),,tkf (tsk + FIGHT2 allies 6) vs tsk; queue 51; cambc 4.0.0, 70 maps, C++,b2ba3de
 2026-10-27 11:51,cpp19[1,2],140/280,tsk:140/280(+2436),,cpp19 (tsk + LOCKED_OPEN) vs tsk; queue 51; cambc 4.0.0, 70 maps, C++,b2ba3de
 2026-10-27 11:54,tkf[1,2],165/280,c29b:165/280(+30118),,tkf (tsk + FIGHT2 allies 6) vs c29b (v14); queue 51; cambc 4.0.0, 70 maps, C++,b2ba3de
+2026-10-27 17:14,s10[1,2],125/280,cpp19:125/280(-6207),74393,s10 (cpp19 + BUILD_30 10, Strength tail) vs cpp19; queue 52; cambc 4.0.0, 70 maps, C++,158c26f
+2026-10-27 17:21,s11[1,2],119/280,cpp19:119/280(-15850),76431,s11 (cpp19 + BUILD_30 11, Treasure + Strength tail) vs cpp19; queue 52; cambc 4.0.0, 70 maps, C++,158c26f
