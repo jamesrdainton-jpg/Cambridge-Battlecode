@@ -195,3 +195,5 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-27 17:37,gt20[1,2],157/280,cpp19:157/280(+9222),76328,gt20 (cpp19 + GOLD_TAPER 2000) vs cpp19; queue 53; cambc 4.0.0, 70 maps, C++,9cc429b
 2026-10-27 17:46,gtc[1,2],151/280,cpp19:151/280(+8744),78171,gtc (cpp19 + GOLD_TAPER 100000, no fade) vs cpp19; queue 54; cambc 4.0.0, 70 maps, C++,fb65986
 2026-10-27 17:54,gw6[1,2],144/280,cpp19:144/280(+7428),77478,gw6 (cpp19 + GOLD_TAPER 2000 + GOLD_WEIGHT 0.6) vs cpp19; queue 54; cambc 4.0.0, 70 maps, C++,fb65986
+2026-10-27 18:13,es10[1,2],128/280,cpp20:128/280(-11945),76999,es10 (cpp20 + ENEMY_SIDE 1.0) vs cpp20; queue 55; cambc 4.0.0, 70 maps, C++,ec953af
+2026-10-27 18:19,nf70[1,2],119/280,cpp20:119/280(-24129),76792,nf70 (cpp20 + NEED_FRAC 0.7) vs cpp20; queue 55; cambc 4.0.0, 70 maps, C++,ec953af
