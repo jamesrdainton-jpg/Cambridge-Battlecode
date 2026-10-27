@@ -1,0 +1,24 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf35
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf25
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ne35
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf35_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf35_s2
+    nf35_s1 vs cpp20_s1: 83/140 (+12002)
+    nf35_s2 vs cpp20_s2: 81/140 (+14424)
+vs cpp20      wins 164/280  gem margin +26426
+economy (rounds to 1000 vs idle, summed over 70 maps): 75200
+2026-10-27 19:25,nf35[1,2],164/280,cpp20:164/280(+26426),75200,nf35 (cpp20 + NEED_FRAC 0.35) vs cpp20; queue 58 (rerun of 57); cambc 4.0.0, 70 maps, C++,b187da2
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf25_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf25_s2
+    nf25_s1 vs cpp20_s1: 90/140 (+13058)
+    nf25_s2 vs cpp20_s2: 83/140 (+14768)
+vs cpp20      wins 173/280  gem margin +27826
+economy (rounds to 1000 vs idle, summed over 70 maps): 76373
+2026-10-27 19:31,nf25[1,2],173/280,cpp20:173/280(+27826),76373,nf25 (cpp20 + NEED_FRAC 0.25) vs cpp20; queue 58; cambc 4.0.0, 70 maps, C++,b187da2
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ne35_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\ne35_s2
+    ne35_s1 vs cpp20_s1: 68/140 (+1729)
+    ne35_s2 vs cpp20_s2: 76/140 (+5130)
+vs cpp20      wins 144/280  gem margin +6859
+economy (rounds to 1000 vs idle, summed over 70 maps): 75539
+2026-10-27 19:37,ne35[1,2],144/280,cpp20:144/280(+6859),75539,ne35 (cpp20 + NEED_FRAC 0.35 + ENEMY_SIDE 0.7) vs cpp20; queue 58; cambc 4.0.0, 70 maps, C++,b187da2

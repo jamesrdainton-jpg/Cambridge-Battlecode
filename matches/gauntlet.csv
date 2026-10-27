@@ -199,3 +199,6 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-27 18:19,nf70[1,2],119/280,cpp20:119/280(-24129),76792,nf70 (cpp20 + NEED_FRAC 0.7) vs cpp20; queue 55; cambc 4.0.0, 70 maps, C++,ec953af
 2026-10-27 18:27,nf45[1,2],161/280,cpp20:161/280(+15005),75190,nf45 (cpp20 + NEED_FRAC 0.45) vs cpp20; queue 56; cambc 4.0.0, 70 maps, C++,f7e6d43
 2026-10-27 18:35,es70[1,2],150/280,cpp20:150/280(+10193),76014,es70 (cpp20 + ENEMY_SIDE 0.7) vs cpp20; queue 56; cambc 4.0.0, 70 maps, C++,f7e6d43
+2026-10-27 19:25,nf35[1,2],164/280,cpp20:164/280(+26426),75200,nf35 (cpp20 + NEED_FRAC 0.35) vs cpp20; queue 58 (rerun of 57); cambc 4.0.0, 70 maps, C++,b187da2
+2026-10-27 19:31,nf25[1,2],173/280,cpp20:173/280(+27826),76373,nf25 (cpp20 + NEED_FRAC 0.25) vs cpp20; queue 58; cambc 4.0.0, 70 maps, C++,b187da2
+2026-10-27 19:37,ne35[1,2],144/280,cpp20:144/280(+6859),75539,ne35 (cpp20 + NEED_FRAC 0.35 + ENEMY_SIDE 0.7) vs cpp20; queue 58; cambc 4.0.0, 70 maps, C++,b187da2
