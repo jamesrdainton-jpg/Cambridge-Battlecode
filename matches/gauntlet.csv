@@ -186,3 +186,6 @@ time,bot,wins,per_opponent,economy_rounds,note,commit
 2026-10-27 11:39,tkp[1,2],12/12,idle:12/12(+10954),,tkp (tsk + TILE_PASS) vs idle on 3 maps; probe maps=01yellow-brick-road,01big-world,02gift-wrapping,41c34d5+dirty
 2026-10-27 11:41,tkp[1,2],128/280,tsk:128/280(-9796),,tkp (tsk + TILE_PASS) vs tsk; queue 50; cambc 4.0.0, 70 maps, C++,5a65c73
 2026-10-27 11:47,tkp[1,2],176/280,c29b:176/280(+36056),75948,tkp (BUILD_30 6 + CAMP_AWAKE + TARGET_STATE + SEEK_HIDDEN + TILE_PASS) vs c29b (v14) + economy; queue 50; cambc 4.0.0, 70 maps, C++,5a65c73
+2026-10-27 11:49,tkf[1,2],136/280,tsk:136/280(-726),,tkf (tsk + FIGHT2 allies 6) vs tsk; queue 51; cambc 4.0.0, 70 maps, C++,b2ba3de
+2026-10-27 11:51,cpp19[1,2],140/280,tsk:140/280(+2436),,cpp19 (tsk + LOCKED_OPEN) vs tsk; queue 51; cambc 4.0.0, 70 maps, C++,b2ba3de
+2026-10-27 11:54,tkf[1,2],165/280,c29b:165/280(+30118),,tkf (tsk + FIGHT2 allies 6) vs c29b (v14); queue 51; cambc 4.0.0, 70 maps, C++,b2ba3de

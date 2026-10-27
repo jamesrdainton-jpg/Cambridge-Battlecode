@@ -1,0 +1,19 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\tkf
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\tkf_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\tkf_s2
+    tkf_s1 vs tsk_s1: 68/140 (+663)
+    tkf_s2 vs tsk_s2: 68/140 (-1389)
+vs tsk        wins 136/280  gem margin -726
+2026-10-27 11:49,tkf[1,2],136/280,tsk:136/280(-726),,tkf (tsk + FIGHT2 allies 6) vs tsk; queue 51; cambc 4.0.0, 70 maps, C++,b2ba3de
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\cpp19_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\cpp19_s2
+    cpp19_s1 vs tsk_s1: 70/140 (+1763)
+    cpp19_s2 vs tsk_s2: 70/140 (+673)
+vs tsk        wins 140/280  gem margin +2436
+2026-10-27 11:51,cpp19[1,2],140/280,tsk:140/280(+2436),,cpp19 (tsk + LOCKED_OPEN) vs tsk; queue 51; cambc 4.0.0, 70 maps, C++,b2ba3de
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\tkf_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\tkf_s2
+    tkf_s1 vs c29b_s1: 76/140 (+10264)
+    tkf_s2 vs c29b_s2: 89/140 (+19854)
+vs c29b       wins 165/280  gem margin +30118
+2026-10-27 11:54,tkf[1,2],165/280,c29b:165/280(+30118),,tkf (tsk + FIGHT2 allies 6) vs c29b (v14); queue 51; cambc 4.0.0, 70 maps, C++,b2ba3de
