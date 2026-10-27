@@ -1,6 +1,7 @@
 """Item build orders per champion in platform games: what the other team buys, in order, and how it compares with us.
 
 Usage: python -I research/2026-10-27/tools/builds.py replays/platform/match-group-*.zip [--side them|us] [--until 800]
+       (also takes ranked.py's replays/ranked/*.bin)
 Per champion type: how often each emblem family/stat is the 1st, 2nd, 3rd... completed (5 shards of one item), the
 mean shards of each kind owned at rounds 200/400/800, and a few sample sequences. Item ids: 14 families x 3 stats x
 (shard, emblem), in the SDK's order (cambc 4.0).
@@ -33,6 +34,9 @@ def item_name(i):
 def games(paths):
     for path in paths:
         with zipfile.ZipFile(path) as z:
+            if "replay.repl26a" in z.namelist():  # ranked.py's replays/ranked/*.bin: one game, our stdout beside it
+                yield z.read("replay.repl26a"), "a" if "team-a.stdout" in z.namelist() else "b"
+                continue
             for name in sorted(z.namelist()):
                 if not name.endswith(".zip"):
                     continue

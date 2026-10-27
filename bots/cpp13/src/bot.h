@@ -131,7 +131,7 @@ inline std::vector<Stage> build_for(cambc::champion_type kind)
 	const Stage CS{ I::capture_shard_of_strength, I::capture_emblem_of_strength, 0 }, CF{ I::capture_shard_of_focus, I::capture_emblem_of_focus, 0 };
 	const Stage RS{ I::prospector_shard_of_strength, I::prospector_emblem_of_strength, 0 }, RF{ I::prospector_shard_of_focus, I::prospector_emblem_of_focus, 0 };
 	auto at = [](Stage s, int n) { s.need = n; return s; };
-	if (BUILD_30 >= 6 && BUILD_30 <= 9)
+	if (BUILD_30 >= 6 && BUILD_30 <= 11)
 	{
 		// The stronger platform teams' order (research/2026-10-27/tools/builds.py, 30 panel games, 2026-10-27): Jungle,
 		// Durability H, Monster, then Bruiser H and Bruiser of the main stat in turn; Marcella, Heart of Ruin and Ren
@@ -142,12 +142,19 @@ inline std::vector<Stage> build_for(cambc::champion_type kind)
 		const Stage& J = f ? JF : JS;
 		const Stage& M6 = f ? MF : MS;
 		const Stage& B6 = f ? BF : BS;
+		const Stage& P6 = f ? PF : PS;
 		const Stage RF6{ I::prospector_shard_of_focus, I::prospector_emblem_of_focus, 0 }, RS6{ I::prospector_shard_of_strength, I::prospector_emblem_of_strength, 0 };
-		const std::vector<Stage> tail{ at(BH, 5), at(B6, 5), at(BH, 10), at(B6, 10), at(BH, 20), at(B6, 20), at(BH, 30), at(B6, 30), at(B6, 60) };
+		std::vector<Stage> tail{ at(BH, 5), at(B6, 5), at(BH, 10), at(B6, 10), at(BH, 20), at(B6, 20), at(BH, 30), at(B6, 30), at(B6, 60) };
+		// 10/11 (2026-10-27, v18's 50 ranked losses): at r800 the winners' Vesper owns ~22 Strength shards to our 8 and the
+		// same Health (Bruiser S 11, Power S 5, Bruiser H 3). Main-stat tail only: Bruiser (5 + 1 of each other) and
+		// Power (6 for 5).
+		if (BUILD_30 >= 10)
+			tail = { at(B6, 5), at(B6, 10), at(P6, 5), at(B6, 15), at(B6, 20), at(P6, 10), at(B6, 30), at(P6, 30), at(B6, 60) };
 		std::vector<Stage> out;
 		if (BUILD_30 == 7) out = { at(f ? RF6 : RS6, 5), at(J, 5), at(DH, 5), at(M6, 5) };  // Prospector first
 		else if (BUILD_30 == 8) out = { at(DH, 5), at(J, 5), at(M6, 5) };                 // Durability first
 		else if (BUILD_30 == 9) out = { at(J, 5), at(DH, 5) };                            // no Monster
+		else if (BUILD_30 == 11) out = { at(f ? TF : TS, 5), at(J, 5), at(DH, 5), at(M6, 5) };  // Treasure first
 		else out = { at(J, 5), at(DH, 5), at(M6, 5) };
 		out.insert(out.end(), tail.begin(), tail.end());
 		return out;

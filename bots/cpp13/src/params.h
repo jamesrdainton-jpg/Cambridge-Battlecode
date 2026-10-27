@@ -128,6 +128,7 @@ inline constexpr bool SHOP_SAFE = true;
 // Item builds: 0 = v13's (Monster, Power, Jungle, Durability), 1 = Treasure, Jungle, Bruiser stacks (the top teams'),
 // 2 = Treasure, then Bruiser only; 3/4/5 = 1 opening with Capture, Monster or Prospector instead of Treasure (cambc 4.0);
 // 6 = the stronger platform teams' order: Jungle, Durability H, Monster, then Bruiser H and Bruiser S/F in turn;
-// 7 = 6 with Prospector first; 8 = 6 with Durability H before Jungle; 9 = 6 without the Monster stage.
+// 7 = 6 with Prospector first; 8 = 6 with Durability H before Jungle; 9 = 6 without the Monster stage;
+// 10 = 6 with a Strength tail (Bruiser and Power of the main stat, no Bruiser H); 11 = 10 with Treasure first.
 inline constexpr int BUILD_30 = 4;
 } // namespace bot
