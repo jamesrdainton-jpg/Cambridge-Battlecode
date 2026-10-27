@@ -1,0 +1,16 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\gtc
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\gw6
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\gtc_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\gtc_s2
+    gtc_s1 vs cpp19_s1: 73/140 (+5868)
+    gtc_s2 vs cpp19_s2: 78/140 (+2876)
+vs cpp19      wins 151/280  gem margin +8744
+economy (rounds to 1000 vs idle, summed over 70 maps): 78171
+2026-10-27 17:46,gtc[1,2],151/280,cpp19:151/280(+8744),78171,gtc (cpp19 + GOLD_TAPER 100000, no fade) vs cpp19; queue 54; cambc 4.0.0, 70 maps, C++,fb65986
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\gw6_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\gw6_s2
+    gw6_s1 vs cpp19_s1: 65/140 (+746)
+    gw6_s2 vs cpp19_s2: 79/140 (+6682)
+vs cpp19      wins 144/280  gem margin +7428
+economy (rounds to 1000 vs idle, summed over 70 maps): 77478
+2026-10-27 17:54,gw6[1,2],144/280,cpp19:144/280(+7428),77478,gw6 (cpp19 + GOLD_TAPER 2000 + GOLD_WEIGHT 0.6) vs cpp19; queue 54; cambc 4.0.0, 70 maps, C++,fb65986
