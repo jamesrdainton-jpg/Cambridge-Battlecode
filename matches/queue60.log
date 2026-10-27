@@ -1,0 +1,16 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\wl10
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\es10b
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\wl10_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\wl10_s2
+    wl10_s1 vs cpp21_s1: 38/140 (-39012)
+    wl10_s2 vs cpp21_s2: 34/140 (-42323)
+vs cpp21      wins 72/280  gem margin -81335
+economy (rounds to 1000 vs idle, summed over 70 maps): 98335
+2026-10-27 19:58,wl10[1,2],72/280,cpp21:72/280(-81335),98335,wl10 (cpp21 + WAIT_LIMIT 10) vs cpp21; queue 60; cambc 4.0.0, 70 maps, C++,c96a99f
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\es10b_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\es10b_s2
+    es10b_s1 vs cpp21_s1: 68/140 (-2249)
+    es10b_s2 vs cpp21_s2: 59/140 (-8308)
+vs cpp21      wins 127/280  gem margin -10557
+economy (rounds to 1000 vs idle, summed over 70 maps): 75891
+2026-10-27 20:04,es10b[1,2],127/280,cpp21:127/280(-10557),75891,es10b (cpp21 + ENEMY_SIDE 1.0) vs cpp21; queue 60; cambc 4.0.0, 70 maps, C++,c96a99f
