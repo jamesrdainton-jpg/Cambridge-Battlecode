@@ -1,0 +1,32 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\fe11
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\fe15
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\fr11
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\rt4
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\fe11_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\fe11_s2
+    fe11_s1 vs cpp21_s1: 75/140 (+2105)
+    fe11_s2 vs cpp21_s2: 67/140 (-2668)
+vs cpp21      wins 142/280  gem margin -563
+economy (rounds to 1000 vs idle, summed over 70 maps): 76373
+2026-10-27 20:11,fe11[1,2],142/280,cpp21:142/280(-563),76373,fe11 vs cpp21; queue 61; cambc 4.0.0, 70 maps, C++,2df8ca1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\fe15_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\fe15_s2
+    fe15_s1 vs cpp21_s1: 71/140 (+386)
+    fe15_s2 vs cpp21_s2: 72/140 (+1192)
+vs cpp21      wins 143/280  gem margin +1578
+economy (rounds to 1000 vs idle, summed over 70 maps): 76373
+2026-10-27 20:16,fe15[1,2],143/280,cpp21:143/280(+1578),76373,fe15 vs cpp21; queue 61; cambc 4.0.0, 70 maps, C++,2df8ca1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\fr11_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\fr11_s2
+    fr11_s1 vs cpp21_s1: 55/140 (-10281)
+    fr11_s2 vs cpp21_s2: 64/140 (-3813)
+vs cpp21      wins 119/280  gem margin -14094
+economy (rounds to 1000 vs idle, summed over 70 maps): 76286
+2026-10-27 20:23,fr11[1,2],119/280,cpp21:119/280(-14094),76286,fr11 vs cpp21; queue 61; cambc 4.0.0, 70 maps, C++,2df8ca1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\rt4_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\rt4_s2
+    rt4_s1 vs cpp21_s1: 72/140 (-3015)
+    rt4_s2 vs cpp21_s2: 66/140 (-7091)
+vs cpp21      wins 138/280  gem margin -10106
+economy (rounds to 1000 vs idle, summed over 70 maps): 76653
+2026-10-27 20:28,rt4[1,2],138/280,cpp21:138/280(-10106),76653,rt4 vs cpp21; queue 61; cambc 4.0.0, 70 maps, C++,2df8ca1
