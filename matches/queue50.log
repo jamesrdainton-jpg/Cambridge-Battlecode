@@ -1,0 +1,14 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\tkp
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\tkp_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\tkp_s2
+    tkp_s1 vs tsk_s1: 66/140 (-1991)
+    tkp_s2 vs tsk_s2: 62/140 (-7805)
+vs tsk        wins 128/280  gem margin -9796
+2026-10-27 11:41,tkp[1,2],128/280,tsk:128/280(-9796),,tkp (tsk + TILE_PASS) vs tsk; queue 50; cambc 4.0.0, 70 maps, C++,5a65c73
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\tkp_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\tkp_s2
+    tkp_s1 vs c29b_s1: 83/140 (+14584)
+    tkp_s2 vs c29b_s2: 93/140 (+21472)
+vs c29b       wins 176/280  gem margin +36056
+economy (rounds to 1000 vs idle, summed over 70 maps): 75948
+2026-10-27 11:47,tkp[1,2],176/280,c29b:176/280(+36056),75948,tkp (BUILD_30 6 + CAMP_AWAKE + TARGET_STATE + SEEK_HIDDEN + TILE_PASS) vs c29b (v14) + economy; queue 50; cambc 4.0.0, 70 maps, C++,5a65c73
