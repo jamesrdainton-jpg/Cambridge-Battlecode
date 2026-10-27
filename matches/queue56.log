@@ -1,0 +1,16 @@
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf45
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\es70
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf45_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\nf45_s2
+    nf45_s1 vs cpp20_s1: 74/140 (+4430)
+    nf45_s2 vs cpp20_s2: 87/140 (+10575)
+vs cpp20      wins 161/280  gem margin +15005
+economy (rounds to 1000 vs idle, summed over 70 maps): 75190
+2026-10-27 18:27,nf45[1,2],161/280,cpp20:161/280(+15005),75190,nf45 (cpp20 + NEED_FRAC 0.45) vs cpp20; queue 56; cambc 4.0.0, 70 maps, C++,f7e6d43
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\es70_s1
+created C:\Users\james\GitHub\Cambridge-Battlecode\bots\es70_s2
+    es70_s1 vs cpp20_s1: 72/140 (+4281)
+    es70_s2 vs cpp20_s2: 78/140 (+5912)
+vs cpp20      wins 150/280  gem margin +10193
+economy (rounds to 1000 vs idle, summed over 70 maps): 76014
+2026-10-27 18:35,es70[1,2],150/280,cpp20:150/280(+10193),76014,es70 (cpp20 + ENEMY_SIDE 0.7) vs cpp20; queue 56; cambc 4.0.0, 70 maps, C++,f7e6d43
